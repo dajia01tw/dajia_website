@@ -129,6 +129,50 @@ Object.keys(categories).forEach(key => {
     });
 });
 
+
+// ===== 產生「最新消息彙整頁 (news.html)」=====
+// 讀取 page_news.html 模板
+const newsTemplatePath = path.join(TEMPLATES_DIR, 'page_news.html');
+if (fs.existsSync(newsTemplatePath)) {
+    let newsContent = fs.readFileSync(newsTemplatePath, 'utf8');
+    
+    // 產生稅務新聞列表
+    let taxList = '';
+    if (categories['tax-news'] && categories['tax-news'].articles.length > 0) {
+        categories['tax-news'].articles.forEach(article => {
+            taxList += `<li><a href="${article.slug}">${article.title}</a> <span style="color:#718096;font-size:14px;">（${article.date}）</span></li>\n`;
+        });
+    } else {
+        taxList = '<li>尚無稅務新聞</li>';
+    }
+    
+    // 產生本所公告列表
+    let firmList = '';
+    if (categories['firm-news'] && categories['firm-news'].articles.length > 0) {
+        categories['firm-news'].articles.forEach(article => {
+            firmList += `<li><a href="${article.slug}">${article.title}</a> <span style="color:#718096;font-size:14px;">（${article.date}）</span></li>\n`;
+        });
+    } else {
+        firmList = '<li>尚無本所公告</li>';
+    }
+    
+    // 替換佔位符
+    newsContent = newsContent.replace('{{taxNewsList}}', taxList);
+    newsContent = newsContent.replace('{{firmNewsList}}', firmList);
+    
+    // 套入 Layout
+    let finalPage = layoutTemplate.replace('{{content}}', newsContent);
+    finalPage = finalPage.replace(/{{title}}/g, '最新消息');
+    finalPage = finalPage.replace(/{{description}}/g, '大佳稅務記帳士事務所 - 稅務新聞與本所公告彙整');
+    
+    const outputFile = path.join(DIST_DIR, 'news.html');
+    fs.writeFileSync(outputFile, finalPage);
+    console.log(`✅ 已產生最新消息彙整頁: ${outputFile}`);
+} else {
+    console.log('⚠️ 跳過 news.html：模板 page_news.html 不存在');
+}
+
+
 // ===== 產生固定頁面 (首頁、事務所簡介、服務總覽、常用連結、聯絡我們) =====
 const fixedPages = [
     { slug: 'index', title: '首頁', desc: '大佳稅務記帳士事務所 - 專業記帳與稅務服務' },
