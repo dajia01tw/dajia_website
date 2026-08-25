@@ -5,33 +5,352 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{title}} | 大佳稅務記帳士事務所</title>
     <meta name="description" content="{{description}}">
-    <!-- 這裡放您原有的 CSS 連結 -->
-    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        /* ---------- 全域重置與字型 ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: "Segoe UI", "Microsoft JhengHei", "PingFang TC", sans-serif;
+            background-color: #f5f7fa;
+            color: #2d3748;
+            line-height: 1.6;
+        }
+
+        /* ---------- 容器（置中） ---------- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ---------- 1. HEAD (頁首 + 上方導覽) ---------- */
+        .header {
+            background-color: #1a365d;
+            color: white;
+            padding: 15px 0;
+            border-bottom: 4px solid #ecc94b;
+        }
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+        .logo small {
+            font-size: 14px;
+            font-weight: 300;
+            opacity: 0.9;
+            display: block;
+        }
+
+        /* 頂部主選單 (六個主項目) */
+        .top-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 15px;
+        }
+        .top-nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+            padding: 5px 0;
+            border-bottom: 2px solid transparent;
+            transition: 0.3s;
+            white-space: nowrap;
+        }
+        .top-nav a:hover {
+            border-bottom-color: #ecc94b;
+        }
+
+        /* ---------- 2. BANNER (形象區) ---------- */
+        .banner {
+            background: linear-gradient(135deg, #2a4365 0%, #1a365d 100%);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .banner h2 {
+            font-size: 28px;
+            font-weight: 300;
+            letter-spacing: 3px;
+        }
+        .banner p {
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        /* ---------- 3. MAIN (左側地圖 + 右側內容) ---------- */
+        .main-wrap {
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+            padding-bottom: 40px;
+        }
+
+        /* 左側邊欄 (網站地圖) */
+        .sidebar {
+            width: 250px;
+            min-width: 200px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 20px 15px;
+            position: sticky;
+            top: 20px;
+            border: 1px solid #e2e8f0;
+        }
+        .sidebar h3 {
+            color: #1a365d;
+            font-size: 16px;
+            border-bottom: 2px solid #ecc94b;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        /* 左側選單清單樣式 */
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .sidebar ul li {
+            margin-bottom: 2px;
+        }
+        .sidebar ul li a {
+            display: block;
+            padding: 6px 12px;
+            border-radius: 6px;
+            color: #2d3748;
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.2s;
+            border-left: 3px solid transparent;
+        }
+        .sidebar ul li a:hover {
+            background-color: #edf2f7;
+            border-left-color: #ecc94b;
+        }
+
+        /* ★★★ 階層縮排樣式 ★★★ */
+        .sidebar ul ul {
+            padding-left: 20px;   /* 子項目向右縮排 */
+        }
+        .sidebar ul ul li a {
+            font-size: 13px;      /* 子項目字體略小 */
+            padding: 4px 12px;
+            color: #4a5568;
+        }
+        .sidebar ul ul li a:hover {
+            background-color: #f7fafc;
+        }
+
+        /* Active 狀態 (由 build.js 動態加上) */
+        .sidebar ul li a.active {
+            background-color: #ebf8ff;
+            border-left-color: #1a365d;
+            font-weight: 600;
+            color: #1a365d;
+        }
+
+        /* 父層項目樣式 (稍微突出) */
+        .sidebar .parent-item > a {
+            font-weight: 600;
+            color: #1a365d;
+        }
+
+        /* 右側內容區 */
+        .content-area {
+            flex: 1;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 30px 35px;
+            border: 1px solid #e2e8f0;
+            min-height: 400px;
+        }
+        .content-area h2 {
+            color: #1a365d;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .content-area .post-date {
+            color: #718096;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .content-area ul {
+            padding-left: 20px;
+        }
+        .content-area ul li {
+            margin-bottom: 10px;
+            list-style: none;
+            border-bottom: 1px dashed #edf2f7;
+            padding: 8px 0;
+        }
+        .content-area ul li a {
+            color: #2b6cb0;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .content-area ul li a:hover {
+            text-decoration: underline;
+        }
+
+        /* ---------- 4. FOOT (頁尾) ---------- */
+        .footer {
+            background-color: #1a365d;
+            color: #cbd5e0;
+            text-align: center;
+            padding: 25px 0;
+            border-top: 4px solid #ecc94b;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        .footer a {
+            color: #ecc94b;
+            text-decoration: none;
+        }
+
+        /* ---------- 手機版 RWD ---------- */
+        @media (max-width: 768px) {
+            .header-inner {
+                flex-direction: column;
+                text-align: center;
+            }
+            .top-nav {
+                justify-content: center;
+                margin-top: 10px;
+            }
+            .top-nav a {
+                font-size: 13px;
+            }
+            .main-wrap {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                position: relative;
+                top: 0;
+            }
+            .content-area {
+                padding: 20px;
+            }
+            .banner h2 {
+                font-size: 22px;
+            }
+        }
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 10px;
+            }
+            .top-nav a {
+                font-size: 12px;
+                padding: 3px 5px;
+            }
+            .logo h1 {
+                font-size: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>大佳稅務記帳士事務所</h1>
-        <!-- 此處放您的導航選單，稍後 build.js 會自動加上 active -->
-        <nav>
-            <ul>
-                <li><a href="index.html">首頁</a></li>
-                <li><a href="about.html">事務所簡介</a></li>
-                <li><a href="services.html">服務內容總覽</a></li>
-                <li><a href="tax-news.html">稅務新聞</a></li>
-                <li><a href="firm-news.html">本所公告</a></li>
-                <li><a href="links.html">常用連結</a></li>
-                <li><a href="contact.html">聯絡我們</a></li>
-            </ul>
-        </nav>
+
+    <!-- ====== 1. HEAD (頁首 + 頂部主選單) ====== -->
+    <header class="header">
+        <div class="container header-inner">
+            <div class="logo">
+                <h1>大佳稅務記帳士事務所</h1>
+                <small>專業 · 誠信 · 永續經營</small>
+            </div>
+            <!-- ★★★ 頂部主選單 (六個主項目) ★★★ -->
+            <nav class="top-nav">
+                <a href="index.html">🏠 首頁</a>
+                <a href="tax-news.html">📰 最新消息</a>
+                <a href="about.html">📄 事務所簡介</a>
+                <a href="services.html">📋 服務內容總覽</a>
+                <a href="links.html">🔗 常用連結</a>
+                <a href="contact.html">📞 聯絡我們</a>
+            </nav>
+        </div>
     </header>
 
-    <main>
-        <!-- 這裡是「內容區塊」，每個頁面的主要內容會塞進來 -->
-        {{content}}
+    <!-- ====== 2. BANNER (形象標語) ====== -->
+    <section class="banner">
+        <div class="container">
+            <h2>您事業最值得信賴的夥伴</h2>
+            <p>專精於公司登記、稅務申報、帳務處理與諮詢服務</p>
+        </div>
+    </section>
+
+    <!-- ====== 3. MAIN (左側樹狀地圖 + 右側內容) ====== -->
+    <main class="container main-wrap">
+        <!-- 左側邊欄 (樹狀網站導覽) -->
+        <aside class="sidebar">
+            <h3>📌 網站導覽</h3>
+            <ul>
+                <!-- 首頁 -->
+                <li><a href="index.html">🏠 首頁</a></li>
+
+                <!-- ★★★ 最新消息 (父層，底下有子項目) ★★★ -->
+                <li class="parent-item">
+                    <a href="tax-news.html">📰 最新消息</a>
+                    <ul>
+                        <li><a href="tax-news.html">稅務新聞</a></li>
+                        <li><a href="firm-news.html">本所公告</a></li>
+                    </ul>
+                </li>
+
+                <!-- 事務所簡介 -->
+                <li><a href="about.html">📄 事務所簡介</a></li>
+
+                <!-- ★★★ 服務內容總覽 (父層，底下有 7 個子項目) ★★★ -->
+                <li class="parent-item">
+                    <a href="services.html">📋 服務內容總覽</a>
+                    <ul>
+                        <li><a href="company-reg.html">公司設立/變更登記</a></li>
+                        <li><a href="accounting.html">帳務處理</a></li>
+                        <li><a href="tax-consult.html">稅務申報與諮詢</a></li>
+                        <li><a href="labor-ins.html">勞健保專區</a></li>
+                        <li><a href="licensed-business.html">特許行業登記</a></li>
+                        <li><a href="foreign-invest.html">外國人投資</a></li>
+                        <li><a href="addr-rental.html">登記地址租借/虛擬辦公室</a></li>
+                    </ul>
+                </li>
+
+                <!-- 常用連結 -->
+                <li><a href="links.html">🔗 常用連結</a></li>
+
+                <!-- 聯絡我們 -->
+                <li><a href="contact.html">📞 聯絡我們</a></li>
+            </ul>
+        </aside>
+
+        <!-- 右側內容區 -->
+        <section class="content-area">
+            {{content}}
+        </section>
     </main>
 
-    <footer>
-        <p>© 2026 大佳稅務記帳士事務所</p>
+    <!-- ====== 4. FOOT (頁尾) ====== -->
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 大佳稅務記帳士事務所 | 地址：台北市○○區○○路○○號 | 電話：(02) 1234-5678</p>
+            <p style="font-size: 13px; opacity: 0.7;">本網站採用靜態網站生成器技術，內容與版型完全分離。</p>
+        </div>
     </footer>
+
 </body>
 </html>

@@ -17,9 +17,18 @@ const files = fs.readdirSync(ARTICLES_DIR).filter(file => file.endsWith('.md'));
 
 // 分類容器
 const categories = {
+    // === 最新消息 ===
     'tax-news': { name: '稅務新聞', slug: 'tax-news', articles: [] },
     'firm-news': { name: '本所公告', slug: 'firm-news', articles: [] },
-    // 可再擴充服務項目
+    
+    // === 服務內容總覽 (7大項) ===
+    'company-reg': { name: '公司設立/變更登記', slug: 'company-reg', articles: [] },
+    'accounting': { name: '帳務處理', slug: 'accounting', articles: [] },
+    'tax-consult': { name: '稅務申報與諮詢', slug: 'tax-consult', articles: [] },
+    'labor-ins': { name: '勞健保專區', slug: 'labor-ins', articles: [] },
+    'licensed-business': { name: '特許行業登記', slug: 'licensed-business', articles: [] },
+    'foreign-invest': { name: '外國人投資', slug: 'foreign-invest', articles: [] },
+    'addr-rental': { name: '登記地址租借/虛擬辦公室', slug: 'addr-rental', articles: [] }
 };
 
 // 解析每篇文章
@@ -119,5 +128,32 @@ Object.keys(categories).forEach(key => {
         console.log(`✅ 已產生文章頁: ${outputFile}`);
     });
 });
+
+// ===== 產生固定頁面 (首頁、事務所簡介、服務總覽、常用連結、聯絡我們) =====
+const fixedPages = [
+    { slug: 'index', title: '首頁', desc: '大佳稅務記帳士事務所 - 專業記帳與稅務服務' },
+    { slug: 'about', title: '事務所簡介', desc: '大佳稅務記帳士事務所 - 團隊介紹與服務理念' },
+    { slug: 'services', title: '服務內容總覽', desc: '大佳稅務記帳士事務所 - 七項專業服務項目' },
+    { slug: 'links', title: '常用連結', desc: '大佳稅務記帳士事務所 - 政府機關與實用工具連結' },
+    { slug: 'contact', title: '聯絡我們', desc: '大佳稅務記帳士事務所 - 聯絡資訊與服務時間' }
+];
+
+fixedPages.forEach(page => {
+    const templatePath = path.join(TEMPLATES_DIR, `page_${page.slug}.html`);
+    if (!fs.existsSync(templatePath)) {
+        console.log(`⚠️ 跳過 ${page.slug}：模板檔案不存在 (page_${page.slug}.html)`);
+        return;
+    }
+    const content = fs.readFileSync(templatePath, 'utf8');
+    let finalPage = layoutTemplate.replace('{{content}}', content);
+    finalPage = finalPage.replace(/{{title}}/g, page.title);
+    finalPage = finalPage.replace(/{{description}}/g, page.desc);
+    
+    const outputFile = path.join(DIST_DIR, `${page.slug}.html`);
+    fs.writeFileSync(outputFile, finalPage);
+    console.log(`✅ 已產生固定頁面: ${outputFile}`);
+});
+
+
 
 console.log('🎉 所有頁面生成完畢！請將 dist 資料夾內的檔案上傳至虛擬主機。');
