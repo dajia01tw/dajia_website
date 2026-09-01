@@ -154,54 +154,55 @@ Object.keys(categories).forEach(key => {
 
 
 // ===== 產生「最新消息彙整頁 (news.html)」=====
-// 讀取 page_news.html 模板
 const newsTemplatePath = path.join(TEMPLATES_DIR, 'page_news.html');
 if (fs.existsSync(newsTemplatePath)) {
     let newsContent = fs.readFileSync(newsTemplatePath, 'utf8');
     
-    // 產生稅務新聞列表
-    let taxList = '';
     // 🔹 稅務新聞：最多顯示 2 則（依日期排序，最新在前）
     // 若要調整顯示則數，請修改下面的數字 2
     const TAX_NEWS_LIMIT = 2;
-    if (categories['tax-news'] && categories['tax-news'].articles.length > 0) {
-        const articles = categories['tax-news'].articles.slice(0, TAX_NEWS_LIMIT);
-        articles.forEach(article => {
-            taxList += `<li><a href="${article.slug}">${article.title}</a> <span style="color:#718096;font-size:14px;">（${formatDate(article.date)}）</span></li>\n`;
+    let taxList = '';
+    const taxArticles = categories['tax-news'] ? categories['tax-news'].articles : [];
+    if (taxArticles.length > 0) {
+        const displayArticles = taxArticles.slice(0, TAX_NEWS_LIMIT);
+        displayArticles.forEach(article => {
+            // 確保 date 有值，若無則顯示「日期待補」
+            const dateStr = article.date && typeof article.date === 'string' ? article.date : '1970-01-01';
+            taxList += `<li><a href="${article.slug}">${article.title}</a> <span style="color:#718096;font-size:14px;">（${formatDate(dateStr)}）</span></li>\n`;
         });
-        // 如果總數超過顯示上限，加上「查看全部」
-        if (categories['tax-news'].articles.length > TAX_NEWS_LIMIT) {
+        if (taxArticles.length > TAX_NEWS_LIMIT) {
             taxList += `<li style="list-style:none; margin-top:8px;"><a href="tax-news.html" style="color:#1a365d; font-weight:600;">→ 查看全部稅務新聞</a></li>`;
         }
     } else {
         taxList = '<li>尚無稅務新聞</li>';
     }
-    
-    // 產生本所公告列表
-    let firmList = '';
+
     // 🔹 本所公告：最多顯示 2 則（依日期排序，最新在前）
     const FIRM_NEWS_LIMIT = 2;
-    if (categories['firm-news'] && categories['firm-news'].articles.length > 0) {
-        const articles = categories['firm-news'].articles.slice(0, FIRM_NEWS_LIMIT);
-        articles.forEach(article => {
-            firmList += `<li><a href="${article.slug}">${article.title}</a> <span style="color:#718096;font-size:14px;">（${formatDate(article.date)}）</span></li>\n`;
+    let firmList = '';
+    const firmArticles = categories['firm-news'] ? categories['firm-news'].articles : [];
+    if (firmArticles.length > 0) {
+        const displayArticles = firmArticles.slice(0, FIRM_NEWS_LIMIT);
+        displayArticles.forEach(article => {
+            const dateStr = article.date && typeof article.date === 'string' ? article.date : '1970-01-01';
+            firmList += `<li><a href="${article.slug}">${article.title}</a> <span style="color:#718096;font-size:14px;">（${formatDate(dateStr)}）</span></li>\n`;
         });
-        if (categories['firm-news'].articles.length > FIRM_NEWS_LIMIT) {
+        if (firmArticles.length > FIRM_NEWS_LIMIT) {
             firmList += `<li style="list-style:none; margin-top:8px;"><a href="firm-news.html" style="color:#1a365d; font-weight:600;">→ 查看全部本所公告</a></li>`;
         }
     } else {
         firmList = '<li>尚無本所公告</li>';
     }
-    
+
     // 替換佔位符
     newsContent = newsContent.replace('{{taxNewsList}}', taxList);
     newsContent = newsContent.replace('{{firmNewsList}}', firmList);
-    
+
     // 套入 Layout
     let finalPage = layoutTemplate.replace('{{content}}', newsContent);
     finalPage = finalPage.replace(/{{title}}/g, '最新消息');
     finalPage = finalPage.replace(/{{description}}/g, '大佳稅務記帳士事務所 - 稅務新聞與本所公告彙整');
-    
+
     const outputFile = path.join(DIST_DIR, 'news.html');
     fs.writeFileSync(outputFile, finalPage);
     console.log(`✅ 已產生最新消息彙整頁: ${outputFile}`);
