@@ -3,12 +3,25 @@ const path = require('path');
 const marked = require('marked');
 // 日期格式化：將 "2026-08-25" 轉為 "2026/08/25"
 function formatDate(dateStr) {
-    if (!dateStr) return '';
+    // 如果 dateStr 不存在、不是字串、或為空，回傳「日期待補」
+    if (!dateStr || typeof dateStr !== 'string') {
+        return '日期待補';
+    }
+    // 移除前後空白
+    dateStr = dateStr.trim();
+    // 嘗試用 '-' 分割
     const parts = dateStr.split('-');
     if (parts.length === 3) {
-        return `${parts[0]}/${parts[1]}/${parts[2]}`;
+        // 檢查是否都是數字
+        const year = parseInt(parts[0], 10);
+        const month = parseInt(parts[1], 10);
+        const day = parseInt(parts[2], 10);
+        if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
+            return `${year}/${String(month).padStart(2, '0')}/${String(day).padStart(2, '0')}`;
+        }
     }
-    return dateStr;
+    // 如果格式不對，回傳原始值（或「日期待補」）
+    return dateStr || '日期待補';
 }
 
 const matter = require('gray-matter');  // 請先 npm install gray-matter
