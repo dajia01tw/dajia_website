@@ -1,6 +1,16 @@
 const fs = require('fs');
 const path = require('path');
 const marked = require('marked');
+// 日期格式化：將 "2026-08-25" 轉為 "2026/08/25"
+function formatDate(dateStr) {
+    if (!dateStr) return '';
+    const parts = dateStr.split('-');
+    if (parts.length === 3) {
+        return `${parts[0]}/${parts[1]}/${parts[2]}`;
+    }
+    return dateStr;
+}
+
 const matter = require('gray-matter');  // 請先 npm install gray-matter
 
 // 設定路徑
@@ -138,20 +148,34 @@ if (fs.existsSync(newsTemplatePath)) {
     
     // 產生稅務新聞列表
     let taxList = '';
+    // 🔹 稅務新聞：最多顯示 2 則（依日期排序，最新在前）
+    // 若要調整顯示則數，請修改下面的數字 2
+    const TAX_NEWS_LIMIT = 2;
     if (categories['tax-news'] && categories['tax-news'].articles.length > 0) {
-        categories['tax-news'].articles.forEach(article => {
-            taxList += `<li><a href="${article.slug}">${article.title}</a> <span style="color:#718096;font-size:14px;">（${article.date}）</span></li>\n`;
+        const articles = categories['tax-news'].articles.slice(0, TAX_NEWS_LIMIT);
+        articles.forEach(article => {
+            taxList += `<li><a href="${article.slug}">${article.title}</a> <span style="color:#718096;font-size:14px;">（${formatDate(article.date)}）</span></li>\n`;
         });
+        // 如果總數超過顯示上限，加上「查看全部」
+        if (categories['tax-news'].articles.length > TAX_NEWS_LIMIT) {
+            taxList += `<li style="list-style:none; margin-top:8px;"><a href="tax-news.html" style="color:#1a365d; font-weight:600;">→ 查看全部稅務新聞</a></li>`;
+        }
     } else {
         taxList = '<li>尚無稅務新聞</li>';
     }
     
     // 產生本所公告列表
     let firmList = '';
+    // 🔹 本所公告：最多顯示 2 則（依日期排序，最新在前）
+    const FIRM_NEWS_LIMIT = 2;
     if (categories['firm-news'] && categories['firm-news'].articles.length > 0) {
-        categories['firm-news'].articles.forEach(article => {
-            firmList += `<li><a href="${article.slug}">${article.title}</a> <span style="color:#718096;font-size:14px;">（${article.date}）</span></li>\n`;
+        const articles = categories['firm-news'].articles.slice(0, FIRM_NEWS_LIMIT);
+        articles.forEach(article => {
+            firmList += `<li><a href="${article.slug}">${article.title}</a> <span style="color:#718096;font-size:14px;">（${formatDate(article.date)}）</span></li>\n`;
         });
+        if (categories['firm-news'].articles.length > FIRM_NEWS_LIMIT) {
+            firmList += `<li style="list-style:none; margin-top:8px;"><a href="firm-news.html" style="color:#1a365d; font-weight:600;">→ 查看全部本所公告</a></li>`;
+        }
     } else {
         firmList = '<li>尚無本所公告</li>';
     }
