@@ -1,44 +1,19 @@
 const fs = require('fs');
 const path = require('path');
 const marked = require('marked');
-// 日期格式化：將 "2026-08-25" 轉為 "2026/08/25"
-function formatDate(dateStr) {
-    // 如果 dateStr 不存在、不是字串、或為空，回傳「日期待補」
-    if (!dateStr || typeof dateStr !== 'string') {
-        return '日期待補';
-    }
-    // 移除前後空白
-    dateStr = dateStr.trim();
-    // 嘗試用 '-' 分割
-    const parts = dateStr.split('-');
-    if (parts.length === 3) {
-        // 檢查是否都是數字
-        const year = parseInt(parts[0], 10);
-        const month = parseInt(parts[1], 10);
-        const day = parseInt(parts[2], 10);
-        if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
-            return `${year}/${String(month).padStart(2, '0')}/${String(day).padStart(2, '0')}`;
-        }
-    }
-    // 如果格式不對，回傳原始值（或「日期待補」）
-    return dateStr || '日期待補';
-}
+const matter = require('gray-matter');
 
-const matter = require('gray-matter');  // 請先 npm install gray-matter
-
-// 設定路徑
+// ===== 設定路徑 =====
 const ARTICLES_DIR = './articles';
 const TEMPLATES_DIR = './templates';
 const DIST_DIR = './dist';
 
+// 如果 dist 資料夾不存在，就建立它
 if (!fs.existsSync(DIST_DIR)) {
     fs.mkdirSync(DIST_DIR);
 }
 
-// 讀取所有 .md 檔案
-const files = fs.readdirSync(ARTICLES_DIR).filter(file => file.endsWith('.md'));
-
-// 分類容器
+// ===== 定義所有分類（包含最新消息 2 個 + 服務內容 7 個）=====
 const categories = {
     // === 最新消息 ===
     'tax-news': { name: '稅務新聞', slug: 'tax-news', articles: [] },
@@ -54,12 +29,15 @@ const categories = {
     'addr-rental': { name: '登記地址租借/虛擬辦公室', slug: 'addr-rental', articles: [] }
 };
 
-// 解析每篇文章
+// ===== 讀取所有 .md 檔案 =====
+const files = fs.readdirSync(ARTICLES_DIR).filter(file => file.endsWith('.md'));
+
+// ===== 解析每篇文章 =====
 files.forEach(fileName => {
     const filePath = path.join(ARTICLES_DIR, fileName);
     const fileContent = fs.readFileSync(filePath, 'utf8');
     
-    // 使用 gray-matter 解析
+    // 使用 gray-matter 解析 Front Matter
     const parsed = matter(fileContent);
     const frontMatter = parsed.data;
     const body = parsed.content;
@@ -85,75 +63,71 @@ files.forEach(fileName => {
     });
 });
 
-// 排序（最新在前）
+// ===== 對每個分類內的文章「依照日期排序」（最新在前）=====
 Object.keys(categories).forEach(key => {
     categories[key].articles.sort((a, b) => (a.date < b.date ? 1 : -1));
 });
 
-// 讀取 Layout
+// ===== 讀取共用 Layout（外框）=====
 const layoutTemplate = fs.readFileSync(path.join(TEMPLATES_DIR, 'layout.html'), 'utf8');
 
-// 產生列表頁
+// ===== 1. 產生所有「列表頁」（各分類的文章清單）=====
 Object.keys(categories).forEach(key => {
     const cat = categories[key];
-    if (cat.articles.length === 0) return;
+    if (cat.articles.length === 0) {
+        console.log(`⚠️ 跳過 ${key}：該分類尚無文章`);
+        return;
+    }
 
+    // 讀取 list.html 作為內容區塊
     let listTemplate = fs.readFileSync(path.join(TEMPLATES_DIR, 'list.html'), 'utf8');
+    
+    // 產生文章標題清單
     let listItems = '';
     cat.articles.forEach(article => {
         listItems += `<li><a href="${article.slug}">${article.title}</a> (${article.date})</li>\n`;
     });
 
+    // 替換佔位符
     let listContent = listTemplate.replace('{{listItems}}', listItems);
     listContent = listContent.replace('{{pageTitle}}', cat.name);
 
+    // 套入 Layout
     let finalPage = layoutTemplate.replace('{{content}}', listContent);
     finalPage = finalPage.replace(/{{title}}/g, cat.name);
-    finalPage = finalPage.replace(/{{description}}/g, `大佳稅務記帳士事務所 - ${cat.name} 最新消息`);
+    finalPage = finalPage.replace(/{{description}}/g, `大佳稅務記帳士事務所 - ${cat.name} 文章列表`);
 
-    // 選單 active (簡易版)
-    const menuItems = ['tax-news', 'firm-news'];
-    menuItems.forEach(item => {
-        const link = `href="${item}.html"`;
-        if (item === key) {
-            finalPage = finalPage.replace(link, `class="active" ${link}`);
-        }
-    });
-
+    // 寫入 dist 資料夾
     const outputFile = path.join(DIST_DIR, `${key}.html`);
     fs.writeFileSync(outputFile, finalPage);
     console.log(`✅ 已產生列表頁: ${outputFile}`);
 });
 
-// 產生文章內容頁
+// ===== 2. 產生所有「單篇文章內容頁」=====
 Object.keys(categories).forEach(key => {
     const cat = categories[key];
     cat.articles.forEach(article => {
+        // 讀取 article.html 作為內容區塊
         let articleTemplate = fs.readFileSync(path.join(TEMPLATES_DIR, 'article.html'), 'utf8');
+        
+        // 替換文章內容
         let content = articleTemplate.replace('{{articleTitle}}', article.title);
         content = content.replace('{{date}}', article.date);
         content = content.replace('{{articleBody}}', article.htmlBody);
 
+        // 套入 Layout
         let finalPage = layoutTemplate.replace('{{content}}', content);
         finalPage = finalPage.replace(/{{title}}/g, article.title);
         finalPage = finalPage.replace(/{{description}}/g, article.description || article.title);
 
-        const menuItems = ['tax-news', 'firm-news'];
-        menuItems.forEach(item => {
-            const link = `href="${item}.html"`;
-            if (item === key) {
-                finalPage = finalPage.replace(link, `class="active" ${link}`);
-            }
-        });
-
+        // 寫入 dist 資料夾
         const outputFile = path.join(DIST_DIR, article.slug);
         fs.writeFileSync(outputFile, finalPage);
         console.log(`✅ 已產生文章頁: ${outputFile}`);
     });
 });
 
-
-// ===== 產生「最新消息彙整頁 (news.html)」=====
+// ===== 3. 產生「最新消息彙整頁 (news.html)」=====
 const newsTemplatePath = path.join(TEMPLATES_DIR, 'page_news.html');
 if (fs.existsSync(newsTemplatePath)) {
     let newsContent = fs.readFileSync(newsTemplatePath, 'utf8');
@@ -166,9 +140,7 @@ if (fs.existsSync(newsTemplatePath)) {
     if (taxArticles.length > 0) {
         const displayArticles = taxArticles.slice(0, TAX_NEWS_LIMIT);
         displayArticles.forEach(article => {
-            // 確保 date 有值，若無則顯示「日期待補」
-            const dateStr = article.date && typeof article.date === 'string' ? article.date : '1970-01-01';
-            taxList += `<li><a href="${article.slug}">${article.title}</a> <span style="color:#718096;font-size:14px;">（${formatDate(dateStr)}）</span></li>\n`;
+            taxList += `<li><a href="${article.slug}">${article.title}</a> <span style="color:#718096;font-size:14px;">（${article.date}）</span></li>\n`;
         });
         if (taxArticles.length > TAX_NEWS_LIMIT) {
             taxList += `<li style="list-style:none; margin-top:8px;"><a href="tax-news.html" style="color:#1a365d; font-weight:600;">→ 查看全部稅務新聞</a></li>`;
@@ -184,8 +156,7 @@ if (fs.existsSync(newsTemplatePath)) {
     if (firmArticles.length > 0) {
         const displayArticles = firmArticles.slice(0, FIRM_NEWS_LIMIT);
         displayArticles.forEach(article => {
-            const dateStr = article.date && typeof article.date === 'string' ? article.date : '1970-01-01';
-            firmList += `<li><a href="${article.slug}">${article.title}</a> <span style="color:#718096;font-size:14px;">（${formatDate(dateStr)}）</span></li>\n`;
+            firmList += `<li><a href="${article.slug}">${article.title}</a> <span style="color:#718096;font-size:14px;">（${article.date}）</span></li>\n`;
         });
         if (firmArticles.length > FIRM_NEWS_LIMIT) {
             firmList += `<li style="list-style:none; margin-top:8px;"><a href="firm-news.html" style="color:#1a365d; font-weight:600;">→ 查看全部本所公告</a></li>`;
@@ -210,8 +181,7 @@ if (fs.existsSync(newsTemplatePath)) {
     console.log('⚠️ 跳過 news.html：模板 page_news.html 不存在');
 }
 
-
-// ===== 產生固定頁面 (首頁、事務所簡介、服務總覽、常用連結、聯絡我們) =====
+// ===== 4. 產生「固定頁面」(首頁、事務所簡介、服務總覽、常用連結、聯絡我們) =====
 const fixedPages = [
     { slug: 'index', title: '首頁', desc: '大佳稅務記帳士事務所 - 專業記帳與稅務服務' },
     { slug: 'about', title: '事務所簡介', desc: '大佳稅務記帳士事務所 - 團隊介紹與服務理念' },
@@ -236,6 +206,5 @@ fixedPages.forEach(page => {
     console.log(`✅ 已產生固定頁面: ${outputFile}`);
 });
 
-
-
+// ===== 完成！=====
 console.log('🎉 所有頁面生成完畢！請將 dist 資料夾內的檔案上傳至虛擬主機。');
