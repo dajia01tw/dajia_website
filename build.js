@@ -8,9 +8,33 @@ const ARTICLES_DIR = './articles';
 const TEMPLATES_DIR = './templates';
 const DIST_DIR = './dist';
 
-// 如果 dist 資料夾不存在，就建立它
 if (!fs.existsSync(DIST_DIR)) {
     fs.mkdirSync(DIST_DIR);
+}
+
+// ===== 日期格式化函數：將 Date 物件或日期字串轉為 yyyy-mm-dd =====
+function formatDate(dateInput) {
+    if (!dateInput) return '1970-01-01';
+    let dateObj = dateInput;
+    // 如果已經是 Date 物件，直接使用
+    if (dateInput instanceof Date) {
+        dateObj = dateInput;
+    } else if (typeof dateInput === 'string' || dateInput instanceof String) {
+        // 如果是字串，嘗試解析
+        const parsed = new Date(dateInput);
+        if (!isNaN(parsed.getTime())) {
+            dateObj = parsed;
+        } else {
+            return '1970-01-01'; // 無效日期
+        }
+    } else {
+        return '1970-01-01';
+    }
+    // 格式化為 yyyy-mm-dd
+    const year = dateObj.getFullYear();
+    const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+    const day = String(dateObj.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
 }
 
 // ===== 定義所有分類（包含最新消息 2 個 + 服務內容 7 個）=====
@@ -29,6 +53,10 @@ const categories = {
     'addr-rental': { name: '登記地址租借/虛擬辦公室', slug: 'addr-rental', articles: [] }
 };
 
+// ===== 分組清單（用於動態生成聚合頁）=====
+const groupNews = ['tax-news', 'firm-news'];
+const groupServices = ['company-reg', 'accounting', 'tax-consult', 'labor-ins', 'licensed-business', 'foreign-invest', 'addr-rental'];
+
 // ===== 讀取所有 .md 檔案 =====
 const files = fs.readdirSync(ARTICLES_DIR).filter(file => file.endsWith('.md'));
 
@@ -37,27 +65,25 @@ files.forEach(fileName => {
     const filePath = path.join(ARTICLES_DIR, fileName);
     const fileContent = fs.readFileSync(filePath, 'utf8');
     
-    // 使用 gray-matter 解析 Front Matter
     const parsed = matter(fileContent);
     const frontMatter = parsed.data;
     const body = parsed.content;
     
-    // 檢查是否有 categorySlug
     const slug = frontMatter.categorySlug;
     if (!slug || !categories[slug]) {
         console.log(`⚠️ 跳過 ${fileName}：缺少 categorySlug 或分類不存在`);
         return;
     }
 
-    // 將 Markdown 轉為 HTML
     const htmlBody = marked.parse(body);
+    // 格式化日期
+    const dateStr = formatDate(frontMatter.date);
 
-    // 存入分類
     categories[slug].articles.push({
         fileName: fileName,
         title: frontMatter.title || '無標題',
         description: frontMatter.description || '',
-        date: frontMatter.date || '1970-01-01',
+        date: dateStr,   // 已格式化為 yyyy-mm-dd
         slug: fileName.replace('.md', '.html'),
         htmlBody: htmlBody
     });
@@ -79,25 +105,19 @@ Object.keys(categories).forEach(key => {
         return;
     }
 
-    // 讀取 list.html 作為內容區塊
     let listTemplate = fs.readFileSync(path.join(TEMPLATES_DIR, 'list.html'), 'utf8');
-    
-    // 產生文章標題清單
     let listItems = '';
     cat.articles.forEach(article => {
         listItems += `<li><a href="${article.slug}">${article.title}</a> (${article.date})</li>\n`;
     });
 
-    // 替換佔位符
     let listContent = listTemplate.replace('{{listItems}}', listItems);
     listContent = listContent.replace('{{pageTitle}}', cat.name);
 
-    // 套入 Layout
     let finalPage = layoutTemplate.replace('{{content}}', listContent);
     finalPage = finalPage.replace(/{{title}}/g, cat.name);
     finalPage = finalPage.replace(/{{description}}/g, `大佳稅務記帳士事務所 - ${cat.name} 文章列表`);
 
-    // 寫入 dist 資料夾
     const outputFile = path.join(DIST_DIR, `${key}.html`);
     fs.writeFileSync(outputFile, finalPage);
     console.log(`✅ 已產生列表頁: ${outputFile}`);
@@ -107,85 +127,94 @@ Object.keys(categories).forEach(key => {
 Object.keys(categories).forEach(key => {
     const cat = categories[key];
     cat.articles.forEach(article => {
-        // 讀取 article.html 作為內容區塊
         let articleTemplate = fs.readFileSync(path.join(TEMPLATES_DIR, 'article.html'), 'utf8');
-        
-        // 替換文章內容
         let content = articleTemplate.replace('{{articleTitle}}', article.title);
         content = content.replace('{{date}}', article.date);
         content = content.replace('{{articleBody}}', article.htmlBody);
 
-        // 套入 Layout
         let finalPage = layoutTemplate.replace('{{content}}', content);
         finalPage = finalPage.replace(/{{title}}/g, article.title);
         finalPage = finalPage.replace(/{{description}}/g, article.description || article.title);
 
-        // 寫入 dist 資料夾
         const outputFile = path.join(DIST_DIR, article.slug);
         fs.writeFileSync(outputFile, finalPage);
         console.log(`✅ 已產生文章頁: ${outputFile}`);
     });
 });
 
-// ===== 3. 產生「最新消息彙整頁 (news.html)」=====
-const newsTemplatePath = path.join(TEMPLATES_DIR, 'page_news.html');
-if (fs.existsSync(newsTemplatePath)) {
-    let newsContent = fs.readFileSync(newsTemplatePath, 'utf8');
-    
-    // 🔹 稅務新聞：最多顯示 2 則（依日期排序，最新在前）
-    // 若要調整顯示則數，請修改下面的數字 2
-    const TAX_NEWS_LIMIT = 2;
-    let taxList = '';
-    const taxArticles = categories['tax-news'] ? categories['tax-news'].articles : [];
-    if (taxArticles.length > 0) {
-        const displayArticles = taxArticles.slice(0, TAX_NEWS_LIMIT);
-        displayArticles.forEach(article => {
-            taxList += `<li><a href="${article.slug}">${article.title}</a> <span style="color:#718096;font-size:14px;">（${article.date}）</span></li>\n`;
-        });
-        if (taxArticles.length > TAX_NEWS_LIMIT) {
-            taxList += `<li style="list-style:none; margin-top:8px;"><a href="tax-news.html" style="color:#1a365d; font-weight:600;">→ 查看全部稅務新聞</a></li>`;
-        }
-    } else {
-        taxList = '<li>尚無稅務新聞</li>';
-    }
+// ===== 3. 通用函數：產生「聚合頁面」（如 news.html, services.html）=====
+function renderGroupPage(groupList, pageTitle, outputFileName, description) {
+    // 讀取聚合頁模板（我們將用同一個模板，但內容由程式生成）
+    // 這裡不使用靜態模板，而是直接建構 HTML 內容區塊
+    let contentHtml = `<h2>${pageTitle}</h2>\n`;
+    contentHtml += `<p>本所提供以下${groupList.length}類資訊，點擊標題可查看詳細內容：</p>\n`;
 
-    // 🔹 本所公告：最多顯示 2 則（依日期排序，最新在前）
-    const FIRM_NEWS_LIMIT = 2;
-    let firmList = '';
-    const firmArticles = categories['firm-news'] ? categories['firm-news'].articles : [];
-    if (firmArticles.length > 0) {
-        const displayArticles = firmArticles.slice(0, FIRM_NEWS_LIMIT);
-        displayArticles.forEach(article => {
-            firmList += `<li><a href="${article.slug}">${article.title}</a> <span style="color:#718096;font-size:14px;">（${article.date}）</span></li>\n`;
-        });
-        if (firmArticles.length > FIRM_NEWS_LIMIT) {
-            firmList += `<li style="list-style:none; margin-top:8px;"><a href="firm-news.html" style="color:#1a365d; font-weight:600;">→ 查看全部本所公告</a></li>`;
+    groupList.forEach(slug => {
+        const cat = categories[slug];
+        if (!cat) {
+            console.log(`⚠️ 警告：分類 ${slug} 不存在，跳過`);
+            return;
         }
-    } else {
-        firmList = '<li>尚無本所公告</li>';
-    }
+        const articles = cat.articles;
+        const displayLimit = 2;  // 每類最多顯示 2 則
+        const hasArticles = articles.length > 0;
 
-    // 替換佔位符
-    newsContent = newsContent.replace('{{taxNewsList}}', taxList);
-    newsContent = newsContent.replace('{{firmNewsList}}', firmList);
+        // 區塊標題與說明
+        contentHtml += `<div style="margin: 25px 0; padding: 18px 20px; background: #f7fafc; border-radius: 8px; border-left: 4px solid #1a365d;">\n`;
+        contentHtml += `    <h3 style="color: #1a365d; margin-bottom: 5px;"><a href="${slug}.html" style="color: #1a365d; text-decoration: none;">📌 ${cat.name}</a></h3>\n`;
+        // 說明文字（可根據分類自訂，此處簡單處理）
+        const descMap = {
+            'tax-news': '提供最新稅務法規、申報提醒與政策解析。',
+            'firm-news': '本所服務異動、休假通知與活動訊息。',
+            'company-reg': '協助企業合法設立與變更登記。',
+            'accounting': '每月記帳、財務報表編製。',
+            'tax-consult': '營業稅、營所稅、個人綜合所得稅申報。',
+            'labor-ins': '勞健保投保、級距調整、爭議處理。',
+            'licensed-business': '各類特許執照申請輔導。',
+            'foreign-invest': '外資來台設立公司與稅務規劃。',
+            'addr-rental': '提供台北市登記地址與信件代收服務。'
+        };
+        contentHtml += `    <p style="color: #4a5568; margin: 0 0 10px 0;">${descMap[slug] || ''}</p>\n`;
+
+        if (hasArticles) {
+            // 顯示前 2 篇
+            const displayArticles = articles.slice(0, displayLimit);
+            contentHtml += `    <ul style="margin: 0; padding-left: 20px;">\n`;
+            displayArticles.forEach(article => {
+                contentHtml += `        <li><a href="${article.slug}">${article.title}</a> <span style="color:#718096;font-size:14px;">（${article.date}）</span></li>\n`;
+            });
+            contentHtml += `    </ul>\n`;
+            // 若總數大於顯示上限，加入「查看全部」
+            if (articles.length > displayLimit) {
+                const allLink = `${slug}.html`;
+                contentHtml += `    <div style="margin-top: 8px;"><a href="${allLink}" style="color:#1a365d; font-weight:600;">→ 查看全部 ${cat.name}</a></div>\n`;
+            }
+        } else {
+            contentHtml += `    <p style="color:#a0aec0;">尚無文章</p>\n`;
+        }
+        contentHtml += `</div>\n`;
+    });
 
     // 套入 Layout
-    let finalPage = layoutTemplate.replace('{{content}}', newsContent);
-    finalPage = finalPage.replace(/{{title}}/g, '最新消息');
-    finalPage = finalPage.replace(/{{description}}/g, '大佳稅務記帳士事務所 - 稅務新聞與本所公告彙整');
+    let finalPage = layoutTemplate.replace('{{content}}', contentHtml);
+    finalPage = finalPage.replace(/{{title}}/g, pageTitle);
+    finalPage = finalPage.replace(/{{description}}/g, description || `大佳稅務記帳士事務所 - ${pageTitle}`);
 
-    const outputFile = path.join(DIST_DIR, 'news.html');
+    const outputFile = path.join(DIST_DIR, outputFileName);
     fs.writeFileSync(outputFile, finalPage);
-    console.log(`✅ 已產生最新消息彙整頁: ${outputFile}`);
-} else {
-    console.log('⚠️ 跳過 news.html：模板 page_news.html 不存在');
+    console.log(`✅ 已產生聚合頁面: ${outputFile}`);
 }
 
-// ===== 4. 產生「固定頁面」(首頁、事務所簡介、服務總覽、常用連結、聯絡我們) =====
+// ===== 產生 news.html =====
+renderGroupPage(groupNews, '最新消息', 'news.html', '大佳稅務記帳士事務所 - 稅務新聞與本所公告彙整');
+
+// ===== 產生 services.html =====
+renderGroupPage(groupServices, '服務內容總覽', 'services.html', '大佳稅務記帳士事務所 - 七項專業服務項目');
+
+// ===== 4. 產生「固定頁面」(首頁、事務所簡介、常用連結、聯絡我們) =====
 const fixedPages = [
     { slug: 'index', title: '首頁', desc: '大佳稅務記帳士事務所 - 專業記帳與稅務服務' },
     { slug: 'about', title: '事務所簡介', desc: '大佳稅務記帳士事務所 - 團隊介紹與服務理念' },
-    { slug: 'services', title: '服務內容總覽', desc: '大佳稅務記帳士事務所 - 七項專業服務項目' },
     { slug: 'links', title: '常用連結', desc: '大佳稅務記帳士事務所 - 政府機關與實用工具連結' },
     { slug: 'contact', title: '聯絡我們', desc: '大佳稅務記帳士事務所 - 聯絡資訊與服務時間' }
 ];
@@ -206,5 +235,4 @@ fixedPages.forEach(page => {
     console.log(`✅ 已產生固定頁面: ${outputFile}`);
 });
 
-// ===== 完成！=====
 console.log('🎉 所有頁面生成完畢！請將 dist 資料夾內的檔案上傳至虛擬主機。');
