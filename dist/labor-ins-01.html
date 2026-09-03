@@ -538,46 +538,83 @@
     </footer>
 
     <!-- ====== JavaScript (控制漢堡與手機版下拉) ====== -->
-    <script>
-        (function() {
-            // 1. 漢堡按鈕：切換選單顯示
-            const hamburger = document.getElementById('hamburgerBtn');
-            const topNav = document.getElementById('topNav');
+<script>
+    (function() {
+        // 1. 漢堡按鈕：切換選單顯示
+        const hamburger = document.getElementById('hamburgerBtn');
+        const topNav = document.getElementById('topNav');
 
-            if (hamburger && topNav) {
-                hamburger.addEventListener('click', function() {
-                    topNav.classList.toggle('active');
-                });
-            }
-
-            // 2. 手機版：點擊箭頭 (▼) 切換子選單
-            const arrows = document.querySelectorAll('.top-nav .arrow');
-            arrows.forEach(function(arrow) {
-                arrow.addEventListener('click', function(e) {
-                    e.stopPropagation(); // 避免意外冒泡
-                    const parentDropdown = this.parentElement;
-                    if (parentDropdown) {
-                        parentDropdown.classList.toggle('open');
-                    }
-                });
+        if (hamburger && topNav) {
+            hamburger.addEventListener('click', function() {
+                topNav.classList.toggle('active');
             });
+        }
 
-            // 3. (非必須) 點擊選單外空白處可關閉選單 (提升手機體驗)
-            document.addEventListener('click', function(e) {
-                if (window.innerWidth <= 768) {
-                    const nav = document.getElementById('topNav');
-                    const hamburger = document.getElementById('hamburgerBtn');
-                    // 如果點擊的目標不是 nav 內部，也不是漢堡按鈕，則關閉選單
-                    if (nav && nav.classList.contains('active')) {
-                        if (!nav.contains(e.target) && !hamburger.contains(e.target)) {
-                            nav.classList.remove('active');
+        // 2. 手機版：點擊箭頭 (▼/▲) 切換子選單的「展開/收合」
+        const arrows = document.querySelectorAll('.top-nav .arrow');
+        arrows.forEach(function(arrow) {
+            arrow.addEventListener('click', function(e) {
+                e.stopPropagation();   // 防止事件冒泡
+                e.preventDefault();    // 防止任何預設行為（如有）
+                
+                const parentDropdown = this.parentElement;
+                if (parentDropdown) {
+                    // 切換 .open 類別
+                    parentDropdown.classList.toggle('open');
+                    
+                    // ⚠️ 額外保障：直接控制子選單的顯示，確保與 .open 同步
+                    const subMenu = parentDropdown.querySelector('.dropdown-menu');
+                    if (subMenu) {
+                        if (parentDropdown.classList.contains('open')) {
+                            subMenu.style.display = 'block';
+                        } else {
+                            subMenu.style.display = 'none';
                         }
                     }
                 }
             });
+        });
 
-        })();
-    </script>
+        // 3. (手機版) 點擊選單外空白處可關閉選單 (提升體驗)
+        document.addEventListener('click', function(e) {
+            if (window.innerWidth <= 768) {
+                const nav = document.getElementById('topNav');
+                const hamburger = document.getElementById('hamburgerBtn');
+                if (nav && nav.classList.contains('active')) {
+                    if (!nav.contains(e.target) && !hamburger.contains(e.target)) {
+                        nav.classList.remove('active');
+                    }
+                }
+            }
+        });
+
+        // 4. (手機版) 點擊父層連結（如「最新消息」文字）不跳轉，只切換選單
+        //    但若希望點擊文字也跳轉，請將此區塊註解或刪除
+        const dropdownLinks = document.querySelectorAll('.top-nav .dropdown > a');
+        dropdownLinks.forEach(function(link) {
+            link.addEventListener('click', function(e) {
+                if (window.innerWidth <= 768) {
+                    // 手機版：點擊父層連結時，切換子選單（不跳轉）
+                    e.preventDefault();
+                    const parentDropdown = this.parentElement;
+                    if (parentDropdown) {
+                        parentDropdown.classList.toggle('open');
+                        const subMenu = parentDropdown.querySelector('.dropdown-menu');
+                        if (subMenu) {
+                            if (parentDropdown.classList.contains('open')) {
+                                subMenu.style.display = 'block';
+                            } else {
+                                subMenu.style.display = 'none';
+                            }
+                        }
+                    }
+                }
+                // 電腦版不干擾（讓它正常跳轉）
+            });
+        });
+
+    })();
+</script>
 
 </body>
 </html>
