@@ -265,6 +265,26 @@
             text-decoration: underline;
         }
 
+        /* ---------- 麵包屑導航 ---------- */
+.breadcrumb {
+    font-size: 14px;
+    color: #718096;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #edf2f7;
+}
+.breadcrumb a {
+    color: #2b6cb0;
+    text-decoration: none;
+}
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
+.breadcrumb .current {
+    color: #2d3748;
+    font-weight: 600;
+}
+
         /* ---------- 4. FOOT (頁尾) ---------- */
         .footer {
             background-color: #1a365d;
@@ -511,7 +531,13 @@
 
         <!-- 右側內容區 -->
         <section class="content-area">
-            <h2>公司設立流程完整攻略（2026年版）</h2>
+            <!-- 麵包屑導航 -->
+<div class="breadcrumb">
+    <a href="index.html">首頁</a> › <a href="services.html">服務內容總覽</a> › <a href="company-reg.html">公司設立/變更登記</a> › <span class="current">公司設立流程完整攻略（2026年版）</span>
+</div>
+
+<!-- 文章標題與內容 -->
+<h2>公司設立流程完整攻略（2026年版）</h2>
 <p class="post-date">📅 發佈日期：2026-08-15</p>
 <div class="post-content">
     <h1>公司設立流程完整攻略</h1>

@@ -124,14 +124,50 @@ Object.keys(categories).forEach(key => {
 });
 
 // ===== 2. 產生所有「單篇文章內容頁」=====
+// 直接使用全域的 groupNews 和 groupServices（已於上方宣告）
 Object.keys(categories).forEach(key => {
     const cat = categories[key];
     cat.articles.forEach(article => {
+        // 讀取 article.html 作為內容區塊
         let articleTemplate = fs.readFileSync(path.join(TEMPLATES_DIR, 'article.html'), 'utf8');
+
+        // ---- 建立麵包屑 ----
+        let breadcrumbHtml = '';
+        const slug = key;
+        const articleTitle = article.title;
+
+        // 判斷分類屬於哪個群組（使用已宣告的全域變數）
+        let groupName = '';
+        let groupLink = '';
+        if (groupNews.includes(slug)) {
+            groupName = '最新消息';
+            groupLink = 'news.html';
+        } else if (groupServices.includes(slug)) {
+            groupName = '服務內容總覽';
+            groupLink = 'services.html';
+        } else {
+            // 若無匹配，設為首頁（理論上不發生）
+            groupName = '';
+            groupLink = '';
+        }
+
+        // 組裝麵包屑 HTML
+        breadcrumbHtml = `<a href="index.html">首頁</a> › `;
+        if (groupName) {
+            breadcrumbHtml += `<a href="${groupLink}">${groupName}</a> › `;
+        }
+        breadcrumbHtml += `<a href="${slug}.html">${cat.name}</a> › `;
+        breadcrumbHtml += `<span class="current">${articleTitle}</span>`;
+
+        // 將麵包屑替換到模板中
+        articleTemplate = articleTemplate.replace('{{breadcrumb}}', breadcrumbHtml);
+
+        // ---- 替換其他內容 ----
         let content = articleTemplate.replace('{{articleTitle}}', article.title);
         content = content.replace('{{date}}', article.date);
         content = content.replace('{{articleBody}}', article.htmlBody);
 
+        // 套入 Layout
         let finalPage = layoutTemplate.replace('{{content}}', content);
         finalPage = finalPage.replace(/{{title}}/g, article.title);
         finalPage = finalPage.replace(/{{description}}/g, article.description || article.title);
