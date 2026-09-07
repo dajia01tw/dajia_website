@@ -111,7 +111,7 @@ const layoutTemplate = fs.readFileSync(path.join(TEMPLATES_DIR, 'layout.html'), 
 // ===== 1. 產生所有「列表頁」（各分類的文章清單）=====
 // 每頁顯示的文章數量（可調整）
 // 🔧 若要修改每頁篇數，請調整下面的數字
-const ARTICLES_PER_PAGE = 10;
+const ARTICLES_PER_PAGE = 7;
 
 Object.keys(categories).forEach(key => {
     const cat = categories[key];
