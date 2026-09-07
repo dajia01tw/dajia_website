@@ -266,24 +266,70 @@
         }
 
         /* ---------- 麵包屑導航 ---------- */
-.breadcrumb {
-    font-size: 14px;
-    color: #718096;
-    margin-bottom: 15px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #edf2f7;
-}
-.breadcrumb a {
-    color: #2b6cb0;
-    text-decoration: none;
-}
-.breadcrumb a:hover {
-    text-decoration: underline;
-}
-.breadcrumb .current {
-    color: #2d3748;
-    font-weight: 600;
-}
+        .breadcrumb {
+            font-size: 14px;
+            color: #718096;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #edf2f7;
+        }
+        .breadcrumb a {
+            color: #2b6cb0;
+            text-decoration: none;
+        }
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+        .breadcrumb .current {
+            color: #2d3748;
+            font-weight: 600;
+        }
+
+        /* ---------- 分頁導航樣式 ---------- */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+            flex-wrap: wrap;
+        }
+        .pagination a,
+        .pagination span {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 14px;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+        .pagination a {
+            color: #2b6cb0;
+            background: #edf2f7;
+            border: 1px solid #e2e8f0;
+        }
+        .pagination a:hover {
+            background: #2b6cb0;
+            color: white;
+            border-color: #2b6cb0;
+        }
+        .pagination .current {
+            background: #1a365d;
+            color: white;
+            border: 1px solid #1a365d;
+        }
+        .pagination .disabled {
+            color: #a0aec0;
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            cursor: not-allowed;
+        }
+        .pagination .prev,
+        .pagination .next {
+            font-weight: 500;
+        }
 
         /* ---------- 4. FOOT (頁尾) ---------- */
         .footer {
@@ -540,7 +586,12 @@
 <li><a href="firm-news-04.html">慎防詐騙郵件！近期詐騙郵件猖獗，收到稅務信件時請多加留意。</a> (2026-09-04)</li>
 <li><a href="firm-news-03.html">彈性放假：115年2月13日（五），當日將暫停服務。</a> (2026-02-12)</li>
 
-</ul>
+</ul><div class="pagination">
+    <span class="prev disabled">‹ 上一頁</span>
+    <span class="current">1</span>
+    <span class="next disabled">下一頁 ›</span>
+</div>
+
         </section>
     </main>
 

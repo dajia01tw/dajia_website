@@ -109,6 +109,10 @@ Object.keys(categories).forEach(key => {
 const layoutTemplate = fs.readFileSync(path.join(TEMPLATES_DIR, 'layout.html'), 'utf8');
 
 // ===== 1. 產生所有「列表頁」（各分類的文章清單）=====
+// 每頁顯示的文章數量（可調整）
+// 🔧 若要修改每頁篇數，請調整下面的數字
+const ARTICLES_PER_PAGE = 10;
+
 Object.keys(categories).forEach(key => {
     const cat = categories[key];
     if (cat.articles.length === 0) {
@@ -116,24 +120,88 @@ Object.keys(categories).forEach(key => {
         return;
     }
 
-    let listTemplate = fs.readFileSync(path.join(TEMPLATES_DIR, 'list.html'), 'utf8');
-    let listItems = '';
-    cat.articles.forEach(article => {
-        // 若 pinned 小於 999，表示有設定置頂，加上 📌 圖示
-        const pinIcon = (article.pinned && article.pinned < 999) ? '📌 ' : '';
-        listItems += `<li>${pinIcon}<a href="${article.slug}">${article.title}</a> (${article.date})</li>\n`;
-    });
+    const allArticles = cat.articles;
+    const totalArticles = allArticles.length;
+    const totalPages = Math.ceil(totalArticles / ARTICLES_PER_PAGE);
 
-    let listContent = listTemplate.replace('{{listItems}}', listItems);
-    listContent = listContent.replace('{{pageTitle}}', cat.name);
+    // 讀取 list.html 作為內容區塊模板
+    const listTemplate = fs.readFileSync(path.join(TEMPLATES_DIR, 'list.html'), 'utf8');
 
-    let finalPage = layoutTemplate.replace('{{content}}', listContent);
-    finalPage = finalPage.replace(/{{title}}/g, cat.name);
-    finalPage = finalPage.replace(/{{description}}/g, `大佳稅務記帳士事務所 - ${cat.name} 文章列表`);
+    // 為每一頁生成獨立的 HTML
+    for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
+        // 計算該頁的文章範圍（slice 是 0-based，所以要減 1）
+        const startIndex = (pageNum - 1) * ARTICLES_PER_PAGE;
+        const endIndex = Math.min(startIndex + ARTICLES_PER_PAGE, totalArticles);
+        const pageArticles = allArticles.slice(startIndex, endIndex);
 
-    const outputFile = path.join(DIST_DIR, `${key}.html`);
-    fs.writeFileSync(outputFile, finalPage);
-    console.log(`✅ 已產生列表頁: ${outputFile}`);
+        // 產生該頁的文章標題清單
+        let listItems = '';
+        pageArticles.forEach(article => {
+            const pinIcon = (article.pinned && article.pinned < 999) ? '📌 ' : '';
+            listItems += `<li>${pinIcon}<a href="${article.slug}">${article.title}</a> (${article.date})</li>\n`;
+        });
+
+        // 替換佔位符
+        let listContent = listTemplate.replace('{{listItems}}', listItems);
+        
+        // 頁面標題：第一頁顯示分類名稱，其他頁顯示「分類名稱 - 第 N 頁」
+        const pageTitle = (pageNum === 1) ? cat.name : `${cat.name} - 第 ${pageNum} 頁`;
+        listContent = listContent.replace('{{pageTitle}}', pageTitle);
+
+        // ---- 產生分頁導航 (上一頁/下一頁 + 頁碼) ----
+        let paginationHtml = '<div class="pagination">\n';
+        
+        // 「上一頁」連結
+        if (pageNum > 1) {
+            const prevLink = (pageNum === 2) ? `${key}.html` : `${key}-page${pageNum - 1}.html`;
+            paginationHtml += `    <a href="${prevLink}" class="prev">‹ 上一頁</a>\n`;
+        } else {
+            paginationHtml += `    <span class="prev disabled">‹ 上一頁</span>\n`;
+        }
+
+        // 頁碼數字
+        for (let i = 1; i <= totalPages; i++) {
+            let pageLink;
+            if (i === 1) {
+                pageLink = `${key}.html`;
+            } else {
+                pageLink = `${key}-page${i}.html`;
+            }
+            if (i === pageNum) {
+                paginationHtml += `    <span class="current">${i}</span>\n`;
+            } else {
+                paginationHtml += `    <a href="${pageLink}">${i}</a>\n`;
+            }
+        }
+
+        // 「下一頁」連結
+        if (pageNum < totalPages) {
+            const nextLink = `${key}-page${pageNum + 1}.html`;
+            paginationHtml += `    <a href="${nextLink}" class="next">下一頁 ›</a>\n`;
+        } else {
+            paginationHtml += `    <span class="next disabled">下一頁 ›</span>\n`;
+        }
+
+        paginationHtml += '</div>\n';
+
+        // 將分頁導航附加到 listContent 的結尾
+        listContent += paginationHtml;
+
+        // 套入 Layout
+        let finalPage = layoutTemplate.replace('{{content}}', listContent);
+        finalPage = finalPage.replace(/{{title}}/g, pageTitle);
+        finalPage = finalPage.replace(/{{description}}/g, `大佳稅務記帳士事務所 - ${cat.name} 文章列表`);
+
+        // 決定輸出檔名：第一頁用原本的檔名（如 company-reg.html），其他頁加上 -pageN
+        let outputFile;
+        if (pageNum === 1) {
+            outputFile = path.join(DIST_DIR, `${key}.html`);
+        } else {
+            outputFile = path.join(DIST_DIR, `${key}-page${pageNum}.html`);
+        }
+        fs.writeFileSync(outputFile, finalPage);
+        console.log(`✅ 已產生列表頁: ${outputFile} (第 ${pageNum}/${totalPages} 頁)`);
+    }
 });
 
 // ===== 2. 產生所有「單篇文章內容頁」=====

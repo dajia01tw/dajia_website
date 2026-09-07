@@ -266,24 +266,70 @@
         }
 
         /* ---------- 麵包屑導航 ---------- */
-.breadcrumb {
-    font-size: 14px;
-    color: #718096;
-    margin-bottom: 15px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #edf2f7;
-}
-.breadcrumb a {
-    color: #2b6cb0;
-    text-decoration: none;
-}
-.breadcrumb a:hover {
-    text-decoration: underline;
-}
-.breadcrumb .current {
-    color: #2d3748;
-    font-weight: 600;
-}
+        .breadcrumb {
+            font-size: 14px;
+            color: #718096;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #edf2f7;
+        }
+        .breadcrumb a {
+            color: #2b6cb0;
+            text-decoration: none;
+        }
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+        .breadcrumb .current {
+            color: #2d3748;
+            font-weight: 600;
+        }
+
+        /* ---------- 分頁導航樣式 ---------- */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+            flex-wrap: wrap;
+        }
+        .pagination a,
+        .pagination span {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 14px;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+        .pagination a {
+            color: #2b6cb0;
+            background: #edf2f7;
+            border: 1px solid #e2e8f0;
+        }
+        .pagination a:hover {
+            background: #2b6cb0;
+            color: white;
+            border-color: #2b6cb0;
+        }
+        .pagination .current {
+            background: #1a365d;
+            color: white;
+            border: 1px solid #1a365d;
+        }
+        .pagination .disabled {
+            color: #a0aec0;
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            cursor: not-allowed;
+        }
+        .pagination .prev,
+        .pagination .next {
+            font-weight: 500;
+        }
 
         /* ---------- 4. FOOT (頁尾) ---------- */
         .footer {
@@ -544,12 +590,14 @@
 <li><a href="company-reg-10.html">Test-10:開公司（公司登記）需要準備哪些文件？</a> (2026-07-15)</li>
 <li><a href="company-reg-09.html">Test-9:開公司（公司登記）需要準備哪些文件？</a> (2026-07-14)</li>
 <li><a href="company-reg-08.html">Test-8:開公司（公司登記）需要準備哪些文件？</a> (2026-07-13)</li>
-<li><a href="company-reg-07.html">Test-7:開公司（公司登記）需要準備哪些文件？</a> (2026-07-12)</li>
-<li><a href="company-reg-06.html">Test-6:開公司（公司登記）需要準備哪些文件？</a> (2026-07-11)</li>
-<li><a href="company-reg-05.html">公司登記名稱預查應提供之資訊有哪些？</a> (2026-07-10)</li>
-<li><a href="company-reg-04.html">開公司、公司登記的資本額該如何處理？</a> (2026-07-10)</li>
 
-</ul>
+</ul><div class="pagination">
+    <span class="prev disabled">‹ 上一頁</span>
+    <span class="current">1</span>
+    <a href="company-reg-page2.html">2</a>
+    <a href="company-reg-page2.html" class="next">下一頁 ›</a>
+</div>
+
         </section>
     </main>
 
