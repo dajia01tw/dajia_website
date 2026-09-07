@@ -119,7 +119,9 @@ Object.keys(categories).forEach(key => {
     let listTemplate = fs.readFileSync(path.join(TEMPLATES_DIR, 'list.html'), 'utf8');
     let listItems = '';
     cat.articles.forEach(article => {
-        listItems += `<li><a href="${article.slug}">${article.title}</a> (${article.date})</li>\n`;
+        // 若 pinned 小於 999，表示有設定置頂，加上 📌 圖示
+        const pinIcon = (article.pinned && article.pinned < 999) ? '📌 ' : '';
+        listItems += `<li>${pinIcon}<a href="${article.slug}">${article.title}</a> (${article.date})</li>\n`;
     });
 
     let listContent = listTemplate.replace('{{listItems}}', listItems);
@@ -174,7 +176,8 @@ Object.keys(categories).forEach(key => {
         articleTemplate = articleTemplate.replace('{{breadcrumb}}', breadcrumbHtml);
 
         // ---- 替換其他內容 ----
-        let content = articleTemplate.replace('{{articleTitle}}', article.title);
+        const titlePrefix = (article.pinned && article.pinned < 999) ? '📌 ' : '';
+        let content = articleTemplate.replace('{{articleTitle}}', titlePrefix + article.title);
         content = content.replace('{{date}}', article.date);
         content = content.replace('{{articleBody}}', article.htmlBody);
 
@@ -228,7 +231,8 @@ function renderGroupPage(groupList, pageTitle, outputFileName, description) {
             const displayArticles = articles.slice(0, displayLimit);
             contentHtml += `    <ul style="margin: 0; padding-left: 20px;">\n`;
             displayArticles.forEach(article => {
-                contentHtml += `        <li><a href="${article.slug}">${article.title}</a> <span style="color:#718096;font-size:14px;">（${article.date}）</span></li>\n`;
+                const pinIcon = (article.pinned && article.pinned < 999) ? '📌 ' : '';
+                contentHtml += `        <li>${pinIcon}<a href="${article.slug}">${article.title}</a> <span style="color:#718096;font-size:14px;">（${article.date}）</span></li>\n`;
             });
             contentHtml += `    </ul>\n`;
             // 若總數大於顯示上限，加入「查看全部」
