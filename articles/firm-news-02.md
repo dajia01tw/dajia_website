@@ -3,6 +3,7 @@ title: 【徵才】我們在找你！會計夥伴快來加入我們吧！
 description: 【徵才】我們在找你！會計稅務夥伴快來加入我們吧！
 categorySlug: firm-news
 date: 2026-08-31
+pinned: 2
 ---
 
 # 🚀 【徵才】我們在找你！會計夥伴快來加入我們吧！

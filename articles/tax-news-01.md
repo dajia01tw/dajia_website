@@ -3,6 +3,7 @@ title: 113年度營所稅結算申報重點整理
 description: 提醒企業注意營所稅新制規定與申報期限
 categorySlug: tax-news
 date: 2026-08-25
+pinned: 1
 ---
 
 # 113年度營所稅結算申報重點整理

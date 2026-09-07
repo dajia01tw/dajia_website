@@ -3,6 +3,7 @@ title: 本所中秋節連假服務時間異動公告
 description: 因應中秋節連續假期，本所服務時間調整通知
 categorySlug: firm-news
 date: 2026-08-24
+pinned: 1
 ---
 
 # 中秋節連假服務時間異動

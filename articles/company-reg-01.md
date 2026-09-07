@@ -3,6 +3,7 @@ title: 有限公司與股份有限公司如何選擇？
 description: 比較有限公司與股份有限公司在出資、股權轉讓與未來籌資彈性上的差異。
 categorySlug: company-reg
 date: 2026-08-20
+pinned: 3
 ---
 
 # 有限公司與股份有限公司如何選擇？

@@ -3,6 +3,7 @@ title: 開公司（公司登記）需要準備哪些文件？
 description: 開公司（公司登記）需要準備哪些文件？
 categorySlug: company-reg
 date: 2026-07-10
+pinned: 1
 ---
 
 # 開公司（公司登記）需要準備哪些文件？

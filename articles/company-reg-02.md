@@ -3,6 +3,7 @@ title: 公司設立流程完整攻略（2026年版）
 description: 從名稱預查、資本額簽證到商業登記，完整圖解公司設立7大步驟。
 categorySlug: company-reg
 date: 2026-08-15
+pinned: 2
 ---
 
 # 公司設立流程完整攻略

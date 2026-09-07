@@ -85,13 +85,24 @@ files.forEach(fileName => {
         description: frontMatter.description || '',
         date: dateStr,   // 已格式化為 yyyy-mm-dd
         slug: fileName.replace('.md', '.html'),
-        htmlBody: htmlBody
+        htmlBody: htmlBody,
+        pinned: frontMatter.pinned || 999   // ← 加入這一行，預設為 999（不置頂）
     });
 });
 
-// ===== 對每個分類內的文章「依照日期排序」（最新在前）=====
+// ===== 對每個分類內的文章進行排序 =====
+// 規則：先依 pinned 數字升序（數字越小越前面），再依日期降序（最新在前）
 Object.keys(categories).forEach(key => {
-    categories[key].articles.sort((a, b) => (a.date < b.date ? 1 : -1));
+    categories[key].articles.sort((a, b) => {
+        // 先比較 pinned（數字小的優先）
+        const pinnedA = a.pinned || 999;
+        const pinnedB = b.pinned || 999;
+        if (pinnedA !== pinnedB) {
+            return pinnedA - pinnedB;   // 數字小的排前面
+        }
+        // 若 pinned 相同，則依日期排序（最新在前）
+        return (a.date < b.date ? 1 : -1);
+    });
 });
 
 // ===== 讀取共用 Layout（外框）=====
