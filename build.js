@@ -330,6 +330,49 @@ renderGroupPage(groupNews, '最新消息', 'news.html', '大佳稅務記帳士�
 // ===== 產生 services.html =====
 renderGroupPage(groupServices, '服務內容總覽', 'services.html', '大佳稅務記帳士事務所 - 七項專業服務項目');
 
+// ===== 3.5 準備首頁所需的「本所公告」資料 =====
+// 🔧 若要調整首頁顯示的公告篇數，請修改下面的數字
+const HOMEPAGE_FIRM_NEWS_COUNT = 2;
+
+// 讀取 page_index.html 模板
+const indexTemplatePath = path.join(TEMPLATES_DIR, 'page_index.html');
+if (fs.existsSync(indexTemplatePath)) {
+    let indexContent = fs.readFileSync(indexTemplatePath, 'utf8');
+
+    // 取得「本所公告」的文章（已排序，置頂在前）
+    const firmArticles = categories['firm-news'] ? categories['firm-news'].articles : [];
+    let firmListHtml = '';
+
+    if (firmArticles.length > 0) {
+        const displayArticles = firmArticles.slice(0, HOMEPAGE_FIRM_NEWS_COUNT);
+        firmListHtml = '<ul style="padding-left: 20px; margin: 0;">\n';
+        displayArticles.forEach(article => {
+            const pinIcon = (article.pinned && article.pinned < 999) ? '📌 ' : '';
+            firmListHtml += `    <li style="margin-bottom: 8px; list-style: none; border-bottom: 1px dashed #edf2f7; padding: 8px 0;">\n`;
+            firmListHtml += `        ${pinIcon}<a href="${article.slug}" style="color: #2b6cb0; text-decoration: none;">${article.title}</a>\n`;
+            firmListHtml += `        <span style="color: #718096; font-size: 14px; margin-left: 10px;">（${article.date}）</span>\n`;
+            firmListHtml += `    </li>\n`;
+        });
+        firmListHtml += '</ul>\n';
+    } else {
+        firmListHtml = '<p style="color: #a0aec0;">目前尚無公告</p>';
+    }
+
+    // 將 {{firmNewsList}} 替換為公告列表
+    indexContent = indexContent.replace('{{firmNewsList}}', firmListHtml);
+
+    // 將修改後的 indexContent 暫存起來，供後續 fixedPages 使用
+    // 我們不直接在這裡套入 layout，而是將處理好的內容存入一個變數
+    // 在 fixedPages 迴圈中，當遇到 'index' 時，使用這個處理過的內容
+    // 但為了簡化，我們直接修改 fixedPages 的處理邏輯（見下方）
+    
+    // 將處理好的內容存入全域變數，供 fixedPages 使用
+    global.processedIndexContent = indexContent;
+} else {
+    console.log('⚠️ 警告：page_index.html 模板不存在');
+}
+
+
 // ===== 4. 產生「固定頁面」(首頁、事務所簡介、常用連結、聯絡我們) =====
 const fixedPages = [
     { slug: 'index', title: '首頁', desc: '大佳稅務記帳士事務所 - 專業記帳與稅務服務' },
@@ -339,12 +382,20 @@ const fixedPages = [
 ];
 
 fixedPages.forEach(page => {
-    const templatePath = path.join(TEMPLATES_DIR, `page_${page.slug}.html`);
-    if (!fs.existsSync(templatePath)) {
-        console.log(`⚠️ 跳過 ${page.slug}：模板檔案不存在 (page_${page.slug}.html)`);
-        return;
+    let content;
+    
+    // 如果是首頁，且我們已經預先處理過內容，則使用處理過的版本
+    if (page.slug === 'index' && global.processedIndexContent) {
+        content = global.processedIndexContent;
+    } else {
+        const templatePath = path.join(TEMPLATES_DIR, `page_${page.slug}.html`);
+        if (!fs.existsSync(templatePath)) {
+            console.log(`⚠️ 跳過 ${page.slug}：模板檔案不存在 (page_${page.slug}.html)`);
+            return;
+        }
+        content = fs.readFileSync(templatePath, 'utf8');
     }
-    const content = fs.readFileSync(templatePath, 'utf8');
+
     let finalPage = layoutTemplate.replace('{{content}}', content);
     finalPage = finalPage.replace(/{{title}}/g, page.title);
     finalPage = finalPage.replace(/{{description}}/g, page.desc);

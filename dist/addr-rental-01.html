@@ -354,6 +354,10 @@
             .hamburger {
                 display: flex;
             }
+            /* 手機版：首頁的兩欄/三欄布局改為一欄 */
+            .content-area div[style*="grid"] {
+                grid-template-columns: 1fr !important;
+            }
 
             /* 頂部選單調整 */
             .header-inner {
