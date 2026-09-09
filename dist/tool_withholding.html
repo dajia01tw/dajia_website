@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>稅務申報與諮詢 | 大佳稅務記帳士事務所</title>
-    <meta name="description" content="大佳稅務記帳士事務所 - 稅務申報與諮詢 文章列表">
+    <title>所得扣繳計算機 | 大佳稅務記帳士事務所</title>
+    <meta name="description" content="大佳稅務記帳士事務所 - 各類所得扣繳稅額試算">
     
     <style>
         /* ---------- 全域重置與字型 ---------- */
@@ -601,18 +601,112 @@
 
         <!-- 右側內容區 -->
         <section class="content-area">
-            <h2>稅務申報與諮詢</h2>
-<p style="color: #718096; margin-bottom: 20px;">以下為本分類所有文章清單：</p>
-<ul>
-    <li><a href="tax-consult-01.html">113年度營所稅結算申報重點提醒</a> (2026-08-25)</li>
-<li><a href="tax-consult-02.html">營業稅申報常見錯誤與避免方法</a> (2026-08-18)</li>
+            <h2>💼 所得扣繳計算機</h2>
+<p style="color: #4a5568; margin-bottom: 20px;">依所得類別與國籍，即時試算應扣繳稅額。</p>
 
-</ul><div class="pagination">
-    <span class="prev disabled">‹ 上一頁</span>
-    <span class="current">1</span>
-    <span class="next disabled">下一頁 ›</span>
+<div style="background: #f7fafc; padding: 24px; border-radius: 8px; max-width: 550px;">
+    <!-- 國籍選擇 -->
+    <div style="margin-bottom: 15px;">
+        <label style="font-weight: 600; display: block; margin-bottom: 6px;">納稅義務人身份：</label>
+        <select id="nationality" style="width:100%; padding:10px 14px; border:1px solid #e2e8f0; border-radius:6px; font-size:16px;" onchange="calcWithholding()">
+            <option value="resident">本國人（居住者）</option>
+            <option value="nonresident">外國人（非居住者）</option>
+        </select>
+    </div>
+    
+    <!-- 所得類別 -->
+    <div style="margin-bottom: 15px;">
+        <label style="font-weight: 600; display: block; margin-bottom: 6px;">所得類別：</label>
+        <select id="incomeType" style="width:100%; padding:10px 14px; border:1px solid #e2e8f0; border-radius:6px; font-size:16px;" onchange="calcWithholding()">
+            <option value="salary">薪資所得</option>
+            <option value="professional">執行業務所得</option>
+            <option value="interest">利息所得</option>
+            <option value="dividend">股利所得</option>
+        </select>
+    </div>
+    
+    <!-- 二代健保 -->
+    <div style="margin-bottom: 15px;">
+        <label style="font-weight: 600; display: block; margin-bottom: 6px;">二代健保補充保費：</label>
+        <select id="healthIns" style="width:100%; padding:10px 14px; border:1px solid #e2e8f0; border-radius:6px; font-size:16px;" onchange="calcWithholding()">
+            <option value="yes">是（需扣繳 2.11%）</option>
+            <option value="no">否</option>
+        </select>
+    </div>
+    
+    <!-- 金額輸入 -->
+    <div style="margin-bottom: 15px;">
+        <label for="incomeAmount" style="font-weight: 600; display: block; margin-bottom: 6px;">給付金額（新台幣）：</label>
+        <input type="number" id="incomeAmount" placeholder="請輸入金額" style="width:100%; padding:12px 16px; border:1px solid #e2e8f0; border-radius:6px; font-size:18px;" oninput="calcWithholding()">
+    </div>
+    
+    <!-- 計算結果 -->
+    <div style="padding: 16px; background: white; border-radius: 6px; border: 1px solid #e2e8f0;">
+        <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
+            <span>給付總額：</span>
+            <span id="totalAmount" style="font-weight: 600;">-</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
+            <span>扣繳稅額：</span>
+            <span id="withholdAmount" style="color: #e53e3e;">-</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
+            <span>二代健保補充保費：</span>
+            <span id="healthAmount2" style="color: #d69e2e;">-</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding: 6px 0; font-size: 18px; font-weight: 700; color: #1a365d;">
+            <span>實付金額：</span>
+            <span id="netAmount2">-</span>
+        </div>
+    </div>
 </div>
 
+<!-- 稅率參考表 -->
+<div style="margin-top: 30px; padding: 16px 20px; background: #f7fafc; border-radius: 8px; font-size: 14px; color: #2d3748;">
+    <strong>📌 扣繳稅率參考：</strong>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px;">
+        <div><strong>居住者：</strong>薪資 5%、執行業務 10%、利息 10%、股利 5%</div>
+        <div><strong>非居住者：</strong>薪資 18%、執行業務 20%、利息 20%、股利 20%</div>
+    </div>
+    <div style="margin-top: 8px; color: #718096; font-size: 13px;">
+        * 二代健保補充保費 2.11% 適用於符合特定條件之給付。
+    </div>
+</div>
+
+<script>
+function calcWithholding() {
+    const amount = parseFloat(document.getElementById('incomeAmount').value);
+    const nationality = document.getElementById('nationality').value;
+    const incomeType = document.getElementById('incomeType').value;
+    const healthIns = document.getElementById('healthIns').value;
+    
+    if (isNaN(amount) || amount <= 0) {
+        ['totalAmount','withholdAmount','healthAmount2','netAmount2'].forEach(id => {
+            document.getElementById(id).textContent = '-';
+        });
+        return;
+    }
+    
+    // 扣繳稅率表
+    const rates = {
+        resident: { salary: 0.05, professional: 0.10, interest: 0.10, dividend: 0.05 },
+        nonresident: { salary: 0.18, professional: 0.20, interest: 0.20, dividend: 0.20 }
+    };
+    
+    const taxRate = rates[nationality]?.[incomeType] || 0;
+    const tax = amount * taxRate;
+    
+    const healthRate = (healthIns === 'yes') ? 0.0211 : 0;
+    const health = amount * healthRate;
+    
+    const net = amount - tax - health;
+    
+    document.getElementById('totalAmount').textContent = amount.toLocaleString('zh-TW', { style: 'currency', currency: 'TWD' });
+    document.getElementById('withholdAmount').textContent = tax.toLocaleString('zh-TW', { style: 'currency', currency: 'TWD' });
+    document.getElementById('healthAmount2').textContent = health.toLocaleString('zh-TW', { style: 'currency', currency: 'TWD' });
+    document.getElementById('netAmount2').textContent = net.toLocaleString('zh-TW', { style: 'currency', currency: 'TWD' });
+}
+</script>
         </section>
     </main>
 

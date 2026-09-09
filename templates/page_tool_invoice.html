@@ -1,0 +1,112 @@
+<h2>🧾 手開發票小幫手</h2>
+<p style="color: #4a5568; margin-bottom: 20px;">輸入統編查詢公司名稱，並計算含稅/未稅價格。</p>
+
+<!-- 統編查詢區 -->
+<div style="background: #f7fafc; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+    <label for="taxId" style="font-weight: 600; display: block; margin-bottom: 8px;">統一編號：</label>
+    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <input type="text" id="taxId" placeholder="請輸入8位統編" maxlength="8" style="flex:1; min-width:200px; padding:10px 14px; border:1px solid #e2e8f0; border-radius:6px; font-size:16px;">
+        <button onclick="queryCompany()" style="padding:10px 24px; background:#1a365d; color:white; border:none; border-radius:6px; cursor:pointer; font-size:16px;">查詢</button>
+        <button onclick="clearQuery()" style="padding:10px 24px; background:#e2e8f0; color:#2d3748; border:none; border-radius:6px; cursor:pointer; font-size:16px;">清除</button>
+    </div>
+    <div id="companyResult" style="margin-top: 12px; font-size: 16px; color: #2d3748;"></div>
+</div>
+
+<!-- 金額換算區 -->
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+    <div style="background: #f7fafc; padding: 20px; border-radius: 8px;">
+        <label for="priceTax" style="font-weight: 600; display: block; margin-bottom: 8px;">含稅價（含 5% 營業稅）：</label>
+        <input type="number" id="priceTax" placeholder="請輸入含稅金額" style="width:100%; padding:10px 14px; border:1px solid #e2e8f0; border-radius:6px; font-size:16px;" oninput="calcFromTax()">
+        <div style="margin-top: 10px; font-size: 14px; color: #718096;">
+            未稅價：<span id="priceNoTaxDisplay">-</span>
+        </div>
+    </div>
+    <div style="background: #f7fafc; padding: 20px; border-radius: 8px;">
+        <label for="priceNoTax" style="font-weight: 600; display: block; margin-bottom: 8px;">未稅價（不含營業稅）：</label>
+        <input type="number" id="priceNoTax" placeholder="請輸入未稅金額" style="width:100%; padding:10px 14px; border:1px solid #e2e8f0; border-radius:6px; font-size:16px;" oninput="calcFromNoTax()">
+        <div style="margin-top: 10px; font-size: 14px; color: #718096;">
+            含稅價：<span id="priceTaxDisplay">-</span>
+        </div>
+    </div>
+</div>
+
+<script>
+// ===== 1. 統編查詢（呼叫政府開放 API，使用 JSONP） =====
+function queryCompany() {
+    const taxId = document.getElementById('taxId').value.trim();
+    const resultDiv = document.getElementById('companyResult');
+    
+    if (!taxId || taxId.length !== 8 || isNaN(taxId)) {
+        resultDiv.innerHTML = '<span style="color: #e53e3e;">⚠️ 請輸入 8 位數字統編</span>';
+        return;
+    }
+    
+    resultDiv.innerHTML = '<span style="color: #718096;">⏳ 查詢中...</span>';
+    
+    // 使用政府開放 API（JSONP 方式）
+    const script = document.createElement('script');
+    const callbackName = 'jsonp_callback_' + Date.now();
+    window[callbackName] = function(data) {
+        if (data && data.name) {
+            resultDiv.innerHTML = '✅ 公司名稱：<strong style="color:#1a365d;">' + data.name + '</strong>';
+        } else {
+            resultDiv.innerHTML = '<span style="color: #e53e3e;">❌ 查無此統編，請確認輸入是否正確</span>';
+        }
+        delete window[callbackName];
+        document.body.removeChild(script);
+    };
+    
+    script.src = 'https://api.unicorn.com.tw/api/company/' + taxId + '?callback=' + callbackName;
+    document.body.appendChild(script);
+    
+    // 超時處理（10 秒）
+    setTimeout(function() {
+        if (window[callbackName]) {
+            resultDiv.innerHTML = '<span style="color: #e53e3e;">⏰ 查詢逾時，請稍後再試</span>';
+            delete window[callbackName];
+            if (document.body.contains(script)) {
+                document.body.removeChild(script);
+            }
+        }
+    }, 10000);
+}
+
+function clearQuery() {
+    document.getElementById('taxId').value = '';
+    document.getElementById('companyResult').innerHTML = '';
+}
+
+// ===== 2. 金額換算（含稅 ↔ 未稅） =====
+function calcFromTax() {
+    const taxVal = parseFloat(document.getElementById('priceTax').value);
+    if (isNaN(taxVal) || taxVal < 0) {
+        document.getElementById('priceNoTaxDisplay').textContent = '-';
+        return;
+    }
+    const noTax = taxVal / 1.05;
+    document.getElementById('priceNoTaxDisplay').textContent = noTax.toFixed(2);
+    // 同步反向輸入框（但不觸發迴圈）
+    document.getElementById('priceNoTax').value = noTax.toFixed(2);
+}
+
+function calcFromNoTax() {
+    const noTaxVal = parseFloat(document.getElementById('priceNoTax').value);
+    if (isNaN(noTaxVal) || noTaxVal < 0) {
+        document.getElementById('priceTaxDisplay').textContent = '-';
+        return;
+    }
+    const tax = noTaxVal * 1.05;
+    document.getElementById('priceTaxDisplay').textContent = tax.toFixed(2);
+    document.getElementById('priceTax').value = tax.toFixed(2);
+}
+
+// 按 Enter 鍵觸發查詢
+document.getElementById('taxId').addEventListener('keyup', function(e) {
+    if (e.key === 'Enter') queryCompany();
+});
+</script>
+
+<!-- 注意事項 -->
+<div style="margin-top: 30px; padding: 16px 20px; background: #fefcbf; border-radius: 8px; border-left: 4px solid #d69e2e; font-size: 14px; color: #744210;">
+    <strong>📌 注意：</strong>統編查詢功能使用政府開放 API，資料僅供參考。如有錯誤，請以國稅局登記資料為準。
+</div>

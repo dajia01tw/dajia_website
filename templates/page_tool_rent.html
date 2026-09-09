@@ -1,0 +1,62 @@
+<h2>🏢 租金扣繳計算機</h2>
+<p style="color: #4a5568; margin-bottom: 20px;">輸入租金金額，即時試算代扣稅額及二代健保補充保費。</p>
+
+<div style="background: #f7fafc; padding: 24px; border-radius: 8px; max-width: 500px;">
+    <label for="rentAmount" style="font-weight: 600; display: block; margin-bottom: 8px;">每月租金金額（新台幣）：</label>
+    <input type="number" id="rentAmount" placeholder="請輸入租金金額" style="width:100%; padding:12px 16px; border:1px solid #e2e8f0; border-radius:6px; font-size:18px;" oninput="calcRent()">
+    
+    <div style="margin-top: 20px; padding: 16px; background: white; border-radius: 6px; border: 1px solid #e2e8f0;">
+        <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
+            <span>租金總額：</span>
+            <span id="rentTotal" style="font-weight: 600;">-</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
+            <span>扣繳稅額（10%）：</span>
+            <span id="taxAmount" style="color: #e53e3e;">-</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
+            <span>二代健保補充保費（2.11%）：</span>
+            <span id="healthAmount" style="color: #d69e2e;">-</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding: 6px 0; font-size: 18px; font-weight: 700; color: #1a365d;">
+            <span>實付金額：</span>
+            <span id="netAmount">-</span>
+        </div>
+    </div>
+</div>
+
+<!-- 使用說明 -->
+<div style="margin-top: 30px; padding: 16px 20px; background: #ebf8ff; border-radius: 8px; border-left: 4px solid #2b6cb0; font-size: 14px; color: #2a4365;">
+    <strong>📌 說明：</strong>
+    <ul style="margin: 8px 0 0 20px; padding: 0;">
+        <li>扣繳稅率 10% 適用於境內居住者（中華民國境內居住之個人）。</li>
+        <li>二代健保補充保費率 2.11% 適用於符合特定條件之租金給付。</li>
+        <li>實付金額 = 租金總額 - 扣繳稅額 - 二代健保補充保費。</li>
+        <li>若承租人為公司行號，且租金給付對象為個人，需依法辦理扣繳。</li>
+    </ul>
+</div>
+
+<script>
+function calcRent() {
+    const amount = parseFloat(document.getElementById('rentAmount').value);
+    const taxRate = 0.10;      // 10% 扣繳
+    const healthRate = 0.0211; // 2.11% 二代健保
+    
+    if (isNaN(amount) || amount <= 0) {
+        document.getElementById('rentTotal').textContent = '-';
+        document.getElementById('taxAmount').textContent = '-';
+        document.getElementById('healthAmount').textContent = '-';
+        document.getElementById('netAmount').textContent = '-';
+        return;
+    }
+    
+    const tax = amount * taxRate;
+    const health = amount * healthRate;
+    const net = amount - tax - health;
+    
+    document.getElementById('rentTotal').textContent = amount.toLocaleString('zh-TW', { style: 'currency', currency: 'TWD' });
+    document.getElementById('taxAmount').textContent = tax.toLocaleString('zh-TW', { style: 'currency', currency: 'TWD' });
+    document.getElementById('healthAmount').textContent = health.toLocaleString('zh-TW', { style: 'currency', currency: 'TWD' });
+    document.getElementById('netAmount').textContent = net.toLocaleString('zh-TW', { style: 'currency', currency: 'TWD' });
+}
+</script>

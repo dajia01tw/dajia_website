@@ -378,7 +378,11 @@ const fixedPages = [
     { slug: 'index', title: '首頁', desc: '大佳稅務記帳士事務所 - 專業記帳與稅務服務' },
     { slug: 'about', title: '事務所簡介', desc: '大佳稅務記帳士事務所 - 團隊介紹與服務理念' },
     { slug: 'links', title: '常用連結', desc: '大佳稅務記帳士事務所 - 政府機關與實用工具連結' },
-    { slug: 'contact', title: '聯絡我們', desc: '大佳稅務記帳士事務所 - 聯絡資訊與服務時間' }
+    { slug: 'contact', title: '聯絡我們', desc: '大佳稅務記帳士事務所 - 聯絡資訊與服務時間' },
+    // ★★★ 小工具（新增）★★★
+    { slug: 'tool_invoice', title: '手開發票小幫手', desc: '大佳稅務記帳士事務所 - 統一編號查詢與含稅未稅價格換算' },
+    { slug: 'tool_rent', title: '租金扣繳計算機', desc: '大佳稅務記帳士事務所 - 租金扣繳稅額與二代健保補充保費試算' },
+    { slug: 'tool_withholding', title: '所得扣繳計算機', desc: '大佳稅務記帳士事務所 - 各類所得扣繳稅額試算' }
 ];
 
 fixedPages.forEach(page => {
