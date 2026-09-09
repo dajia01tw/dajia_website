@@ -1,72 +1,357 @@
 <h2>🧾 手開發票小幫手</h2>
-<p style="color: #4a5568; margin-bottom: 20px;">輸入統編查詢公司名稱，並計算含稅/未稅價格。</p>
+<p style="color: #4a5568; margin-bottom: 20px;">選擇發票類型，輸入相關資訊，即時產生發票範例。</p>
 
-<!-- 統編查詢區 -->
-<div style="background: #f7fafc; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-    <label for="taxId" style="font-weight: 600; display: block; margin-bottom: 8px;">統一編號：</label>
-    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-        <input type="text" id="taxId" placeholder="請輸入8位統編" maxlength="8" style="flex:1; min-width:200px; padding:10px 14px; border:1px solid #e2e8f0; border-radius:6px; font-size:16px;">
-        <button onclick="queryCompany()" style="padding:10px 24px; background:#1a365d; color:white; border:none; border-radius:6px; cursor:pointer; font-size:16px;">查詢</button>
-        <button onclick="clearQuery()" style="padding:10px 24px; background:#e2e8f0; color:#2d3748; border:none; border-radius:6px; cursor:pointer; font-size:16px;">清除</button>
+<!-- ===== 控制區域 ===== -->
+<div style="background: #f7fafc; padding: 24px; border-radius: 8px; margin-bottom: 30px;">
+    <!-- 發票類型切換 -->
+    <div style="display: flex; gap: 20px; margin-bottom: 20px; flex-wrap: wrap;">
+        <label style="font-weight: 600;">發票類型：</label>
+        <select id="invoiceType" style="padding: 8px 16px; border:1px solid #e2e8f0; border-radius:6px; font-size:16px;" onchange="switchInvoiceType()">
+            <option value="three">三聯式（統一編號）</option>
+            <option value="two">二聯式（無統編）</option>
+        </select>
     </div>
-    <div id="companyResult" style="margin-top: 12px; font-size: 16px; color: #2d3748;"></div>
+
+    <!-- 統編查詢（僅三聯式） -->
+    <div id="taxIdSection" style="margin-bottom: 20px;">
+        <label for="taxId" style="font-weight: 600; display: block; margin-bottom: 6px;">買受人統一編號：</label>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <input type="text" id="taxId" placeholder="請輸入8位統編" maxlength="8" style="flex:1; min-width:200px; padding:10px 14px; border:1px solid #e2e8f0; border-radius:6px; font-size:16px;">
+            <button onclick="queryCompany()" style="padding:10px 24px; background:#1a365d; color:white; border:none; border-radius:6px; cursor:pointer; font-size:16px;">查詢</button>
+            <button onclick="clearQuery()" style="padding:10px 24px; background:#e2e8f0; color:#2d3748; border:none; border-radius:6px; cursor:pointer; font-size:16px;">清除</button>
+        </div>
+        <div id="companyResult" style="margin-top: 8px; font-size: 16px; color: #2d3748;"></div>
+    </div>
+
+    <!-- 稅率選擇 -->
+    <div style="margin-bottom: 20px;">
+        <label style="font-weight: 600; display: block; margin-bottom: 6px;">稅率：</label>
+        <select id="taxRate" style="padding: 8px 16px; border:1px solid #e2e8f0; border-radius:6px; font-size:16px;" onchange="onTaxChange()">
+            <option value="5">應稅 5%</option>
+            <option value="0">零稅率 0%</option>
+            <option value="exempt">免稅</option>
+        </select>
+    </div>
+
+    <!-- 金額輸入（含稅/未稅聯動） -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        <div>
+            <label for="totalAmount" style="font-weight: 600; display: block; margin-bottom: 6px;">收款金額（含稅價）：</label>
+            <input type="number" id="totalAmount" placeholder="輸入含稅總金額" style="width:100%; padding:10px 14px; border:1px solid #e2e8f0; border-radius:6px; font-size:16px;" oninput="onTotalChange()">
+        </div>
+        <div>
+            <label for="salesAmount" style="font-weight: 600; display: block; margin-bottom: 6px;">銷售額（未稅價）：</label>
+            <input type="number" id="salesAmount" placeholder="輸入未稅金額" style="width:100%; padding:10px 14px; border:1px solid #e2e8f0; border-radius:6px; font-size:16px;" oninput="onSalesChange()">
+        </div>
+    </div>
+    <div id="taxAmountDisplay" style="margin-top: 10px; font-size: 14px; color: #718096;">營業稅額：-</div>
+
+    <!-- 日期自動帶入（僅顯示） -->
+    <div style="margin-top: 20px; display: flex; gap: 20px; flex-wrap: wrap; font-size: 14px; color: #4a5568;">
+        <span>中華民國年：<span id="rocYearNum">-</span>（<span id="rocYearText">-</span>）</span>
+        <span>營業稅區間：<span id="taxPeriod">-</span></span>
+        <span>日期：<span id="dateDisplay">-</span></span>
+    </div>
 </div>
 
-<!-- 金額換算區 -->
-<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-    <div style="background: #f7fafc; padding: 20px; border-radius: 8px;">
-        <label for="priceTax" style="font-weight: 600; display: block; margin-bottom: 8px;">含稅價（含 5% 營業稅）：</label>
-        <input type="number" id="priceTax" placeholder="請輸入含稅金額" style="width:100%; padding:10px 14px; border:1px solid #e2e8f0; border-radius:6px; font-size:16px;" oninput="calcFromTax()">
-        <div style="margin-top: 10px; font-size: 14px; color: #718096;">
-            未稅價：<span id="priceNoTaxDisplay">-</span>
+<!-- ===== 發票範例圖 ===== -->
+<div style="border: 2px solid #2d3748; border-radius: 8px; padding: 20px; background: white; max-width: 700px; margin: 0 auto; font-family: 'Courier New', monospace; font-size: 14px;">
+
+    <!-- 標題 -->
+    <div style="text-align: center; font-size: 20px; font-weight: bold; border-bottom: 2px solid #2d3748; padding-bottom: 8px; margin-bottom: 12px;">
+        統一發票（<span id="invoiceTypeLabel">三聯式</span>）
+    </div>
+
+    <!-- 第一行：年 + 區間 -->
+    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+        <span>中華民國 <span id="rocYearTextInvoice">-</span> 年</span>
+        <span>營業稅區間：<span id="taxPeriodInvoice">-</span></span>
+    </div>
+
+    <!-- 第二行：買受人（二聯式沒有統編，但有抬頭? 二聯式通常不需抬頭，但範例仍有。二聯式統編欄位空白） -->
+    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+        <span>買受人：<span id="buyerName">-</span></span>
+        <span id="taxIdInvoiceSection">統一編號：<span id="taxIdInvoice">-</span></span>
+    </div>
+
+    <!-- 第三行：日期 -->
+    <div style="display: flex; gap: 10px; margin-bottom: 12px;">
+        <span>年：<span id="yearDigit">-</span></span>
+        <span>月：<span id="monthDigit">-</span></span>
+        <span>日：<span id="dayDigit">-</span></span>
+    </div>
+
+    <!-- 金額表格（三聯式有銷售額、營業稅、總計；二聯式只有總計） -->
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 12px;">
+        <tr id="threeHeaders" style="background: #edf2f7;">
+            <th style="border:1px solid #2d3748; padding:4px;">銷售額</th>
+            <th style="border:1px solid #2d3748; padding:4px;">營業稅</th>
+            <th style="border:1px solid #2d3748; padding:4px;">總計</th>
+        </tr>
+        <tr>
+            <td id="salesAmountInvoice" style="border:1px solid #2d3748; padding:4px; text-align:right;">-</td>
+            <td id="taxAmountInvoice" style="border:1px solid #2d3748; padding:4px; text-align:right;">-</td>
+            <td id="totalAmountInvoice" style="border:1px solid #2d3748; padding:4px; text-align:right;">-</td>
+        </tr>
+    </table>
+
+    <!-- 總計大寫（拆解為每一位） -->
+    <div style="margin-top: 12px; border-top: 2px solid #2d3748; padding-top: 8px;">
+        <div style="display: flex; flex-wrap: wrap; gap: 2px; justify-content: center;">
+            <span style="font-weight: bold;">總計大寫：</span>
+            <span id="totalChinese">-</span>
+        </div>
+        <!-- 拆解每一位，對應到十億、億、千萬、百萬、十萬、萬、千、百、十、元 -->
+        <div id="chineseDigits" style="display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; margin-top: 6px; font-size: 16px;">
+            <!-- 動態產生 -->
         </div>
     </div>
-    <div style="background: #f7fafc; padding: 20px; border-radius: 8px;">
-        <label for="priceNoTax" style="font-weight: 600; display: block; margin-bottom: 8px;">未稅價（不含營業稅）：</label>
-        <input type="number" id="priceNoTax" placeholder="請輸入未稅金額" style="width:100%; padding:10px 14px; border:1px solid #e2e8f0; border-radius:6px; font-size:16px;" oninput="calcFromNoTax()">
-        <div style="margin-top: 10px; font-size: 14px; color: #718096;">
-            含稅價：<span id="priceTaxDisplay">-</span>
-        </div>
+
+    <!-- 課稅別勾選 -->
+    <div style="margin-top: 12px; display: flex; gap: 20px; justify-content: center; border-top: 1px solid #e2e8f0; padding-top: 8px;">
+        <label><input type="checkbox" id="taxable" checked> 應稅</label>
+        <label><input type="checkbox" id="zeroTax"> 零稅率</label>
+        <label><input type="checkbox" id="exemptTax"> 免稅</label>
     </div>
 </div>
 
 <script>
-// ===== 1. 統編查詢（呼叫政府開放 API，使用 JSONP） =====
+// ===== 全域變數 =====
+let currentInvoiceType = 'three'; // 'three' or 'two'
+let currentTaxRate = 5; // 5, 0, 或 'exempt'
+
+// ===== 切換發票類型 =====
+function switchInvoiceType() {
+    const sel = document.getElementById('invoiceType');
+    currentInvoiceType = sel.value;
+    const taxIdSection = document.getElementById('taxIdSection');
+    const taxIdInvoiceSection = document.getElementById('taxIdInvoiceSection');
+    const label = document.getElementById('invoiceTypeLabel');
+    const threeHeaders = document.getElementById('threeHeaders');
+    
+    if (currentInvoiceType === 'three') {
+        taxIdSection.style.display = 'block';
+        taxIdInvoiceSection.style.display = 'inline';
+        label.textContent = '三聯式';
+        threeHeaders.style.display = 'table-row';
+        // 顯示銷售額、營業稅、總計三欄
+        document.querySelectorAll('#salesAmountInvoice, #taxAmountInvoice, #totalAmountInvoice').forEach(el => el.style.display = '');
+    } else {
+        taxIdSection.style.display = 'none';
+        taxIdInvoiceSection.style.display = 'none';
+        label.textContent = '二聯式';
+        threeHeaders.style.display = 'none';
+        // 只顯示總計
+        document.querySelectorAll('#salesAmountInvoice, #taxAmountInvoice').forEach(el => el.style.display = 'none');
+        document.querySelector('#totalAmountInvoice').style.display = '';
+    }
+    updateInvoice();
+}
+
+// ===== 稅率變更 =====
+function onTaxChange() {
+    const sel = document.getElementById('taxRate');
+    const val = sel.value;
+    if (val === 'exempt') {
+        currentTaxRate = 'exempt';
+    } else {
+        currentTaxRate = parseInt(val, 10);
+    }
+    updateInvoice();
+}
+
+// ===== 金額聯動（含稅→未稅） =====
+function onTotalChange() {
+    const total = parseFloat(document.getElementById('totalAmount').value);
+    if (isNaN(total) || total < 0) {
+        document.getElementById('salesAmount').value = '';
+        document.getElementById('taxAmountDisplay').textContent = '營業稅額：-';
+        updateInvoice();
+        return;
+    }
+    let rate = currentTaxRate;
+    if (rate === 'exempt') {
+        // 免稅：未稅 = 含稅
+        document.getElementById('salesAmount').value = total.toFixed(0);
+        document.getElementById('taxAmountDisplay').textContent = '營業稅額：0 (免稅)';
+    } else {
+        // 含稅價 = 未稅價 * (1 + rate/100)
+        const sales = total / (1 + rate/100);
+        document.getElementById('salesAmount').value = sales.toFixed(0);
+        const tax = total - sales;
+        document.getElementById('taxAmountDisplay').textContent = `營業稅額：${tax.toFixed(0)} (${rate}%)`;
+    }
+    updateInvoice();
+}
+
+// ===== 金額聯動（未稅→含稅） =====
+function onSalesChange() {
+    const sales = parseFloat(document.getElementById('salesAmount').value);
+    if (isNaN(sales) || sales < 0) {
+        document.getElementById('totalAmount').value = '';
+        document.getElementById('taxAmountDisplay').textContent = '營業稅額：-';
+        updateInvoice();
+        return;
+    }
+    let rate = currentTaxRate;
+    if (rate === 'exempt') {
+        document.getElementById('totalAmount').value = sales.toFixed(0);
+        document.getElementById('taxAmountDisplay').textContent = '營業稅額：0 (免稅)';
+    } else {
+        const total = sales * (1 + rate/100);
+        document.getElementById('totalAmount').value = total.toFixed(0);
+        const tax = total - sales;
+        document.getElementById('taxAmountDisplay').textContent = `營業稅額：${tax.toFixed(0)} (${rate}%)`;
+    }
+    updateInvoice();
+}
+
+// ===== 更新發票範例 =====
+function updateInvoice() {
+    // 取得日期
+    const now = new Date();
+    const year = now.getFullYear(); // 西元
+    const rocYear = year - 1911;    // 中華民國年
+    const month = now.getMonth() + 1;
+    const day = now.getDate();
+
+    // 營業稅區間（每兩個月）
+    let periodStart, periodEnd;
+    if (month >= 1 && month <= 2) { periodStart = 1; periodEnd = 2; }
+    else if (month >= 3 && month <= 4) { periodStart = 3; periodEnd = 4; }
+    else if (month >= 5 && month <= 6) { periodStart = 5; periodEnd = 6; }
+    else if (month >= 7 && month <= 8) { periodStart = 7; periodEnd = 8; }
+    else if (month >= 9 && month <= 10) { periodStart = 9; periodEnd = 10; }
+    else { periodStart = 11; periodEnd = 12; }
+
+    // 中文數字
+    const chineseNum = ['零','壹','贰','参','肆','伍','陆','柒','捌','玖'];
+    const chineseUnit = ['','拾','佰','仟','万','拾','佰','仟','亿','拾','佰','仟'];
+
+    function toChineseNumber(num) {
+        if (num === 0) return '零';
+        let str = num.toString();
+        let result = '';
+        let len = str.length;
+        for (let i = 0; i < len; i++) {
+            let digit = parseInt(str[i]);
+            let unitIndex = len - i - 1;
+            if (digit !== 0) {
+                result += chineseNum[digit] + chineseUnit[unitIndex];
+            } else {
+                // 處理零
+                if (i < len-1 && parseInt(str[i+1]) !== 0) {
+                    result += '零';
+                }
+            }
+        }
+        return result;
+    }
+
+    // 取得總計金額（含稅）
+    const total = parseFloat(document.getElementById('totalAmount').value) || 0;
+    const sales = parseFloat(document.getElementById('salesAmount').value) || 0;
+    let tax = 0;
+    if (currentTaxRate !== 'exempt') {
+        tax = total - sales;
+    }
+
+    // 更新範例圖
+    document.getElementById('rocYearTextInvoice').textContent = rocYear;
+    document.getElementById('taxPeriodInvoice').textContent = `${periodStart}、${periodEnd}月`;
+
+    // 買受人名稱
+    const companyName = document.getElementById('companyResult').innerText.includes('公司名稱') ? 
+        document.getElementById('companyResult').innerText.split('：')[1] : '';
+    document.getElementById('buyerName').textContent = companyName || '-';
+
+    // 統編
+    const taxIdVal = document.getElementById('taxId').value;
+    document.getElementById('taxIdInvoice').textContent = taxIdVal || '-';
+
+    // 年月日
+    document.getElementById('yearDigit').textContent = year;
+    document.getElementById('monthDigit').textContent = month;
+    document.getElementById('dayDigit').textContent = day;
+
+    // 金額
+    if (currentInvoiceType === 'three') {
+        document.getElementById('salesAmountInvoice').textContent = sales.toFixed(0);
+        document.getElementById('taxAmountInvoice').textContent = tax.toFixed(0);
+        document.getElementById('totalAmountInvoice').textContent = total.toFixed(0);
+    } else {
+        document.getElementById('totalAmountInvoice').textContent = total.toFixed(0);
+    }
+
+    // 總計大寫
+    const totalChinese = toChineseNumber(total);
+    document.getElementById('totalChinese').textContent = totalChinese || '-';
+
+    // 拆解每一位（用於顯示）
+    const digitsContainer = document.getElementById('chineseDigits');
+    digitsContainer.innerHTML = '';
+    if (total > 0) {
+        const totalStr = total.toString();
+        const units = ['元','拾','佰','仟','万','拾','佰','仟','亿'];
+        // 從個位開始反向處理
+        let digits = totalStr.split('').reverse();
+        let html = '';
+        for (let i = 0; i < digits.length; i++) {
+            const num = parseInt(digits[i]);
+            const unitIndex = i;
+            const chineseDigit = chineseNum[num];
+            const unit = units[unitIndex] || '';
+            html += `<span style="display:inline-block; min-width:24px; text-align:center; border-bottom:1px solid #2d3748; margin:2px;">${chineseDigit}${unit}</span>`;
+        }
+        digitsContainer.innerHTML = html;
+    } else {
+        digitsContainer.innerHTML = '<span>零</span>';
+    }
+
+    // 課稅別勾選
+    document.getElementById('taxable').checked = (currentTaxRate === 5);
+    document.getElementById('zeroTax').checked = (currentTaxRate === 0);
+    document.getElementById('exemptTax').checked = (currentTaxRate === 'exempt');
+
+    // 上方的日期顯示
+    document.getElementById('rocYearNum').textContent = rocYear;
+    document.getElementById('rocYearText').textContent = toChineseNumber(rocYear);
+    document.getElementById('taxPeriod').textContent = `${periodStart}、${periodEnd}月`;
+    document.getElementById('dateDisplay').textContent = `${year}/${month}/${day}`;
+}
+
+// ===== 統一編號查詢（JSONP） =====
 function queryCompany() {
     const taxId = document.getElementById('taxId').value.trim();
     const resultDiv = document.getElementById('companyResult');
-    
     if (!taxId || taxId.length !== 8 || isNaN(taxId)) {
         resultDiv.innerHTML = '<span style="color: #e53e3e;">⚠️ 請輸入 8 位數字統編</span>';
         return;
     }
-    
     resultDiv.innerHTML = '<span style="color: #718096;">⏳ 查詢中...</span>';
-    
-    // 使用政府開放 API（JSONP 方式）
+    // 使用政府 API（需替換為實際可用的 API）
+    // 此處使用示意，實際請依你的現有 API 調整
     const script = document.createElement('script');
     const callbackName = 'jsonp_callback_' + Date.now();
     window[callbackName] = function(data) {
         if (data && data.name) {
             resultDiv.innerHTML = '✅ 公司名稱：<strong style="color:#1a365d;">' + data.name + '</strong>';
         } else {
-            resultDiv.innerHTML = '<span style="color: #e53e3e;">❌ 查無此統編，請確認輸入是否正確</span>';
+            resultDiv.innerHTML = '<span style="color: #e53e3e;">❌ 查無此統編</span>';
         }
         delete window[callbackName];
         document.body.removeChild(script);
     };
-    
+    // 替換為你的實際 API 網址，例如：
+    // script.src = 'https://your-api-endpoint.com/' + taxId + '?callback=' + callbackName;
     script.src = 'https://api.unicorn.com.tw/api/company/' + taxId + '?callback=' + callbackName;
     document.body.appendChild(script);
-    
-    // 超時處理（10 秒）
+    // 超時處理
     setTimeout(function() {
         if (window[callbackName]) {
-            resultDiv.innerHTML = '<span style="color: #e53e3e;">⏰ 查詢逾時，請稍後再試</span>';
+            resultDiv.innerHTML = '<span style="color: #e53e3e;">⏰ 查詢逾時</span>';
             delete window[callbackName];
-            if (document.body.contains(script)) {
-                document.body.removeChild(script);
-            }
+            if (document.body.contains(script)) document.body.removeChild(script);
         }
     }, 10000);
 }
@@ -74,39 +359,29 @@ function queryCompany() {
 function clearQuery() {
     document.getElementById('taxId').value = '';
     document.getElementById('companyResult').innerHTML = '';
+    updateInvoice();
 }
 
-// ===== 2. 金額換算（含稅 ↔ 未稅） =====
-function calcFromTax() {
-    const taxVal = parseFloat(document.getElementById('priceTax').value);
-    if (isNaN(taxVal) || taxVal < 0) {
-        document.getElementById('priceNoTaxDisplay').textContent = '-';
-        return;
-    }
-    const noTax = taxVal / 1.05;
-    document.getElementById('priceNoTaxDisplay').textContent = noTax.toFixed(2);
-    // 同步反向輸入框（但不觸發迴圈）
-    document.getElementById('priceNoTax').value = noTax.toFixed(2);
-}
-
-function calcFromNoTax() {
-    const noTaxVal = parseFloat(document.getElementById('priceNoTax').value);
-    if (isNaN(noTaxVal) || noTaxVal < 0) {
-        document.getElementById('priceTaxDisplay').textContent = '-';
-        return;
-    }
-    const tax = noTaxVal * 1.05;
-    document.getElementById('priceTaxDisplay').textContent = tax.toFixed(2);
-    document.getElementById('priceTax').value = tax.toFixed(2);
-}
-
-// 按 Enter 鍵觸發查詢
-document.getElementById('taxId').addEventListener('keyup', function(e) {
-    if (e.key === 'Enter') queryCompany();
+// ===== 初始化 =====
+document.addEventListener('DOMContentLoaded', function() {
+    // 預設三聯式
+    document.getElementById('invoiceType').value = 'three';
+    switchInvoiceType();
+    // 自動填入今天的日期（顯示）
+    updateInvoice();
+    // 預設輸入金額（可選）
+    // 可加一些預設值方便測試
 });
 </script>
 
-<!-- 注意事項 -->
-<div style="margin-top: 30px; padding: 16px 20px; background: #fefcbf; border-radius: 8px; border-left: 4px solid #d69e2e; font-size: 14px; color: #744210;">
-    <strong>📌 注意：</strong>統編查詢功能使用政府開放 API，資料僅供參考。如有錯誤，請以國稅局登記資料為準。
+<!-- 使用說明 -->
+<div style="margin-top: 30px; padding: 16px 20px; background: #ebf8ff; border-radius: 8px; border-left: 4px solid #2b6cb0; font-size: 14px; color: #2a4365;">
+    <strong>📌 操作說明：</strong>
+    <ul style="margin: 8px 0 0 20px; padding: 0;">
+        <li>選擇「三聯式」或「二聯式」發票。</li>
+        <li>三聯式請輸入買受人統一編號，並點擊「查詢」自動帶入公司名稱。</li>
+        <li>選擇稅率（應稅5%、零稅率0%、免稅）。</li>
+        <li>輸入「收款金額（含稅價）」或「銷售額（未稅價）」會自動換算另一欄。</li>
+        <li>下方會即時產生發票範例，並自動帶入當前日期及營業稅區間。</li>
+    </ul>
 </div>
