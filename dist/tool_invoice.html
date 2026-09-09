@@ -947,7 +947,7 @@ function queryCompany() {
     };
     // 替換為你的實際 API 網址，例如：
     // script.src = 'https://your-api-endpoint.com/' + taxId + '?callback=' + callbackName;
-    script.src = 'https://company.g0v.ronny.tw/' + taxId + '?callback=' + callbackName;
+    script.src = 'https://data.gcis.nat.gov.tw/od/rule' + taxId + '?callback=' + callbackName;
     document.body.appendChild(script);
     // 超時處理
     setTimeout(function() {
