@@ -602,66 +602,306 @@
         <!-- 右側內容區 -->
         <section class="content-area">
             <h2>🏢 租金扣繳計算機</h2>
-<p style="color: #4a5568; margin-bottom: 20px;">輸入租金金額，即時試算代扣稅額及二代健保補充保費。</p>
+<p style="color: #4a5568; margin-bottom: 20px;">依房東身份與租金金額，即時試算代扣稅額及二代健保補充保費。</p>
 
-<div style="background: #f7fafc; padding: 24px; border-radius: 8px; max-width: 500px;">
-    <label for="rentAmount" style="font-weight: 600; display: block; margin-bottom: 8px;">每月租金金額（新台幣）：</label>
-    <input type="number" id="rentAmount" placeholder="請輸入租金金額" style="width:100%; padding:12px 16px; border:1px solid #e2e8f0; border-radius:6px; font-size:18px;" oninput="calcRent()">
-    
-    <div style="margin-top: 20px; padding: 16px; background: white; border-radius: 6px; border: 1px solid #e2e8f0;">
-        <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
-            <span>租金總額：</span>
-            <span id="rentTotal" style="font-weight: 600;">-</span>
+<!-- ===== 控制區域 ===== -->
+<div style="background: #f7fafc; padding: 24px; border-radius: 8px; margin-bottom: 30px;">
+
+    <!-- 房東身份 -->
+    <div style="margin-bottom: 20px;">
+        <label style="font-weight: 600; display: block; margin-bottom: 8px;">個人房東身份：</label>
+        <select id="landlordType" style="padding: 8px 16px; border:1px solid #e2e8f0; border-radius:6px; font-size:16px; min-width:200px;" onchange="onLandlordTypeChange()">
+            <option value="local">本國人</option>
+            <option value="foreign">外國人</option>
+        </select>
+    </div>
+
+    <!-- 本國人：居住情況（單選） -->
+    <div id="localResidentSection" style="margin-bottom: 20px;">
+        <label style="font-weight: 600; display: block; margin-bottom: 8px;">居住情況：</label>
+        <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+            <label style="cursor:pointer;">
+                <input type="radio" name="localResident" value="resident" checked onchange="onResidentChange()"> 居住 1 天以上
+            </label>
+            <label style="cursor:pointer;">
+                <input type="radio" name="localResident" value="nonresident" onchange="onResidentChange()"> 全年均未在台居住
+            </label>
         </div>
-        <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
-            <span>扣繳稅額（10%）：</span>
-            <span id="taxAmount" style="color: #e53e3e;">-</span>
+        <div id="localResidentNote" style="margin-top: 8px; font-size: 13px; color: #718096;"></div>
+    </div>
+
+    <!-- 外國人：居住情況（單選） -->
+    <div id="foreignResidentSection" style="margin-bottom: 20px; display: none;">
+        <label style="font-weight: 600; display: block; margin-bottom: 8px;">居住情況：</label>
+        <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+            <label style="cursor:pointer;">
+                <input type="radio" name="foreignResident" value="183" onchange="onResidentChange()"> 居住滿 183 天
+            </label>
+            <label style="cursor:pointer;">
+                <input type="radio" name="foreignResident" value="not183" onchange="onResidentChange()"> 居住未達 183 天
+            </label>
         </div>
-        <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
-            <span>二代健保補充保費（2.11%）：</span>
-            <span id="healthAmount" style="color: #d69e2e;">-</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; padding: 6px 0; font-size: 18px; font-weight: 700; color: #1a365d;">
-            <span>實付金額：</span>
-            <span id="netAmount">-</span>
+        <div id="foreignResidentNote" style="margin-top: 8px; font-size: 13px; color: #718096;"></div>
+    </div>
+
+    <!-- 每期租金 -->
+    <div style="margin-bottom: 20px;">
+        <label for="rentAmount" style="font-weight: 600; display: block; margin-bottom: 8px;">每期租金（元）：</label>
+        <input type="text" id="rentAmount" placeholder="請輸入租金金額" oninput="onRentChange()" style="width: 100%; max-width: 300px; padding: 10px 14px; border:1px solid #e2e8f0; border-radius:6px; font-size: 18px;">
+    </div>
+
+    <!-- 租金含稅/未稅 -->
+    <div style="margin-bottom: 10px;">
+        <label style="font-weight: 600; display: block; margin-bottom: 8px;">租金金額類型：</label>
+        <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+            <label style="cursor:pointer;">
+                <input type="radio" name="rentType" value="taxIncluded" checked onchange="onRentTypeChange()"> 租金已含稅
+            </label>
+            <label style="cursor:pointer;">
+                <input type="radio" name="rentType" value="taxExcluded" onchange="onRentTypeChange()"> 租金未含稅
+            </label>
         </div>
     </div>
 </div>
 
-<!-- 使用說明 -->
+<!-- ===== 呈現區 ===== -->
+<div style="border: 2px solid #2d3748; border-radius: 8px; padding: 24px; background: white; max-width: 720px; margin: 0 auto; font-family: 'Courier New', monospace; font-size: 14px; color: #1a202c;">
+
+    <!-- 上區塊：房東身份 -->
+    <div id="resultHeader" style="text-align: center; font-size: 18px; font-weight: bold; border-bottom: 2px solid #2d3748; padding-bottom: 12px; margin-bottom: 16px;">
+        個人房東：本國人（居住者）
+    </div>
+
+    <!-- 下區塊：計算結果 -->
+    <div id="resultBody" style="font-size: 15px; line-height: 2;">
+        <div style="color: #718096; text-align: center; padding: 20px 0;">請於上方輸入租金金額以開始試算</div>
+    </div>
+</div>
+
+<!-- ===== 說明區 ===== -->
 <div style="margin-top: 30px; padding: 16px 20px; background: #ebf8ff; border-radius: 8px; border-left: 4px solid #2b6cb0; font-size: 14px; color: #2a4365;">
     <strong>📌 說明：</strong>
     <ul style="margin: 8px 0 0 20px; padding: 0;">
-        <li>扣繳稅率 10% 適用於境內居住者（中華民國境內居住之個人）。</li>
-        <li>二代健保補充保費率 2.11% 適用於符合特定條件之租金給付。</li>
-        <li>實付金額 = 租金總額 - 扣繳稅額 - 二代健保補充保費。</li>
-        <li>若承租人為公司行號，且租金給付對象為個人，需依法辦理扣繳。</li>
+        <li>本國人設有戶籍雖居住大於 1 天但未滿 31 天者，有可能被要求自行舉證生活及經濟重心在台灣。</li>
+        <li>本系統未考慮外國人在台居住滿 183 天且有投保健保之情況，如有這種情況都歡迎來電洽詢。</li>
+        <li>房東為公司行號時，應在收到租金時開立統一發票。</li>
     </ul>
 </div>
 
 <script>
-function calcRent() {
-    const amount = parseFloat(document.getElementById('rentAmount').value);
-    const taxRate = 0.10;      // 10% 扣繳
-    const healthRate = 0.0211; // 2.11% 二代健保
-    
-    if (isNaN(amount) || amount <= 0) {
-        document.getElementById('rentTotal').textContent = '-';
-        document.getElementById('taxAmount').textContent = '-';
-        document.getElementById('healthAmount').textContent = '-';
-        document.getElementById('netAmount').textContent = '-';
+// ===== 全域變數 =====
+let currentLandlordType = 'local';     // 'local' or 'foreign'
+let currentResidentMode = 'A';         // 'A', 'B', 'C'
+let currentRentType = 'taxIncluded';   // 'taxIncluded' or 'taxExcluded'
+
+// ===== 依房東身份與居住情況決定模式 =====
+function updateResidentMode() {
+    if (currentLandlordType === 'local') {
+        const radios = document.getElementsByName('localResident');
+        let value = 'resident';
+        for (const r of radios) { if (r.checked) { value = r.value; break; } }
+        currentResidentMode = (value === 'resident') ? 'A' : 'B';
+        document.getElementById('localResidentNote').textContent =
+            (value === 'resident') ? '稅務身份：居住者' : '稅務身份：非居住者';
+    } else {
+        const radios = document.getElementsByName('foreignResident');
+        let value = '';
+        for (const r of radios) { if (r.checked) { value = r.value; break; } }
+        if (value === '183') currentResidentMode = 'C';
+        else if (value === 'not183') currentResidentMode = 'B';
+        else currentResidentMode = 'C'; // 預設
+        document.getElementById('foreignResidentNote').textContent =
+            (value === '183') ? '稅務身份：居住者' : '稅務身份：非居住者';
+    }
+    updateResult();
+}
+
+// ===== 房東身份切換 =====
+function onLandlordTypeChange() {
+    currentLandlordType = document.getElementById('landlordType').value;
+    if (currentLandlordType === 'local') {
+        document.getElementById('localResidentSection').style.display = 'block';
+        document.getElementById('foreignResidentSection').style.display = 'none';
+        // 預設勾選「居住1天以上」
+        document.querySelector('input[name="localResident"][value="resident"]').checked = true;
+    } else {
+        document.getElementById('localResidentSection').style.display = 'none';
+        document.getElementById('foreignResidentSection').style.display = 'block';
+        // 預設不勾選，等使用者選
+        document.querySelectorAll('input[name="foreignResident"]').forEach(r => r.checked = false);
+    }
+    updateResidentMode();
+    updateResult();
+}
+
+// ===== 居住情況切換 =====
+function onResidentChange() {
+    updateResidentMode();
+}
+
+// ===== 租金類型切換 =====
+function onRentTypeChange() {
+    const radios = document.getElementsByName('rentType');
+    for (const r of radios) { if (r.checked) { currentRentType = r.value; break; } }
+    updateResult();
+}
+
+// ===== 租金輸入變更 =====
+function onRentChange() {
+    updateResult();
+}
+
+// ===== 無條件捨去至整數 =====
+function floorToInt(num) {
+    return Math.floor(num);
+}
+
+// ===== 四捨五入至整數 =====
+function roundToInt(num) {
+    return Math.round(num);
+}
+
+// ===== 千分號 =====
+function formatNumber(num) {
+    if (num === null || num === undefined || isNaN(num)) return '-';
+    return Number(num).toLocaleString('zh-TW');
+}
+
+// ===== 更新計算結果 =====
+function updateResult() {
+    const rentInput = document.getElementById('rentAmount').value.replace(/,/g, '');
+    const rent = parseFloat(rentInput);
+
+    // 上區塊：房東身份
+    const header = document.getElementById('resultHeader');
+    let landlordLabel = '';
+    if (currentLandlordType === 'local') {
+        landlordLabel = '個人房東：本國人';
+    } else {
+        landlordLabel = '個人房東：外國人';
+    }
+    let modeLabel = '';
+    if (currentResidentMode === 'A') modeLabel = '（居住者）';
+    else if (currentResidentMode === 'B') modeLabel = '（非居住者）';
+    else if (currentResidentMode === 'C') modeLabel = '（居住者）';
+    header.textContent = landlordLabel + modeLabel;
+
+    // 下區塊：計算結果
+    const body = document.getElementById('resultBody');
+
+    if (isNaN(rent) || rent <= 0) {
+        body.innerHTML = '<div style="color: #718096; text-align: center; padding: 20px 0;">請於上方輸入租金金額以開始試算</div>';
         return;
     }
-    
-    const tax = amount * taxRate;
-    const health = amount * healthRate;
-    const net = amount - tax - health;
-    
-    document.getElementById('rentTotal').textContent = amount.toLocaleString('zh-TW', { style: 'currency', currency: 'TWD' });
-    document.getElementById('taxAmount').textContent = tax.toLocaleString('zh-TW', { style: 'currency', currency: 'TWD' });
-    document.getElementById('healthAmount').textContent = health.toLocaleString('zh-TW', { style: 'currency', currency: 'TWD' });
-    document.getElementById('netAmount').textContent = net.toLocaleString('zh-TW', { style: 'currency', currency: 'TWD' });
+
+    let html = '';
+
+    // === A 模式：本國人居住者 ===
+    if (currentResidentMode === 'A') {
+        if (currentRentType === 'taxIncluded') {
+            // 已知每期租金（含稅）= a
+            const a = floorToInt(rent);
+            const b = floorToInt(a * 0.1);
+            const c = roundToInt(a * 0.0211);
+            const d = a - b - c;
+            html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
+                <span>每期租金（含稅）= a</span><span style="color: blue; font-weight: bold;">${formatNumber(a)} 元</span></div>`;
+            html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
+                <span>扣繳 10% = a × 0.1</span><span style="color: blue; font-weight: bold;">${formatNumber(b)} 元</span></div>`;
+            html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
+                <span>二代健保 2.11% = a × 0.0211</span><span style="color: blue; font-weight: bold;">${formatNumber(c)} 元</span></div>`;
+            html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; font-size: 17px; font-weight: bold; color: #1a365d;">
+                <span>實際支付租金（未稅）= a - b - c</span><span>${formatNumber(d)} 元</span></div>`;
+            html += `<div style="margin-top: 14px; color: #e53e3e; font-weight: 600;">⚠️ 注意：請於次月 10 日前完成繳款作業。</div>`;
+        } else {
+            // 已知實際支付租金（未稅）= d
+            const d = floorToInt(rent);
+            const a = floorToInt(d / 0.8789);
+            const b = floorToInt(a * 0.1);
+            const c = a - b - d;
+            html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
+                <span>每期租金（含稅）= d / 0.8789</span><span style="color: blue; font-weight: bold;">${formatNumber(a)} 元</span></div>`;
+            html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
+                <span>扣繳 10% = a × 0.1</span><span style="color: blue; font-weight: bold;">${formatNumber(b)} 元</span></div>`;
+            html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
+                <span>二代健保 2.11% = a - b - d</span><span style="color: blue; font-weight: bold;">${formatNumber(c)} 元</span></div>`;
+            html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; font-size: 17px; font-weight: bold; color: #1a365d;">
+                <span>實際支付租金（未稅）= d</span><span>${formatNumber(d)} 元</span></div>`;
+            html += `<div style="margin-top: 14px; color: #e53e3e; font-weight: 600;">⚠️ 注意：請於次月 10 日前完成繳款作業。</div>`;
+        }
+    }
+
+    // === B 模式：非居住者 ===
+    else if (currentResidentMode === 'B') {
+        if (currentRentType === 'taxIncluded') {
+            // 已知每期租金（含稅）= a
+            const a = floorToInt(rent);
+            const b = floorToInt(a * 0.2);
+            const c = a - b;
+            html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
+                <span>每期租金（含稅）= a</span><span style="color: blue; font-weight: bold;">${formatNumber(a)} 元</span></div>`;
+            html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
+                <span>扣繳 20% = a × 0.2</span><span style="color: blue; font-weight: bold;">${formatNumber(b)} 元</span></div>`;
+            html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; font-size: 17px; font-weight: bold; color: #1a365d;">
+                <span>實際支付租金（未稅）= a - b</span><span>${formatNumber(c)} 元</span></div>`;
+            html += `<div style="margin-top: 14px; color: #e53e3e; font-weight: 600;">⚠️ 注意：請於租金給付的 10 日內完成繳款及申報作業。</div>`;
+        } else {
+            // 已知實際支付租金（未稅）= c
+            const c = floorToInt(rent);
+            const a = floorToInt(c / 0.8);
+            const b = a - c;
+            html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
+                <span>每期租金（含稅）= c / 0.8</span><span style="color: blue; font-weight: bold;">${formatNumber(a)} 元</span></div>`;
+            html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
+                <span>扣繳 20% = a - c</span><span style="color: blue; font-weight: bold;">${formatNumber(b)} 元</span></div>`;
+            html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; font-size: 17px; font-weight: bold; color: #1a365d;">
+                <span>實際支付租金（未稅）= c</span><span>${formatNumber(c)} 元</span></div>`;
+            html += `<div style="margin-top: 14px; color: #e53e3e; font-weight: 600;">⚠️ 注意：請於租金給付的 10 日內完成繳款及申報作業。</div>`;
+        }
+    }
+
+    // === C 模式：外國人居住者 ===
+    else if (currentResidentMode === 'C') {
+        if (currentRentType === 'taxIncluded') {
+            // 已知每期租金（含稅）= a
+            const a = floorToInt(rent);
+            const b = floorToInt(a * 0.1);
+            const c = a - b;
+            html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
+                <span>每期租金（含稅）= a</span><span style="color: blue; font-weight: bold;">${formatNumber(a)} 元</span></div>`;
+            html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
+                <span>扣繳 10% = a × 0.1</span><span style="color: blue; font-weight: bold;">${formatNumber(b)} 元</span></div>`;
+            html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; font-size: 17px; font-weight: bold; color: #1a365d;">
+                <span>實際支付租金（未稅）= a - b</span><span>${formatNumber(c)} 元</span></div>`;
+            html += `<div style="margin-top: 14px; color: #e53e3e; font-weight: 600;">⚠️ 注意：請於次月 10 日前完成繳款作業。</div>`;
+        } else {
+            // 已知實際支付租金（未稅）= c
+            const c = floorToInt(rent);
+            const a = floorToInt(c / 0.9);
+            const b = a - c;
+            html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
+                <span>每期租金（含稅）= c / 0.9</span><span style="color: blue; font-weight: bold;">${formatNumber(a)} 元</span></div>`;
+            html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
+                <span>扣繳 10% = a - c</span><span style="color: blue; font-weight: bold;">${formatNumber(b)} 元</span></div>`;
+            html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; font-size: 17px; font-weight: bold; color: #1a365d;">
+                <span>實際支付租金（未稅）= c</span><span>${formatNumber(c)} 元</span></div>`;
+            html += `<div style="margin-top: 14px; color: #e53e3e; font-weight: 600;">⚠️ 注意：請於次月 10 日前完成繳款作業。</div>`;
+        }
+    }
+
+    body.innerHTML = html;
 }
+
+// ===== 初始化 =====
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('landlordType').value = 'local';
+    document.getElementById('localResidentSection').style.display = 'block';
+    document.getElementById('foreignResidentSection').style.display = 'none';
+    document.querySelector('input[name="localResident"][value="resident"]').checked = true;
+    document.querySelector('input[name="rentType"][value="taxIncluded"]').checked = true;
+    updateResidentMode();
+    updateResult();
+});
 </script>
         </section>
     </main>
