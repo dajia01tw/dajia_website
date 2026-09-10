@@ -58,7 +58,6 @@
         買受人：<span id="buyerName" style="color: blue; font-weight: bold;">-</span>
     </div>
 
-    <!-- 三聯式：統編 + 年月日（各 50%） -->
     <div id="taxIdInvoiceSection" style="display: flex; margin-bottom: 2px;">
         <div style="width: 50%;">
             統一編號：<span id="taxIdInvoice" style="color: blue; font-weight: bold;">-</span>
@@ -68,7 +67,6 @@
         </div>
     </div>
 
-    <!-- 二聯式：日期單獨一行 -->
     <div id="dateInvoiceSection" style="display: none; margin-bottom: 2px;">
         中華民國 <span id="yearDigitTwo" style="color: blue; font-weight: bold;">-</span> 年 <span id="monthDigitTwo" style="color: blue; font-weight: bold;">-</span> 月 <span id="dayDigitTwo" style="color: blue; font-weight: bold;">-</span> 日
     </div>
@@ -91,35 +89,61 @@
             <td style="border: 1px solid #2d3748; padding: 5px; text-align: center;">金額</td>
             <td style="border: 1px solid #2d3748; padding: 5px; text-align: center;">備註</td>
         </tr>
-        <!-- 第2列：品名輸入行 -->
+        <!-- 第2列 -->
         <tr style="height: 30px;">
             <td colspan="2" style="border: 1px solid #2d3748; padding: 5px; color: blue; font-weight: bold;">請填上品名</td>
             <td style="border: 1px solid #2d3748; padding: 5px; text-align: center; color: blue; font-weight: bold;">1</td>
             <td style="border: 1px solid #2d3748; padding: 5px; text-align: right; color: blue; font-weight: bold;"><span id="unitPriceThree">-</span></td>
             <td style="border: 1px solid #2d3748; padding: 5px; text-align: right; color: blue; font-weight: bold;"><span id="amountThree">-</span></td>
-            <td rowspan="6" style="border: 1px solid #2d3748; padding: 5px; vertical-align: top; text-align: center; font-size: 12px; color: #a0aec0;">
-                <div style="margin-top: 10px;">營業人蓋統一<br>發票專用章</div>
-                <div style="margin-top: 30px; color: blue; font-weight: bold;">記得蓋<br>發票章</div>
-            </td>
+            <td style="border: 1px solid #2d3748; padding: 5px; text-align: center;">　</td>
         </tr>
-        <!-- 第3列：空白 -->
-        <tr style="height: 26px;"><td colspan="2" style="border: 1px solid #2d3748;"></td><td style="border: 1px solid #2d3748;"></td><td style="border: 1px solid #2d3748;"></td><td style="border: 1px solid #2d3748;"></td></tr>
-        <!-- 第4列：空白 -->
-        <tr style="height: 26px;"><td colspan="2" style="border: 1px solid #2d3748;"></td><td style="border: 1px solid #2d3748;"></td><td style="border: 1px solid #2d3748;"></td><td style="border: 1px solid #2d3748;"></td></tr>
-        <!-- 第5列：空白 -->
-        <tr style="height: 26px;"><td colspan="2" style="border: 1px solid #2d3748;"></td><td style="border: 1px solid #2d3748;"></td><td style="border: 1px solid #2d3748;"></td><td style="border: 1px solid #2d3748;"></td></tr>
-        <!-- 第6列：空白 -->
-        <tr style="height: 26px;"><td colspan="2" style="border: 1px solid #2d3748;"></td><td style="border: 1px solid #2d3748;"></td><td style="border: 1px solid #2d3748;"></td><td style="border: 1px solid #2d3748;"></td></tr>
+        <!-- 第3列 -->
+        <tr style="height: 26px;">
+            <td colspan="2" style="border: 1px solid #2d3748;"></td>
+            <td style="border: 1px solid #2d3748;"></td>
+            <td style="border: 1px solid #2d3748;"></td>
+            <td style="border: 1px solid #2d3748;"></td>
+            <td style="border: 1px solid #2d3748; padding: 5px; text-align: center;">　</td>
+        </tr>
+        <!-- 第4列 -->
+        <tr style="height: 26px;">
+            <td colspan="2" style="border: 1px solid #2d3748;"></td>
+            <td style="border: 1px solid #2d3748;"></td>
+            <td style="border: 1px solid #2d3748;"></td>
+            <td style="border: 1px solid #2d3748;"></td>
+            <td style="border: 1px solid #2d3748; padding: 5px; text-align: center; vertical-align: middle;">營業人蓋統一發票專用章</td>
+        </tr>
+        <!-- 第5列：第6欄與第6列合併（rowspan=2 開始） -->
+        <tr style="height: 26px;">
+            <td colspan="2" style="border: 1px solid #2d3748;"></td>
+            <td style="border: 1px solid #2d3748;"></td>
+            <td style="border: 1px solid #2d3748;"></td>
+            <td style="border: 1px solid #2d3748;"></td>
+            <td rowspan="6" style="border: 1px solid #2d3748; padding: 5px; text-align: center; vertical-align: middle; color: blue; font-weight: bold; font-size: 13px;">記得蓋<br>發票章</td>
+        </tr>
+        <!-- 第6列 -->
+        <tr style="height: 26px;">
+            <td colspan="2" style="border: 1px solid #2d3748;"></td>
+            <td style="border: 1px solid #2d3748;"></td>
+            <td style="border: 1px solid #2d3748;"></td>
+            <td style="border: 1px solid #2d3748;"></td>
+        </tr>
         <!-- 第7列：銷售額合計（1.2.3.4合併） -->
         <tr style="height: 26px;">
             <td colspan="4" style="border: 1px solid #2d3748; padding: 5px; text-align: right;">銷售額合計</td>
             <td style="border: 1px solid #2d3748; padding: 5px; text-align: right; color: blue; font-weight: bold;"><span id="salesTotalThree">-</span></td>
         </tr>
-        <!-- 第8列：營業稅 -->
+        <!-- 第8列：營業稅（不合併，1.2.3.4各為獨立欄） -->
         <tr style="height: 26px;">
-            <td colspan="2" style="border: 1px solid #2d3748; padding: 5px; text-align: center;">營業稅</td>
-            <td colspan="2" style="border: 1px solid #2d3748; padding: 5px; text-align: center; font-size: 12px;">
-                <span id="taxTypeThree" style="color: blue; font-weight: bold;">☑ 應稅　☐ 零稅率　☐ 免稅</span>
+            <td style="border: 1px solid #2d3748; padding: 5px; text-align: center;">營業稅</td>
+            <td style="border: 1px solid #2d3748; padding: 5px; text-align: center; font-size: 12px;">
+                <span id="taxOptionThree1" style="color: blue; font-weight: bold;">☑ 應稅</span>
+            </td>
+            <td style="border: 1px solid #2d3748; padding: 5px; text-align: center; font-size: 12px;">
+                <span id="taxOptionThree2" style="color: blue; font-weight: bold;">☐ 零稅率</span>
+            </td>
+            <td style="border: 1px solid #2d3748; padding: 5px; text-align: center; font-size: 12px;">
+                <span id="taxOptionThree3" style="color: blue; font-weight: bold;">☐ 免稅</span>
             </td>
             <td style="border: 1px solid #2d3748; padding: 5px; text-align: right; color: blue; font-weight: bold;"><span id="taxAmountThree">-</span></td>
         </tr>
@@ -151,27 +175,52 @@
             <td style="border: 1px solid #2d3748; padding: 5px; text-align: center;">金額</td>
             <td style="border: 1px solid #2d3748; padding: 5px; text-align: center;">備註</td>
         </tr>
-        <!-- 第2列：品名輸入行 -->
+        <!-- 第2列 -->
         <tr style="height: 30px;">
             <td style="border: 1px solid #2d3748; padding: 5px; color: blue; font-weight: bold;">請填上品名</td>
             <td style="border: 1px solid #2d3748; padding: 5px; text-align: center; color: blue; font-weight: bold;">1</td>
             <td style="border: 1px solid #2d3748; padding: 5px; text-align: right; color: blue; font-weight: bold;"><span id="unitPriceTwo">-</span></td>
             <td style="border: 1px solid #2d3748; padding: 5px; text-align: right; color: blue; font-weight: bold;"><span id="amountTwo">-</span></td>
-            <td rowspan="6" style="border: 1px solid #2d3748; padding: 5px; vertical-align: top; text-align: center; font-size: 12px; color: #a0aec0;">
-                <div style="margin-top: 10px;">營業人蓋統一<br>發票專用章</div>
-                <div style="margin-top: 30px; color: blue; font-weight: bold;">記得蓋<br>發票章</div>
-            </td>
+            <td style="border: 1px solid #2d3748; padding: 5px; text-align: center;">　</td>
         </tr>
-        <!-- 第3列：空白 -->
-        <tr style="height: 26px;"><td style="border: 1px solid #2d3748;"></td><td style="border: 1px solid #2d3748;"></td><td style="border: 1px solid #2d3748;"></td><td style="border: 1px solid #2d3748;"></td></tr>
-        <!-- 第4列：空白 -->
-        <tr style="height: 26px;"><td style="border: 1px solid #2d3748;"></td><td style="border: 1px solid #2d3748;"></td><td style="border: 1px solid #2d3748;"></td><td style="border: 1px solid #2d3748;"></td></tr>
-        <!-- 第5列：空白 -->
-        <tr style="height: 26px;"><td style="border: 1px solid #2d3748;"></td><td style="border: 1px solid #2d3748;"></td><td style="border: 1px solid #2d3748;"></td><td style="border: 1px solid #2d3748;"></td></tr>
-        <!-- 第6列：空白 -->
-        <tr style="height: 26px;"><td style="border: 1px solid #2d3748;"></td><td style="border: 1px solid #2d3748;"></td><td style="border: 1px solid #2d3748;"></td><td style="border: 1px solid #2d3748;"></td></tr>
-        <!-- 第7列：空白 -->
-        <tr style="height: 26px;"><td style="border: 1px solid #2d3748;"></td><td style="border: 1px solid #2d3748;"></td><td style="border: 1px solid #2d3748;"></td><td style="border: 1px solid #2d3748;"></td></tr>
+        <!-- 第3列 -->
+        <tr style="height: 26px;">
+            <td style="border: 1px solid #2d3748;"></td>
+            <td style="border: 1px solid #2d3748;"></td>
+            <td style="border: 1px solid #2d3748;"></td>
+            <td style="border: 1px solid #2d3748;"></td>
+            <td style="border: 1px solid #2d3748; padding: 5px; text-align: center;">　</td>
+        </tr>
+        <!-- 第4列 -->
+        <tr style="height: 26px;">
+            <td style="border: 1px solid #2d3748;"></td>
+            <td style="border: 1px solid #2d3748;"></td>
+            <td style="border: 1px solid #2d3748;"></td>
+            <td style="border: 1px solid #2d3748;"></td>
+            <td style="border: 1px solid #2d3748; padding: 5px; text-align: center; vertical-align: middle;">營業人蓋統一發票專用章</td>
+        </tr>
+        <!-- 第5列：第5欄與第6-10列合併（rowspan=6 開始） -->
+        <tr style="height: 26px;">
+            <td style="border: 1px solid #2d3748;"></td>
+            <td style="border: 1px solid #2d3748;"></td>
+            <td style="border: 1px solid #2d3748;"></td>
+            <td style="border: 1px solid #2d3748;"></td>
+            <td rowspan="6" style="border: 1px solid #2d3748; padding: 5px; text-align: center; vertical-align: middle; color: blue; font-weight: bold; font-size: 13px;">記得蓋<br>發票章</td>
+        </tr>
+        <!-- 第6列 -->
+        <tr style="height: 26px;">
+            <td style="border: 1px solid #2d3748;"></td>
+            <td style="border: 1px solid #2d3748;"></td>
+            <td style="border: 1px solid #2d3748;"></td>
+            <td style="border: 1px solid #2d3748;"></td>
+        </tr>
+        <!-- 第7列 -->
+        <tr style="height: 26px;">
+            <td style="border: 1px solid #2d3748;"></td>
+            <td style="border: 1px solid #2d3748;"></td>
+            <td style="border: 1px solid #2d3748;"></td>
+            <td style="border: 1px solid #2d3748;"></td>
+        </tr>
         <!-- 第8列：總計（1.2.3合併） -->
         <tr style="height: 26px;">
             <td colspan="3" style="border: 1px solid #2d3748; padding: 5px; text-align: right;">總計</td>
@@ -184,11 +233,17 @@
                 <div id="chineseDigitsTwo" style="display: flex; flex-wrap: wrap; gap: 2px; font-size: 13px; justify-content: center;"></div>
             </td>
         </tr>
-        <!-- 第10列：營業稅（1.2.3合併） -->
+        <!-- 第10列：營業稅（1.2.3.4不合併，維持4個儲存格） -->
         <tr style="height: 26px;">
-            <td colspan="3" style="border: 1px solid #2d3748; padding: 5px; text-align: center;">營業稅</td>
+            <td style="border: 1px solid #2d3748; padding: 5px; text-align: center;">營業稅</td>
             <td style="border: 1px solid #2d3748; padding: 5px; text-align: center; font-size: 12px;">
-                <span id="taxTypeTwo" style="color: blue; font-weight: bold;">☑ 應稅　☐ 零稅率　☐ 免稅</span>
+                <span id="taxOptionTwo1" style="color: blue; font-weight: bold;">☑ 應稅</span>
+            </td>
+            <td style="border: 1px solid #2d3748; padding: 5px; text-align: center; font-size: 12px;">
+                <span id="taxOptionTwo2" style="color: blue; font-weight: bold;">☐ 零稅率</span>
+            </td>
+            <td style="border: 1px solid #2d3748; padding: 5px; text-align: center; font-size: 12px;">
+                <span id="taxOptionTwo3" style="color: blue; font-weight: bold;">☐ 免稅</span>
             </td>
         </tr>
     </table>
@@ -312,7 +367,6 @@ function generateChineseAmount(amount) {
     return result;
 }
 
-// ===== 渲染中文大寫（共用） =====
 function renderChineseAmount(containerId, amount) {
     const container = document.getElementById(containerId);
     container.innerHTML = '';
@@ -376,13 +430,18 @@ function updateInvoice() {
     document.getElementById('monthDigitTwo').textContent = month;
     document.getElementById('dayDigitTwo').textContent = day;
 
-    // 稅別文字
-    let taxTypeStr = '';
-    if (currentTaxRate === 5) taxTypeStr = '☑ 應稅　☐ 零稅率　☐ 免稅';
-    else if (currentTaxRate === 0) taxTypeStr = '☐ 應稅　☑ 零稅率　☐ 免稅';
-    else taxTypeStr = '☐ 應稅　☐ 零稅率　☑ 免稅';
-    document.getElementById('taxTypeThree').textContent = taxTypeStr;
-    document.getElementById('taxTypeTwo').textContent = taxTypeStr;
+    // 稅別勾選（三聯式：1.2.3.4 各自獨立；二聯式：1.2.3.4 各自獨立）
+    const isTaxable = (currentTaxRate === 5);
+    const isZero = (currentTaxRate === 0);
+    const isExempt = (currentTaxRate === 'exempt');
+
+    document.getElementById('taxOptionThree1').textContent = isTaxable ? '☑ 應稅' : '☐ 應稅';
+    document.getElementById('taxOptionThree2').textContent = isZero ? '☑ 零稅率' : '☐ 零稅率';
+    document.getElementById('taxOptionThree3').textContent = isExempt ? '☑ 免稅' : '☐ 免稅';
+
+    document.getElementById('taxOptionTwo1').textContent = isTaxable ? '☑ 應稅' : '☐ 應稅';
+    document.getElementById('taxOptionTwo2').textContent = isZero ? '☑ 零稅率' : '☐ 零稅率';
+    document.getElementById('taxOptionTwo3').textContent = isExempt ? '☑ 免稅' : '☐ 免稅';
 
     // 三聯式金額
     document.getElementById('unitPriceThree').textContent = sales > 0 ? formatNumber(sales.toFixed(0)) : '-';
