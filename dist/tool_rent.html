@@ -638,7 +638,7 @@
                 <input type="radio" name="foreignResident" value="183" onchange="onResidentChange()"> 居住滿 183 天
             </label>
             <label style="cursor:pointer;">
-                <input type="radio" name="foreignResident" value="not183" checked onchange="onResidentChange()"> 居住未達 183 天
+                <input type="radio" name="foreignResident" value="not183" onchange="onResidentChange()"> 居住未達 183 天
             </label>
         </div>
         <div id="foreignResidentNote" style="margin-top: 8px; font-size: 13px; color: #718096;"></div>
@@ -727,8 +727,8 @@ function onLandlordTypeChange() {
     } else {
         document.getElementById('localResidentSection').style.display = 'none';
         document.getElementById('foreignResidentSection').style.display = 'block';
-        // 預設不勾選，等使用者選
-        document.querySelectorAll('input[name="foreignResident"]').forEach(r => r.checked = false);
+        // 預設就自動勾選「居住未達 183 天」
+        document.querySelector('input[name="foreignResident"][value="not183"]').checked = true;
     }
     updateResidentMode();
     updateResult();
@@ -898,6 +898,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('localResidentSection').style.display = 'block';
     document.getElementById('foreignResidentSection').style.display = 'none';
     document.querySelector('input[name="localResident"][value="resident"]').checked = true;
+    document.querySelector('input[name="foreignResident"][value="not183"]').checked = true;
     document.querySelector('input[name="rentType"][value="taxIncluded"]').checked = true;
     updateResidentMode();
     updateResult();
