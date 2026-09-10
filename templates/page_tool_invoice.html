@@ -16,7 +16,7 @@
     <div id="taxIdSection" style="margin-bottom: 20px;">
         <label for="taxId" style="font-weight: 600; display: block; margin-bottom: 6px;">買受人統一編號：</label>
         <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-            <input type="text" id="taxId" placeholder="請輸入8位統編" maxlength="8" style="flex:1; min-width:200px; padding:10px 14px; border:1px solid #e2e8f0; border-radius:6px; font-size:16px;">
+            <input type="text" id="taxId" placeholder="請輸入8位統編" maxlength="8" oninput="autoQuery()" style="flex:1; min-width:200px; padding:10px 14px; border:1px solid #e2e8f0; border-radius:6px; font-size:16px;">
             <button onclick="queryCompany()" style="padding:10px 24px; background:#1a365d; color:white; border:none; border-radius:6px; cursor:pointer; font-size:16px;">查詢</button>
             <button onclick="clearQuery()" style="padding:10px 24px; background:#e2e8f0; color:#2d3748; border:none; border-radius:6px; cursor:pointer; font-size:16px;">清除</button>
         </div>
@@ -320,40 +320,64 @@ function updateInvoice() {
     document.getElementById('dateDisplay').textContent = `${year}/${month}/${day}`;
 }
 
-// ===== 統一編號查詢（JSONP） =====
+// ===== 統一編號查詢（使用 g0v API，支援 CORS） =====
 function queryCompany() {
     const taxId = document.getElementById('taxId').value.trim();
     const resultDiv = document.getElementById('companyResult');
+    
     if (!taxId || taxId.length !== 8 || isNaN(taxId)) {
         resultDiv.innerHTML = '<span style="color: #e53e3e;">⚠️ 請輸入 8 位數字統編</span>';
         return;
     }
+    
     resultDiv.innerHTML = '<span style="color: #718096;">⏳ 查詢中...</span>';
-    // 使用政府 API（需替換為實際可用的 API）
-    // 此處使用示意，實際請依你的現有 API 調整
-    const script = document.createElement('script');
-    const callbackName = 'jsonp_callback_' + Date.now();
-    window[callbackName] = function(data) {
-        if (data && data.name) {
-            resultDiv.innerHTML = '✅ 公司名稱：<strong style="color:#1a365d;">' + data.name + '</strong>';
-        } else {
-            resultDiv.innerHTML = '<span style="color: #e53e3e;">❌ 查無此統編</span>';
-        }
-        delete window[callbackName];
-        document.body.removeChild(script);
-    };
-    // 替換為你的實際 API 網址，例如：
-    // script.src = 'https://your-api-endpoint.com/' + taxId + '?callback=' + callbackName;
-    script.src = 'https://data.gcis.nat.gov.tw/od/rule' + taxId + '?callback=' + callbackName;
-    document.body.appendChild(script);
-    // 超時處理
-    setTimeout(function() {
-        if (window[callbackName]) {
-            resultDiv.innerHTML = '<span style="color: #e53e3e;">⏰ 查詢逾時</span>';
-            delete window[callbackName];
-            if (document.body.contains(script)) document.body.removeChild(script);
-        }
-    }, 10000);
+    
+    // 使用 g0v API（支援 CORS，可直接 fetch）
+    const apiUrl = `https://company.g0v.ronny.tw/api/show/${taxId}`;
+    
+    fetch(apiUrl)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('API 回應錯誤');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // g0v API 回傳的資料結構
+            // 通常會包含 "公司名稱" 或 "商業名稱" 等欄位
+            let companyName = '';
+            if (data) {
+                // 嘗試不同的欄位名稱（依 API 回傳格式調整）
+                companyName = data['公司名稱'] || data['商業名稱'] || data['Company_Name'] || data['name'] || '';
+                
+                // 如果回傳的是巢狀結構，嘗試從 data.data 中取出
+                if (!companyName && data.data) {
+                    companyName = data.data['公司名稱'] || data.data['商業名稱'] || data.data['Company_Name'] || '';
+                }
+            }
+            
+            if (companyName) {
+                resultDiv.innerHTML = '✅ 公司名稱：<strong style="color:#1a365d;">' + companyName + '</strong>';
+                // 自動更新發票上的買受人名稱
+                document.getElementById('buyerName').textContent = companyName;
+            } else {
+                resultDiv.innerHTML = '<span style="color: #e53e3e;">❌ 查無此統編，請確認輸入是否正確</span>';
+            }
+            // 重新繪製發票
+            updateInvoice();
+        })
+        .catch(error => {
+            console.error('查詢錯誤：', error);
+            resultDiv.innerHTML = '<span style="color: #e53e3e;">⚠️ 查詢失敗，請稍後再試</span>';
+        });
+}
+
+function autoQuery() {
+    const taxId = document.getElementById('taxId').value.trim();
+    // 當輸入滿 8 位數字時，自動觸發查詢
+    if (taxId.length === 8 && !isNaN(taxId)) {
+        queryCompany();
+    }
 }
 
 function clearQuery() {
