@@ -602,110 +602,221 @@
         <!-- 右側內容區 -->
         <section class="content-area">
             <h2>💼 所得扣繳計算機</h2>
-<p style="color: #4a5568; margin-bottom: 20px;">依所得類別與國籍，即時試算應扣繳稅額。</p>
+<p style="color: #4a5568; margin-bottom: 20px;">依納稅義務人身份與所得類別，即時試算應扣繳稅額及二代健保補充保費。</p>
 
-<div style="background: #f7fafc; padding: 24px; border-radius: 8px; max-width: 550px;">
-    <!-- 國籍選擇 -->
-    <div style="margin-bottom: 15px;">
+<!-- ===== 控制區域 ===== -->
+<div style="background: #f7fafc; padding: 24px; border-radius: 8px; margin-bottom: 30px;">
+
+    <!-- 納稅義務人身份 -->
+    <div style="margin-bottom: 20px;">
         <label style="font-weight: 600; display: block; margin-bottom: 6px;">納稅義務人身份：</label>
-        <select id="nationality" style="width:100%; padding:10px 14px; border:1px solid #e2e8f0; border-radius:6px; font-size:16px;" onchange="calcWithholding()">
+        <select id="nationality" style="padding: 10px 14px; border:1px solid #e2e8f0; border-radius:6px; font-size:16px; min-width:220px;" onchange="calcWithholding()">
             <option value="resident">本國人（居住者）</option>
             <option value="nonresident">外國人（非居住者）</option>
         </select>
     </div>
-    
+
     <!-- 所得類別 -->
-    <div style="margin-bottom: 15px;">
+    <div style="margin-bottom: 20px;">
         <label style="font-weight: 600; display: block; margin-bottom: 6px;">所得類別：</label>
-        <select id="incomeType" style="width:100%; padding:10px 14px; border:1px solid #e2e8f0; border-radius:6px; font-size:16px;" onchange="calcWithholding()">
-            <option value="salary">薪資所得</option>
+        <select id="incomeType" style="padding: 10px 14px; border:1px solid #e2e8f0; border-radius:6px; font-size:16px; min-width:220px;" onchange="calcWithholding()">
             <option value="professional">執行業務所得</option>
-            <option value="interest">利息所得</option>
             <option value="dividend">股利所得</option>
         </select>
     </div>
-    
-    <!-- 二代健保 -->
-    <div style="margin-bottom: 15px;">
+
+    <!-- 二代健保補充保費 -->
+    <div style="margin-bottom: 20px;">
         <label style="font-weight: 600; display: block; margin-bottom: 6px;">二代健保補充保費：</label>
-        <select id="healthIns" style="width:100%; padding:10px 14px; border:1px solid #e2e8f0; border-radius:6px; font-size:16px;" onchange="calcWithholding()">
-            <option value="yes">是（需扣繳 2.11%）</option>
-            <option value="no">否</option>
+        <select id="healthIns" style="padding: 10px 14px; border:1px solid #e2e8f0; border-radius:6px; font-size:16px; min-width:220px;" onchange="calcWithholding()">
+            <option value="yes">是：需扣費 2.11%</option>
+            <option value="no">否：免扣費（符合條件者）</option>
         </select>
     </div>
-    
+
     <!-- 金額輸入 -->
     <div style="margin-bottom: 15px;">
-        <label for="incomeAmount" style="font-weight: 600; display: block; margin-bottom: 6px;">給付金額（新台幣）：</label>
-        <input type="number" id="incomeAmount" placeholder="請輸入金額" style="width:100%; padding:12px 16px; border:1px solid #e2e8f0; border-radius:6px; font-size:18px;" oninput="calcWithholding()">
+        <label for="incomeAmount" style="font-weight: 600; display: block; margin-bottom: 6px;">金額（新台幣）：</label>
+        <input type="number" id="incomeAmount" placeholder="請輸入金額" style="width:100%; max-width:300px; padding:12px 16px; border:1px solid #e2e8f0; border-radius:6px; font-size:18px;" oninput="calcWithholding()">
     </div>
-    
-    <!-- 計算結果 -->
-    <div style="padding: 16px; background: white; border-radius: 6px; border: 1px solid #e2e8f0;">
-        <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
-            <span>給付總額：</span>
-            <span id="totalAmount" style="font-weight: 600;">-</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
-            <span>扣繳稅額：</span>
-            <span id="withholdAmount" style="color: #e53e3e;">-</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
-            <span>二代健保補充保費：</span>
-            <span id="healthAmount2" style="color: #d69e2e;">-</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; padding: 6px 0; font-size: 18px; font-weight: 700; color: #1a365d;">
-            <span>實付金額：</span>
-            <span id="netAmount2">-</span>
+
+    <!-- 實領金額核取方塊 -->
+    <div style="margin-bottom: 10px;">
+        <label style="cursor:pointer; font-weight: 600;">
+            <input type="checkbox" id="isNetAmount" onchange="calcWithholding()"> 實領金額（稅後反算應付金額）
+        </label>
+        <div style="margin-top: 4px; font-size: 13px; color: #718096;">
+            ☐ 不核取：金額 = 所得人含稅之總所得（內含扣繳稅額）<br>
+            ☑ 核取：金額 = 所得人未稅實拿之金額（稅後實領）
         </div>
     </div>
 </div>
 
-<!-- 稅率參考表 -->
-<div style="margin-top: 30px; padding: 16px 20px; background: #f7fafc; border-radius: 8px; font-size: 14px; color: #2d3748;">
-    <strong>📌 扣繳稅率參考：</strong>
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px;">
-        <div><strong>居住者：</strong>薪資 5%、執行業務 10%、利息 10%、股利 5%</div>
-        <div><strong>非居住者：</strong>薪資 18%、執行業務 20%、利息 20%、股利 20%</div>
+<!-- ===== 計算結果呈現區 ===== -->
+<div style="border: 2px solid #2d3748; border-radius: 8px; padding: 24px; background: white; max-width: 720px; margin: 0 auto; font-family: 'Courier New', monospace; font-size: 14px; color: #1a202c;">
+    <div id="resultBody" style="font-size: 15px; line-height: 2;">
+        <div style="color: #718096; text-align: center; padding: 20px 0;">請於上方輸入金額以開始試算</div>
     </div>
-    <div style="margin-top: 8px; color: #718096; font-size: 13px;">
-        * 二代健保補充保費 2.11% 適用於符合特定條件之給付。
-    </div>
+</div>
+
+<!-- ===== 說明區 ===== -->
+<div style="margin-top: 30px; padding: 16px 20px; background: #ebf8ff; border-radius: 8px; border-left: 4px solid #2b6cb0; font-size: 14px; color: #2a4365;">
+    <strong>📌 說明：</strong>
+    <ul style="margin: 8px 0 0 20px; padding: 0;">
+        <li>外國人在台灣若符合在同一課稅年度內居留滿 183 天以上，或是在台灣有住所且經常居住，就會被認定為稅法上的「居住者」。</li>
+        <li>二代健保補充保費：一般情況下都是需要扣費的。少數符合免扣二代健保補充保費的身分包括：職業工會會員、專技人員自行執業情況。</li>
+    </ul>
 </div>
 
 <script>
+// ===== 全域變數 =====
+// 扣繳率表（稅務上）
+const WITHHOLDING_RATES = {
+    resident:    { professional: 0.10, dividend: 0.10 },
+    nonresident: { professional: 0.20, dividend: 0.21 }
+};
+
+// 起扣點
+const THRESHOLD = 20010;        // 所得稅起扣點
+const HEALTH_THRESHOLD = 20000; // 二代健保起扣點
+const HEALTH_RATE = 0.0211;     // 二代健保費率
+
+// ===== 無條件捨去至整數 =====
+function floorToInt(num) {
+    return Math.floor(num);
+}
+
+// ===== 千分號 =====
+function formatNumber(num) {
+    if (num === null || num === undefined || isNaN(num)) return '-';
+    return Number(num).toLocaleString('zh-TW');
+}
+
+// ===== 計算 =====
 function calcWithholding() {
-    const amount = parseFloat(document.getElementById('incomeAmount').value);
+    const amountInput = parseFloat(document.getElementById('incomeAmount').value);
     const nationality = document.getElementById('nationality').value;
     const incomeType = document.getElementById('incomeType').value;
     const healthIns = document.getElementById('healthIns').value;
-    
-    if (isNaN(amount) || amount <= 0) {
-        ['totalAmount','withholdAmount','healthAmount2','netAmount2'].forEach(id => {
-            document.getElementById(id).textContent = '-';
-        });
+    const isNetAmount = document.getElementById('isNetAmount').checked;
+
+    const resultBody = document.getElementById('resultBody');
+
+    if (isNaN(amountInput) || amountInput <= 0) {
+        resultBody.innerHTML = '<div style="color: #718096; text-align: center; padding: 20px 0;">請於上方輸入金額以開始試算</div>';
         return;
     }
+
+    // 取得扣繳率
+    const taxRate = WITHHOLDING_RATES[nationality][incomeType];
+
+    // ===== 反算含稅所得 =====
+    // 若勾選「實領金額」，輸入值為稅後實拿金額（未稅），需反算含稅總所得
+    // 含稅 = 實領 + 扣繳稅 + 二代健保
+    // 含稅 = 實領 + 含稅 × taxRate + 含稅 × healthRate（若需扣健保）
+    // 含稅 × (1 - taxRate - healthRate) = 實領
+    // 含稅 = 實領 / (1 - taxRate - healthRate)
     
-    // 扣繳稅率表
-    const rates = {
-        resident: { salary: 0.05, professional: 0.10, interest: 0.10, dividend: 0.05 },
-        nonresident: { salary: 0.18, professional: 0.20, interest: 0.20, dividend: 0.20 }
-    };
-    
-    const taxRate = rates[nationality]?.[incomeType] || 0;
-    const tax = amount * taxRate;
-    
-    const healthRate = (healthIns === 'yes') ? 0.0211 : 0;
-    const health = amount * healthRate;
-    
-    const net = amount - tax - health;
-    
-    document.getElementById('totalAmount').textContent = amount.toLocaleString('zh-TW', { style: 'currency', currency: 'TWD' });
-    document.getElementById('withholdAmount').textContent = tax.toLocaleString('zh-TW', { style: 'currency', currency: 'TWD' });
-    document.getElementById('healthAmount2').textContent = health.toLocaleString('zh-TW', { style: 'currency', currency: 'TWD' });
-    document.getElementById('netAmount2').textContent = net.toLocaleString('zh-TW', { style: 'currency', currency: 'TWD' });
+    let healthRate = 0;
+    if (healthIns === 'yes') healthRate = HEALTH_RATE;
+
+    let grossAmount; // 含稅總所得
+    let netAmount;   // 稅後實拿金額
+
+    if (isNetAmount) {
+        // 輸入為實領金額，反算含稅總所得
+        netAmount = amountInput;
+        const denominator = 1 - taxRate - healthRate;
+        if (denominator <= 0) {
+            resultBody.innerHTML = '<div style="color: #e53e3e; text-align: center; padding: 20px 0;">⚠️ 扣繳率加總過高，無法反算，請確認輸入。</div>';
+            return;
+        }
+        grossAmount = netAmount / denominator;
+    } else {
+        // 輸入為含稅總所得
+        grossAmount = amountInput;
+        netAmount = null; // 待計算
+    }
+
+    // ===== 計算扣繳稅額（依起扣點判斷） =====
+    let tax = 0;
+    if (grossAmount >= THRESHOLD) {
+        tax = floorToInt(grossAmount * taxRate);
+    }
+
+    // ===== 計算二代健保補充保費（依起扣點判斷） =====
+    let healthFee = 0;
+    if (healthIns === 'yes') {
+        if (grossAmount >= HEALTH_THRESHOLD) {
+            // 上限以 1,000 萬元為限（股利所得）
+            let healthBase = grossAmount;
+            if (incomeType === 'dividend' && healthBase > 10000000) {
+                healthBase = 10000000;
+            }
+            healthFee = floorToInt(healthBase * HEALTH_RATE);
+        }
+    }
+
+    // ===== 若輸入為含稅，計算實拿金額 =====
+    if (!isNetAmount) {
+        netAmount = grossAmount - tax - healthFee;
+    }
+
+    // ===== 組裝結果 HTML =====
+    let html = '';
+
+    // 顯示基本資訊
+    const nationalityLabel = (nationality === 'resident') ? '本國人（居住者）' : '外國人（非居住者）';
+    const incomeLabel = (incomeType === 'professional') ? '執行業務所得' : '股利所得';
+    html += `<div style="margin-bottom: 12px; font-size: 14px; color: #4a5568;">`;
+    html += `身份：${nationalityLabel}　|　所得類別：${incomeLabel}　|　扣繳率：${(taxRate * 100).toFixed(0)}%`;
+    html += `</div>`;
+
+    // 顯示輸入型態
+    if (isNetAmount) {
+        html += `<div style="margin-bottom: 12px; font-size: 13px; color: #718096;">（輸入為「實領金額」，已反算含稅總所得）</div>`;
+    }
+
+    // 計算結果列表
+    html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
+        <span>含稅總所得（應付金額）</span><span style="color: blue; font-weight: bold;">${formatNumber(floorToInt(grossAmount))} 元</span></div>`;
+
+    // 扣繳稅額（含起扣點說明）
+    let taxNote = '';
+    if (grossAmount < THRESHOLD) {
+        taxNote = `（未達起扣點 ${formatNumber(THRESHOLD)} 元，免扣繳）`;
+    }
+    html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
+        <span>扣繳稅額 ${(taxRate * 100).toFixed(0)}% ${taxNote}</span><span style="color: #e53e3e; font-weight: bold;">${formatNumber(tax)} 元</span></div>`;
+
+    // 二代健保
+    if (healthIns === 'yes') {
+        let healthNote = '';
+        if (grossAmount < HEALTH_THRESHOLD) {
+            healthNote = `（未達起扣點 ${formatNumber(HEALTH_THRESHOLD)} 元，免扣費）`;
+        }
+        html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
+            <span>二代健保補充保費 2.11% ${healthNote}</span><span style="color: #d69e2e; font-weight: bold;">${formatNumber(healthFee)} 元</span></div>`;
+    } else {
+        html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
+            <span>二代健保補充保費</span><span style="color: #718096;">免扣費</span></div>`;
+    }
+
+    // 實拿金額
+    html += `<div style="display: flex; justify-content: space-between; padding: 8px 0; font-size: 18px; font-weight: 700; color: #1a365d;">
+        <span>實領金額（稅後）</span><span>${formatNumber(floorToInt(netAmount))} 元</span></div>`;
+
+    resultBody.innerHTML = html;
 }
+
+// ===== 初始化 =====
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('nationality').value = 'resident';
+    document.getElementById('incomeType').value = 'professional';
+    document.getElementById('healthIns').value = 'yes';
+    document.getElementById('isNetAmount').checked = false;
+    calcWithholding();
+});
 </script>
         </section>
     </main>
