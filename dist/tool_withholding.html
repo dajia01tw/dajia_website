@@ -738,7 +738,7 @@ function calcWithholding() {
 
     // ===== 計算扣繳稅額 =====
     let tax = 0;
-    if (grossAmount >= THRESHOLD) {
+    if (taxRate > 0 && grossAmount >= THRESHOLD) {
         tax = floorToInt(grossAmount * taxRate);
     }
 
@@ -776,8 +776,8 @@ function calcWithholding() {
         <span>含稅總所得（應付金額）</span><span style="color: blue; font-weight: bold;">${formatNumber(floorToInt(grossAmount))} 元</span></div>`;
 
     let taxNote = '';
-    if (grossAmount < THRESHOLD) {
-        taxNote = `（未達起扣點 ${formatNumber(THRESHOLD)} 元，免扣繳）`;
+    if (taxRate > 0 && grossAmount < THRESHOLD) {
+     taxNote = `（未達起扣點 ${formatNumber(THRESHOLD)} 元，免扣繳）`;
     }
     html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
         <span>扣繳稅額 ${(taxRate * 100).toFixed(0)}% ${taxNote}</span><span style="color: #e53e3e; font-weight: bold;">${formatNumber(tax)} 元</span></div>`;
