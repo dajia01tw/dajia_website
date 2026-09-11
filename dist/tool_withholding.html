@@ -610,7 +610,7 @@
     <!-- 納稅義務人身份 -->
     <div style="margin-bottom: 20px;">
         <label style="font-weight: 600; display: block; margin-bottom: 6px;">納稅義務人身份：</label>
-        <select id="nationality" style="padding: 10px 14px; border:1px solid #e2e8f0; border-radius:6px; font-size:16px; min-width:220px;" onchange="calcWithholding()">
+        <select id="nationality" style="padding: 10px 14px; border:1px solid #e2e8f0; border-radius:6px; font-size:16px; min-width:220px;" onchange="onNationalityChange()">
             <option value="resident">本國人（居住者）</option>
             <option value="nonresident">外國人（非居住者）</option>
         </select>
@@ -626,7 +626,7 @@
     </div>
 
     <!-- 二代健保補充保費 -->
-    <div style="margin-bottom: 20px;">
+    <div id="healthInsSection" style="margin-bottom: 20px;">
         <label style="font-weight: 600; display: block; margin-bottom: 6px;">二代健保補充保費：</label>
         <select id="healthIns" style="padding: 10px 14px; border:1px solid #e2e8f0; border-radius:6px; font-size:16px; min-width:220px;" onchange="calcWithholding()">
             <option value="yes">是：需扣費 2.11%</option>
@@ -702,6 +702,12 @@ function calcWithholding() {
 
     const resultBody = document.getElementById('resultBody');
 
+    // ===== 判斷是否為外國人（非居住者），若是則強制免扣二代健保 =====
+    let effectiveHealthIns = healthIns;
+    if (nationality === 'nonresident') {
+        effectiveHealthIns = 'no';
+    }
+
     if (isNaN(amountInput) || amountInput <= 0) {
         resultBody.innerHTML = '<div style="color: #718096; text-align: center; padding: 20px 0;">請於上方輸入金額以開始試算</div>';
         return;
@@ -711,20 +717,13 @@ function calcWithholding() {
     const taxRate = WITHHOLDING_RATES[nationality][incomeType];
 
     // ===== 反算含稅所得 =====
-    // 若勾選「實領金額」，輸入值為稅後實拿金額（未稅），需反算含稅總所得
-    // 含稅 = 實領 + 扣繳稅 + 二代健保
-    // 含稅 = 實領 + 含稅 × taxRate + 含稅 × healthRate（若需扣健保）
-    // 含稅 × (1 - taxRate - healthRate) = 實領
-    // 含稅 = 實領 / (1 - taxRate - healthRate)
-    
     let healthRate = 0;
-    if (healthIns === 'yes') healthRate = HEALTH_RATE;
+    if (effectiveHealthIns === 'yes') healthRate = HEALTH_RATE;
 
-    let grossAmount; // 含稅總所得
-    let netAmount;   // 稅後實拿金額
+    let grossAmount;
+    let netAmount;
 
     if (isNetAmount) {
-        // 輸入為實領金額，反算含稅總所得
         netAmount = amountInput;
         const denominator = 1 - taxRate - healthRate;
         if (denominator <= 0) {
@@ -733,22 +732,20 @@ function calcWithholding() {
         }
         grossAmount = netAmount / denominator;
     } else {
-        // 輸入為含稅總所得
         grossAmount = amountInput;
-        netAmount = null; // 待計算
+        netAmount = null;
     }
 
-    // ===== 計算扣繳稅額（依起扣點判斷） =====
+    // ===== 計算扣繳稅額 =====
     let tax = 0;
     if (grossAmount >= THRESHOLD) {
         tax = floorToInt(grossAmount * taxRate);
     }
 
-    // ===== 計算二代健保補充保費（依起扣點判斷） =====
+    // ===== 計算二代健保補充保費 =====
     let healthFee = 0;
-    if (healthIns === 'yes') {
+    if (effectiveHealthIns === 'yes') {
         if (grossAmount >= HEALTH_THRESHOLD) {
-            // 上限以 1,000 萬元為限（股利所得）
             let healthBase = grossAmount;
             if (incomeType === 'dividend' && healthBase > 10000000) {
                 healthBase = 10000000;
@@ -765,23 +762,19 @@ function calcWithholding() {
     // ===== 組裝結果 HTML =====
     let html = '';
 
-    // 顯示基本資訊
     const nationalityLabel = (nationality === 'resident') ? '本國人（居住者）' : '外國人（非居住者）';
     const incomeLabel = (incomeType === 'professional') ? '執行業務所得' : '股利所得';
     html += `<div style="margin-bottom: 12px; font-size: 14px; color: #4a5568;">`;
     html += `身份：${nationalityLabel}　|　所得類別：${incomeLabel}　|　扣繳率：${(taxRate * 100).toFixed(0)}%`;
     html += `</div>`;
 
-    // 顯示輸入型態
     if (isNetAmount) {
         html += `<div style="margin-bottom: 12px; font-size: 13px; color: #718096;">（輸入為「實領金額」，已反算含稅總所得）</div>`;
     }
 
-    // 計算結果列表
     html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
         <span>含稅總所得（應付金額）</span><span style="color: blue; font-weight: bold;">${formatNumber(floorToInt(grossAmount))} 元</span></div>`;
 
-    // 扣繳稅額（含起扣點說明）
     let taxNote = '';
     if (grossAmount < THRESHOLD) {
         taxNote = `（未達起扣點 ${formatNumber(THRESHOLD)} 元，免扣繳）`;
@@ -789,8 +782,8 @@ function calcWithholding() {
     html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
         <span>扣繳稅額 ${(taxRate * 100).toFixed(0)}% ${taxNote}</span><span style="color: #e53e3e; font-weight: bold;">${formatNumber(tax)} 元</span></div>`;
 
-    // 二代健保
-    if (healthIns === 'yes') {
+    // 二代健保（依 effectiveHealthIns 顯示）
+    if (effectiveHealthIns === 'yes') {
         let healthNote = '';
         if (grossAmount < HEALTH_THRESHOLD) {
             healthNote = `（未達起扣點 ${formatNumber(HEALTH_THRESHOLD)} 元，免扣費）`;
@@ -799,14 +792,33 @@ function calcWithholding() {
             <span>二代健保補充保費 2.11% ${healthNote}</span><span style="color: #d69e2e; font-weight: bold;">${formatNumber(healthFee)} 元</span></div>`;
     } else {
         html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
-            <span>二代健保補充保費</span><span style="color: #718096;">免扣費</span></div>`;
+            <span>二代健保補充保費</span><span style="color: #718096;">免扣費${nationality === 'nonresident' ? '（外國人非居住者）' : ''}</span></div>`;
     }
 
-    // 實拿金額
     html += `<div style="display: flex; justify-content: space-between; padding: 8px 0; font-size: 18px; font-weight: 700; color: #1a365d;">
         <span>實領金額（稅後）</span><span>${formatNumber(floorToInt(netAmount))} 元</span></div>`;
 
     resultBody.innerHTML = html;
+}
+
+// ===== 身份切換時，處理二代健保區塊的顯示/隱藏 =====
+function onNationalityChange() {
+    const nationality = document.getElementById('nationality').value;
+    const healthInsSection = document.getElementById('healthInsSection');
+    const healthIns = document.getElementById('healthIns');
+
+    if (nationality === 'nonresident') {
+        // 外國人（非居住者）：隱藏二代健保區塊，並強制設為「否」
+        healthInsSection.style.display = 'none';
+        healthIns.value = 'no';
+    } else {
+        // 本國人（居住者）：顯示二代健保區塊
+        healthInsSection.style.display = 'block';
+        // 若原本是「否」，可保持原狀；若為其他，也可保持原狀
+        // 預設為「是」
+        if (!healthIns.value) healthIns.value = 'yes';
+    }
+    calcWithholding();
 }
 
 // ===== 初始化 =====
@@ -815,7 +827,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('incomeType').value = 'professional';
     document.getElementById('healthIns').value = 'yes';
     document.getElementById('isNetAmount').checked = false;
-    calcWithholding();
+    onNationalityChange();  // ← 改為呼叫這個，它會自動處理顯示/隱藏與計算
 });
 </script>
         </section>
