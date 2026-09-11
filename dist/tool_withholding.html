@@ -743,9 +743,19 @@ function calcWithholding() {
     }
 
     // ===== 計算扣繳稅額 =====
+    // 居住者：含稅 ≥ 20,010 元才需扣繳
+    // 非居住者：不論金額多寡，一律扣繳（無條件捨去）
     let tax = 0;
-    if (taxRate > 0 && grossAmount >= THRESHOLD) {
-        tax = floorToInt(grossAmount * taxRate);
+    if (taxRate > 0) {
+        if (nationality === 'nonresident') {
+            // 非居住者：一律扣繳
+            tax = floorToInt(grossAmount * taxRate);
+        } else {
+            // 居住者：含稅 ≥ 起扣點才扣繳
+            if (grossAmount >= THRESHOLD) {
+                tax = floorToInt(grossAmount * taxRate);
+            }
+        }
     }
 
     // ===== 計算二代健保補充保費 =====
@@ -782,8 +792,14 @@ function calcWithholding() {
         <span>含稅總所得（應付金額）</span><span style="color: blue; font-weight: bold;">${formatNumber(floorToInt(grossAmount))} 元</span></div>`;
 
     let taxNote = '';
-    if (taxRate > 0 && grossAmount < THRESHOLD) {
-     taxNote = `（未達起扣點 ${formatNumber(THRESHOLD)} 元，免扣繳）`;
+    if (taxRate > 0) {
+        if (nationality === 'nonresident') {
+            // 非居住者：不論金額多寡，一律扣繳
+            taxNote = `（不論金額多寡，一律扣繳）`;
+        } else if (grossAmount < THRESHOLD) {
+            // 居住者：未達起扣點
+            taxNote = `（未達起扣點 ${formatNumber(THRESHOLD)} 元，免扣繳）`;
+        }
     }
     html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
         <span>扣繳稅額 ${(taxRate * 100).toFixed(0)}% ${taxNote}</span><span style="color: #e53e3e; font-weight: bold;">${formatNumber(tax)} 元</span></div>`;
