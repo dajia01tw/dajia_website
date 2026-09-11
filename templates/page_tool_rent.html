@@ -191,6 +191,10 @@ function updateResult() {
         return;
     }
 
+    // ===== 常數 =====
+    const TAX_THRESHOLD = 20010;    // 扣繳稅起扣點
+    const HEALTH_THRESHOLD = 20000; // 二代健保起扣點
+
     let html = '';
 
     // === A 模式：本國人居住者 ===
@@ -198,15 +202,25 @@ function updateResult() {
         if (currentRentType === 'taxIncluded') {
             // 已知每期租金（含稅）= a
             const a = floorToInt(rent);
-            const b = floorToInt(a * 0.1);
-            const c = roundToInt(a * 0.0211);
+            // 扣繳稅：含稅 ≥ 20,010 元才扣 10%
+            const b = (a >= TAX_THRESHOLD) ? floorToInt(a * 0.1) : 0;
+            // 二代健保：含稅 ≥ 20,000 元才扣 2.11%
+            const c = (a >= HEALTH_THRESHOLD) ? roundToInt(a * 0.0211) : 0;
             const d = a - b - c;
+
             html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
                 <span>每期租金（含稅）= a</span><span style="color: blue; font-weight: bold;">${formatNumber(a)} 元</span></div>`;
+
+            let bNote = '';
+            if (a < TAX_THRESHOLD) bNote = `（未達起扣點 ${formatNumber(TAX_THRESHOLD)} 元，免扣繳）`;
             html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
-                <span>扣繳 10% = a × 0.1</span><span style="color: blue; font-weight: bold;">${formatNumber(b)} 元</span></div>`;
+                <span>扣繳 10% = a × 0.1 ${bNote}</span><span style="color: blue; font-weight: bold;">${formatNumber(b)} 元</span></div>`;
+
+            let cNote = '';
+            if (a < HEALTH_THRESHOLD) cNote = `（未達起扣點 ${formatNumber(HEALTH_THRESHOLD)} 元，免扣費）`;
             html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
-                <span>二代健保 2.11% = a × 0.0211</span><span style="color: blue; font-weight: bold;">${formatNumber(c)} 元</span></div>`;
+                <span>二代健保 2.11% = a × 0.0211 ${cNote}</span><span style="color: blue; font-weight: bold;">${formatNumber(c)} 元</span></div>`;
+
             html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; font-size: 17px; font-weight: bold; color: #1a365d;">
                 <span>實際支付租金（未稅）= a - b - c</span><span>${formatNumber(d)} 元</span></div>`;
             html += `<div style="margin-top: 14px; color: #e53e3e; font-weight: 600;">⚠️ 注意：請於次月 10 日前完成繳款作業。</div>`;
@@ -214,14 +228,20 @@ function updateResult() {
             // 已知實際支付租金（未稅）= d
             const d = floorToInt(rent);
             const a = floorToInt(d / 0.8789);
-            const b = floorToInt(a * 0.1);
+            const b = (a >= TAX_THRESHOLD) ? floorToInt(a * 0.1) : 0;
             const c = a - b - d;
+
             html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
                 <span>每期租金（含稅）= d / 0.8789</span><span style="color: blue; font-weight: bold;">${formatNumber(a)} 元</span></div>`;
+
+            let bNote = '';
+            if (a < TAX_THRESHOLD) bNote = `（未達起扣點 ${formatNumber(TAX_THRESHOLD)} 元，免扣繳）`;
             html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
-                <span>扣繳 10% = a × 0.1</span><span style="color: blue; font-weight: bold;">${formatNumber(b)} 元</span></div>`;
+                <span>扣繳 10% = a × 0.1 ${bNote}</span><span style="color: blue; font-weight: bold;">${formatNumber(b)} 元</span></div>`;
+
             html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
                 <span>二代健保 2.11% = a - b - d</span><span style="color: blue; font-weight: bold;">${formatNumber(c)} 元</span></div>`;
+
             html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; font-size: 17px; font-weight: bold; color: #1a365d;">
                 <span>實際支付租金（未稅）= d</span><span>${formatNumber(d)} 元</span></div>`;
             html += `<div style="margin-top: 14px; color: #e53e3e; font-weight: 600;">⚠️ 注意：請於次月 10 日前完成繳款作業。</div>`;
@@ -233,12 +253,16 @@ function updateResult() {
         if (currentRentType === 'taxIncluded') {
             // 已知每期租金（含稅）= a
             const a = floorToInt(rent);
+            // 扣繳稅：不論金額多寡，一律扣 20%（無條件捨去）
             const b = floorToInt(a * 0.2);
             const c = a - b;
+
             html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
                 <span>每期租金（含稅）= a</span><span style="color: blue; font-weight: bold;">${formatNumber(a)} 元</span></div>`;
             html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
-                <span>扣繳 20% = a × 0.2</span><span style="color: blue; font-weight: bold;">${formatNumber(b)} 元</span></div>`;
+                <span>扣繳 20% = a × 0.2（不論金額多寡，一律扣繳）</span><span style="color: blue; font-weight: bold;">${formatNumber(b)} 元</span></div>`;
+            html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
+                <span>二代健保補充保費</span><span style="color: #718096;">不適用</span></div>`;
             html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; font-size: 17px; font-weight: bold; color: #1a365d;">
                 <span>實際支付租金（未稅）= a - b</span><span>${formatNumber(c)} 元</span></div>`;
             html += `<div style="margin-top: 14px; color: #e53e3e; font-weight: 600;">⚠️ 注意：請於租金給付的 10 日內完成繳款及申報作業。</div>`;
@@ -247,10 +271,13 @@ function updateResult() {
             const c = floorToInt(rent);
             const a = floorToInt(c / 0.8);
             const b = a - c;
+
             html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
                 <span>每期租金（含稅）= c / 0.8</span><span style="color: blue; font-weight: bold;">${formatNumber(a)} 元</span></div>`;
             html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
-                <span>扣繳 20% = a - c</span><span style="color: blue; font-weight: bold;">${formatNumber(b)} 元</span></div>`;
+                <span>扣繳 20% = a - c（不論金額多寡，一律扣繳）</span><span style="color: blue; font-weight: bold;">${formatNumber(b)} 元</span></div>`;
+            html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
+                <span>二代健保補充保費</span><span style="color: #718096;">不適用</span></div>`;
             html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; font-size: 17px; font-weight: bold; color: #1a365d;">
                 <span>實際支付租金（未稅）= c</span><span>${formatNumber(c)} 元</span></div>`;
             html += `<div style="margin-top: 14px; color: #e53e3e; font-weight: 600;">⚠️ 注意：請於租金給付的 10 日內完成繳款及申報作業。</div>`;
@@ -262,12 +289,21 @@ function updateResult() {
         if (currentRentType === 'taxIncluded') {
             // 已知每期租金（含稅）= a
             const a = floorToInt(rent);
-            const b = floorToInt(a * 0.1);
+            // 扣繳稅：含稅 ≥ 20,010 元才扣 10%
+            const b = (a >= TAX_THRESHOLD) ? floorToInt(a * 0.1) : 0;
             const c = a - b;
+
             html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
                 <span>每期租金（含稅）= a</span><span style="color: blue; font-weight: bold;">${formatNumber(a)} 元</span></div>`;
+
+            let bNote = '';
+            if (a < TAX_THRESHOLD) bNote = `（未達起扣點 ${formatNumber(TAX_THRESHOLD)} 元，免扣繳）`;
             html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
-                <span>扣繳 10% = a × 0.1</span><span style="color: blue; font-weight: bold;">${formatNumber(b)} 元</span></div>`;
+                <span>扣繳 10% = a × 0.1 ${bNote}</span><span style="color: blue; font-weight: bold;">${formatNumber(b)} 元</span></div>`;
+
+            html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
+                <span>二代健保補充保費</span><span style="color: #718096;">不適用</span></div>`;
+
             html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; font-size: 17px; font-weight: bold; color: #1a365d;">
                 <span>實際支付租金（未稅）= a - b</span><span>${formatNumber(c)} 元</span></div>`;
             html += `<div style="margin-top: 14px; color: #e53e3e; font-weight: 600;">⚠️ 注意：請於次月 10 日前完成繳款作業。</div>`;
@@ -275,11 +311,19 @@ function updateResult() {
             // 已知實際支付租金（未稅）= c
             const c = floorToInt(rent);
             const a = floorToInt(c / 0.9);
-            const b = a - c;
+            const b = (a >= TAX_THRESHOLD) ? floorToInt(a * 0.1) : 0;
+
             html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
                 <span>每期租金（含稅）= c / 0.9</span><span style="color: blue; font-weight: bold;">${formatNumber(a)} 元</span></div>`;
+
+            let bNote = '';
+            if (a < TAX_THRESHOLD) bNote = `（未達起扣點 ${formatNumber(TAX_THRESHOLD)} 元，免扣繳）`;
             html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
-                <span>扣繳 10% = a - c</span><span style="color: blue; font-weight: bold;">${formatNumber(b)} 元</span></div>`;
+                <span>扣繳 10% = a - c ${bNote}</span><span style="color: blue; font-weight: bold;">${formatNumber(b)} 元</span></div>`;
+
+            html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #edf2f7;">
+                <span>二代健保補充保費</span><span style="color: #718096;">不適用</span></div>`;
+
             html += `<div style="display: flex; justify-content: space-between; padding: 6px 0; font-size: 17px; font-weight: bold; color: #1a365d;">
                 <span>實際支付租金（未稅）= c</span><span>${formatNumber(c)} 元</span></div>`;
             html += `<div style="margin-top: 14px; color: #e53e3e; font-weight: 600;">⚠️ 注意：請於次月 10 日前完成繳款作業。</div>`;
