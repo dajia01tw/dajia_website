@@ -601,23 +601,175 @@
 
         <!-- 右側內容區 -->
         <section class="content-area">
-            <h2>關於大佳稅務記帳士事務所</h2>
-<p><strong>成立時間：</strong>2010 年</p>
-<p><strong>服務理念：</strong>以專業守護客戶的財務健康，以誠信建立長期的信任關係。</p>
+            <h2>🏢 認識大佳</h2>
+<p style="color: #4a5568; margin-bottom: 20px; line-height: 1.9;">
+    大佳稅務記帳士事務所超過 <strong>15 年</strong>執業經驗，服務超過 <strong>1,000 家</strong>企業與執行業務者，提供公司行號設立、變更、記帳、報稅、節稅等一站式的財務稅務服務。
+</p>
 
-<h3>我們的專業團隊</h3>
-<ul>
-    <li><strong>王大明</strong> 主持會計師｜執業年資 20 年｜專長：稅務規劃、跨國投資</li>
-    <li><strong>李小華</strong> 稅務經理｜執業年資 12 年｜專長：營業稅、營所稅申報</li>
-    <li><strong>陳志強</strong> 記帳部經理｜執業年資 10 年｜專長：帳務處理、財務報表分析</li>
-</ul>
+<hr style="margin: 30px 0; border: none; border-top: 2px solid #e2e8f0;">
 
-<h3>我們的服務特色</h3>
-<ol>
-    <li><strong>即時回覆</strong>：Line 與 email 問題 24 小時內回覆。</li>
-    <li><strong>定期報告</strong>：每月提供財務報表與稅務提醒。</li>
-    <li><strong>客製化服務</strong>：依客戶產業特性調整記帳與申報策略。</li>
-</ol>
+<h3>💡 服務理念</h3>
+<p style="color: #4a5568; margin-bottom: 20px; line-height: 1.9;">
+    以<strong>專業</strong>守護客戶的財務健康，以<strong>誠信</strong>建立長期的信任關係。
+</p>
+
+<hr style="margin: 30px 0; border: none; border-top: 2px solid #e2e8f0;">
+
+<h3>⭐ 我們的特色</h3>
+<div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin: 20px 0;">
+    <div style="background: #f7fafc; padding: 20px; border-radius: 8px; border-left: 4px solid #1a365d;">
+        <div style="font-size: 32px; margin-bottom: 8px;">⚡</div>
+        <h4 style="color: #1a365d; margin-bottom: 10px;">效率即時</h4>
+        <p style="font-size: 14px; color: #4a5568; line-height: 1.8; margin: 0;">
+            傾聽您的需求，給予最佳建議，專屬服務窗口，LINE 與電話即時回覆，讓您的疑問不等待。文件交付網路傳送，即時對接您的商機。
+        </p>
+    </div>
+    <div style="background: #f7fafc; padding: 20px; border-radius: 8px; border-left: 4px solid #2b6cb0;">
+        <div style="font-size: 32px; margin-bottom: 8px;">💰</div>
+        <h4 style="color: #1a365d; margin-bottom: 10px;">價格平實</h4>
+        <p style="font-size: 14px; color: #4a5568; line-height: 1.8; margin: 0;">
+            設立登記、記帳報稅等服務項目，均會於事前明確報價，無隱藏費用，讓您清楚掌握每一筆支出，絕不巧立名目。
+        </p>
+    </div>
+    <div style="background: #f7fafc; padding: 20px; border-radius: 8px; border-left: 4px solid #38a169;">
+        <div style="font-size: 32px; margin-bottom: 8px;">🔥</div>
+        <h4 style="color: #1a365d; margin-bottom: 10px;">專業熱忱</h4>
+        <p style="font-size: 14px; color: #4a5568; line-height: 1.8; margin: 0;">
+            國家考試及格認證，多業種背景出身，深知中小企業的需求，可提供最適切建議。擅長用白話方式解說稅務、會計相關資訊，拉近貴我的落差。
+        </p>
+    </div>
+</div>
+
+<hr style="margin: 30px 0; border: none; border-top: 2px solid #e2e8f0;">
+
+<h3>💬 客戶好評</h3>
+
+<!-- 客戶好評輪播區 -->
+<div id="testimonialContainer" style="margin: 20px 0; position: relative;">
+    <div id="testimonialCard" style="background: #f7fafc; padding: 30px 24px; border-radius: 8px; border-left: 4px solid #1a365d; min-height: 220px; transition: opacity 0.4s ease;">
+        <!-- 由 JavaScript 動態填入 -->
+    </div>
+
+    <!-- 控制按鈕與指示點 -->
+    <div style="display: flex; justify-content: center; align-items: center; gap: 16px; margin-top: 20px;">
+        <button id="prevBtn" onclick="changeTestimonial(-1)" style="background: #e2e8f0; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 16px; color: #2d3748;">‹</button>
+        <div id="testimonialDots" style="display: flex; gap: 8px;"></div>
+        <button id="nextBtn" onclick="changeTestimonial(1)" style="background: #e2e8f0; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 16px; color: #2d3748;">›</button>
+    </div>
+</div>
+
+<script>
+// ===== 客戶好評資料 =====
+const testimonials = [
+    {
+        emoji: '📦',
+        industry: '電商業',
+        name: '葛小姐',
+        text: '做電商後才發現帳務比想像中複雜，尤其是平台撥款、手續費和發票的處理。幸好有記帳士協助，很多細節都會主動提醒我們，也會說明為什麼要這樣處理。現在帳務清楚很多，自己也不用一直擔心報稅問題。'
+    },
+    {
+        emoji: '🍜',
+        industry: '餐廳業',
+        name: '劉小姐',
+        text: '原本自己處理帳務時，常常搞不清楚發票、進貨和報稅的問題，後來交給記帳士事務所處理後輕鬆很多。有不懂的地方也都可以直接詢問，回覆很清楚，對餐飲業的稅務也很熟悉，合作起來很放心。'
+    },
+    {
+        emoji: '🚢',
+        industry: '進出口貿易業',
+        name: '蘇先生',
+        text: '公司有做進口、出口及三角貿易等不同的業務，原本對零稅率、進口憑證及國外交易的帳務處理不太熟悉。事務所處理這類問題很有經驗，遇到比較特殊的交易也會先了解情況再說明處理方式，不會只是單純幫忙報稅，這點讓我們很有感。'
+    },
+    {
+        emoji: '🏗️',
+        industry: '工程業',
+        name: '馮先生',
+        text: '工程業的人員、設備、費用支出比較複雜，事務所詳細告知法律與實務的情況。對我們的帳務狀況了解得很仔細，遇到不確定的稅務問題也會先說明處理方式，不只是單純幫忙申報，服務很有專業感。'
+    },
+    {
+        emoji: '📐',
+        industry: '執行業務事務所',
+        name: '林先生',
+        text: '技師事務所剛成立時，對記帳、發票及申報哪些稅完全沒有概念，很多事情都是邊做邊問。事務所不只幫忙處理帳務，遇到問題也會耐心解釋，讓我們慢慢了解稅務。找了記帳士事務所後綜所稅省了非常多真是太讓人開心了。'
+    }
+];
+
+let currentTestimonial = 0;
+
+// ===== 渲染指定的好評 =====
+function renderTestimonial(index) {
+    const t = testimonials[index];
+    const card = document.getElementById('testimonialCard');
+
+    // 淡出
+    card.style.opacity = '0';
+
+    setTimeout(() => {
+        card.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                <span style="font-size: 36px;">${t.emoji}</span>
+                <div>
+                    <div style="font-weight: 700; color: #1a365d; font-size: 16px;">${t.industry}　${t.name}</div>
+                    <div style="color: #ecc94b; font-size: 16px; letter-spacing: 2px;">★★★★★</div>
+                </div>
+            </div>
+            <p style="color: #4a5568; line-height: 1.9; margin: 0; font-size: 15px;">${t.text}</p>
+        `;
+        // 淡入
+        card.style.opacity = '1';
+    }, 200);
+
+    // 更新指示點
+    const dots = document.querySelectorAll('#testimonialDots span');
+    dots.forEach((dot, i) => {
+        dot.style.background = (i === index) ? '#1a365d' : '#cbd5e0';
+    });
+}
+
+// ===== 切換好評 =====
+function changeTestimonial(direction) {
+    currentTestimonial += direction;
+    if (currentTestimonial < 0) currentTestimonial = testimonials.length - 1;
+    if (currentTestimonial >= testimonials.length) currentTestimonial = 0;
+    renderTestimonial(currentTestimonial);
+}
+
+// ===== 初始化 =====
+document.addEventListener('DOMContentLoaded', function() {
+    // 建立指示點
+    const dotsContainer = document.getElementById('testimonialDots');
+    testimonials.forEach((_, i) => {
+        const dot = document.createElement('span');
+        dot.style.width = '10px';
+        dot.style.height = '10px';
+        dot.style.borderRadius = '50%';
+        dot.style.background = (i === 0) ? '#1a365d' : '#cbd5e0';
+        dot.style.cursor = 'pointer';
+        dot.style.display = 'inline-block';
+        dot.addEventListener('click', function() {
+            currentTestimonial = i;
+            renderTestimonial(i);
+        });
+        dotsContainer.appendChild(dot);
+    });
+
+    // 初始渲染第一則
+    renderTestimonial(0);
+
+    // 自動輪播（每 8 秒切換一次）
+    setInterval(function() {
+        changeTestimonial(1);
+    }, 8000);
+});
+</script>
+
+<!-- 提醒 -->
+<div style="margin-top: 30px; padding: 16px 20px; background: #ebf8ff; border-radius: 8px; border-left: 4px solid #2b6cb0; font-size: 14px; color: #2a4365;">
+    <strong>📌 聯絡我們：</strong>
+    <ul style="margin: 8px 0 0 20px; padding: 0;">
+        <li>若您對本所的服務有任何疑問，歡迎隨時來電或來信洽詢。</li>
+        <li>我們將竭誠為您提供最專業、最即時的服務。</li>
+    </ul>
+</div>
         </section>
     </main>
 
