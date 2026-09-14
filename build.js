@@ -75,7 +75,9 @@ files.forEach(fileName => {
         return;
     }
 
-    const htmlBody = marked.parse(body);
+    let htmlBody = marked.parse(body);
+    // 自動為所有 <img> 加上 loading="lazy"
+    htmlBody = htmlBody.replace(/<img /g, '<img loading="lazy" ');
     // 格式化日期
     const dateStr = formatDate(frontMatter.date);
 
@@ -83,10 +85,12 @@ files.forEach(fileName => {
         fileName: fileName,
         title: frontMatter.title || '無標題',
         description: frontMatter.description || '',
-        date: dateStr,   // 已格式化為 yyyy-mm-dd
+        date: dateStr,
         slug: fileName.replace('.md', '.html'),
         htmlBody: htmlBody,
-        pinned: frontMatter.pinned || 999   // ← 加入這一行，預設為 999（不置頂）
+        pinned: frontMatter.pinned || 999,          // ← 加入這一行，預設為 999（不置頂）
+        tags: frontMatter.tags || [],              // ← 新增
+        author: frontMatter.author || '大佳稅務記帳士事務所'  // ← 新增
     });
 });
 
@@ -205,7 +209,6 @@ Object.keys(categories).forEach(key => {
 });
 
 // ===== 2. 產生所有「單篇文章內容頁」=====
-// 直接使用全域的 groupNews 和 groupServices（已於上方宣告）
 Object.keys(categories).forEach(key => {
     const cat = categories[key];
     cat.articles.forEach(article => {
@@ -215,9 +218,6 @@ Object.keys(categories).forEach(key => {
         // ---- 建立麵包屑 ----
         let breadcrumbHtml = '';
         const slug = key;
-        const articleTitle = article.title;
-
-        // 判斷分類屬於哪個群組（使用已宣告的全域變數）
         let groupName = '';
         let groupLink = '';
         if (groupNews.includes(slug)) {
@@ -226,33 +226,102 @@ Object.keys(categories).forEach(key => {
         } else if (groupServices.includes(slug)) {
             groupName = '服務內容總覽';
             groupLink = 'services.html';
-        } else {
-            // 若無匹配，設為首頁（理論上不發生）
-            groupName = '';
-            groupLink = '';
         }
-
-        // 組裝麵包屑 HTML
         breadcrumbHtml = `<a href="index.html">首頁</a> › `;
-        if (groupName) {
-            breadcrumbHtml += `<a href="${groupLink}">${groupName}</a> › `;
-        }
+        if (groupName) breadcrumbHtml += `<a href="${groupLink}">${groupName}</a> › `;
         breadcrumbHtml += `<a href="${slug}.html">${cat.name}</a> › `;
-        breadcrumbHtml += `<span class="current">${articleTitle}</span>`;
+        breadcrumbHtml += `<span class="current">${article.title}</span>`;
 
-        // 將麵包屑替換到模板中
-        articleTemplate = articleTemplate.replace('{{breadcrumb}}', breadcrumbHtml);
+        // ---- 分類與標籤 ----
+        const categoryHtml = `<a href="${slug}.html" class="article-category">🏷️ ${cat.name}</a>`;
+        let tagsHtml = '';
+        if (article.tags && article.tags.length > 0) {
+            tagsHtml = article.tags.map(tag => `<span class="article-tag">${tag}</span>`).join('');
+        }
 
-        // ---- 替換其他內容 ----
-        const titlePrefix = (article.pinned && article.pinned < 999) ? '📌 ' : '';
-        let content = articleTemplate.replace('{{articleTitle}}', titlePrefix + article.title);
+        // ---- 閱讀時間（每分鐘 250 字） ----
+        const plainText = article.htmlBody.replace(/<[^>]*>/g, '');
+        const wordCount = plainText.length;
+        const readingTime = Math.max(1, Math.ceil(wordCount / 250));
+
+        // ---- 相關文章（同分類，排除自己，取前 3 篇） ----
+        const relatedArticles = cat.articles
+            .filter(a => a.slug !== article.slug)
+            .slice(0, 3);
+        let relatedHtml = '';
+        if (relatedArticles.length > 0) {
+            relatedHtml = '<div class="related-articles">';
+            relatedHtml += '<h3>📚 相關文章</h3>';
+            relatedHtml += '<ul>';
+            relatedArticles.forEach(rel => {
+                const pinIcon = (rel.pinned && rel.pinned < 999) ? '📌 ' : '';
+                relatedHtml += `<li>${pinIcon}<a href="${rel.slug}">${rel.title}</a> <span class="related-date">（${rel.date}）</span></li>`;
+            });
+            relatedHtml += '</ul>';
+            relatedHtml += '</div>';
+        }
+
+        // ---- CTA 區塊 ----
+        const ctaHtml = `
+        <div class="article-cta">
+            <h3>需要專人協助嗎？</h3>
+            <p>我們提供免費初步諮詢，歡迎與我們聯繫。</p>
+            <div class="cta-buttons">
+                <a href="tel:0287718346" class="cta-btn cta-btn-primary">📞 電話諮詢</a>
+                <a href="contact.html" class="cta-btn cta-btn-secondary">✉️ 聯絡我們</a>
+            </div>
+        </div>`;
+
+        // ---- 回列表 + 看更多 ----
+        const navHtml = `
+        <div class="article-nav">
+            <a href="${slug}.html" class="article-nav-btn">← 回${cat.name}列表</a>
+            <a href="${slug}.html" class="article-nav-btn">看更多${cat.name} →</a>
+        </div>`;
+
+        // ---- 將所有內容替換到模板中 ----
+        let content = articleTemplate;
+        content = content.replace('{{breadcrumb}}', breadcrumbHtml);
+        content = content.replace('{{articleTitle}}', article.title);
         content = content.replace('{{date}}', article.date);
+        content = content.replace('{{author}}', article.author || '大佳稅務記帳士事務所');
+        content = content.replace('{{readingTime}}', readingTime);
+        content = content.replace('{{category}}', categoryHtml);
+        content = content.replace('{{tags}}', tagsHtml);
         content = content.replace('{{articleBody}}', article.htmlBody);
+        content = content.replace('{{relatedArticles}}', relatedHtml);
+        content = content.replace('{{cta}}', ctaHtml);
+        content = content.replace('{{articleNav}}', navHtml);
 
-        // 套入 Layout
+        // ---- 生成 JSON-LD 結構化資料 ----
+        const jsonLd = `
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": ${JSON.stringify(article.title)},
+  "description": ${JSON.stringify(article.description)},
+  "datePublished": "${article.date}",
+  "dateModified": "${article.date}",
+  "author": {
+    "@type": "Organization",
+    "name": ${JSON.stringify(article.author || '大佳稅務記帳士事務所')}
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "大佳稅務記帳士事務所"
+  },
+  "articleSection": ${JSON.stringify(cat.name)},
+  "keywords": ${JSON.stringify(article.tags || [])}
+}
+</script>`;
+
+        // ---- 套入 Layout ----
         let finalPage = layoutTemplate.replace('{{content}}', content);
         finalPage = finalPage.replace(/{{title}}/g, article.title);
         finalPage = finalPage.replace(/{{description}}/g, article.description || article.title);
+        // 將 JSON-LD 插入到 </head> 之前
+        finalPage = finalPage.replace('</head>', jsonLd + '\n</head>');
 
         const outputFile = path.join(DIST_DIR, article.slug);
         fs.writeFileSync(outputFile, finalPage);
@@ -408,5 +477,25 @@ fixedPages.forEach(page => {
     fs.writeFileSync(outputFile, finalPage);
     console.log(`✅ 已產生固定頁面: ${outputFile}`);
 });
+
+// ===== 複製 images 資料夾到 dist =====
+const IMAGES_SRC = './images';
+const IMAGES_DEST = path.join(DIST_DIR, 'images');
+if (fs.existsSync(IMAGES_SRC)) {
+    if (!fs.existsSync(IMAGES_DEST)) {
+        fs.mkdirSync(IMAGES_DEST, { recursive: true });
+    }
+    const imageFiles = fs.readdirSync(IMAGES_SRC);
+    imageFiles.forEach(file => {
+        const srcPath = path.join(IMAGES_SRC, file);
+        const destPath = path.join(IMAGES_DEST, file);
+        if (fs.statSync(srcPath).isFile()) {
+            fs.copyFileSync(srcPath, destPath);
+        }
+    });
+    console.log(`✅ 已複製 ${imageFiles.length} 個圖片檔案到 dist/images`);
+} else {
+    console.log('⚠️ images 資料夾不存在，跳過複製');
+}
 
 console.log('🎉 所有頁面生成完畢！請將 dist 資料夾內的檔案上傳至虛擬主機。');

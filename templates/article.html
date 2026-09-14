@@ -1,11 +1,36 @@
-<!-- 麵包屑導航 -->
+<!-- 麵包屑 -->
 <div class="breadcrumb">
     {{breadcrumb}}
 </div>
 
-<!-- 文章標題與內容 -->
-<h2>{{articleTitle}}</h2>
-<p class="post-date">📅 發佈日期：{{date}}</p>
+<!-- 文章標題 -->
+<h1 class="article-title">{{articleTitle}}</h1>
+
+<!-- 文章資訊列 -->
+<div class="article-meta">
+    <span class="meta-item">📅 {{date}}</span>
+    <span class="meta-divider">｜</span>
+    <span class="meta-item">✍️ {{author}}</span>
+    <span class="meta-divider">｜</span>
+    <span class="meta-item">⏱️ 約 {{readingTime}} 分鐘</span>
+</div>
+
+<!-- 分類與標籤 -->
+<div class="article-taxonomy">
+    {{category}}
+    {{tags}}
+</div>
+
+<!-- 文章內文 -->
 <div class="post-content">
     {{articleBody}}
 </div>
+
+<!-- 相關文章 -->
+{{relatedArticles}}
+
+<!-- CTA 區塊 -->
+{{cta}}
+
+<!-- 回列表 + 看更多 -->
+{{articleNav}}
