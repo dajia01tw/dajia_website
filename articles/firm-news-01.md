@@ -1,8 +1,14 @@
 ---
+# ===== 必填欄位 =====
 title: 本所中秋節連假服務時間異動公告
 description: 因應中秋節連續假期，本所服務時間調整通知
 categorySlug: firm-news
 date: 2026-08-24
+# ===== 建議填寫 =====
+category: 本所公告
+tags: ["暫停服務"]
+author: 大佳稅務記帳士事務所
+# ===== 選填欄位 =====
 pinned: 1
 ---
 

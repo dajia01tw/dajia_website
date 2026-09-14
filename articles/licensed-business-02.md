@@ -1,8 +1,15 @@
 ---
+# ===== 必填欄位 =====
 title: 特許行業登記申請流程與注意事項
 description: 從前置作業到取得執照，平均耗時3-6個月。
 categorySlug: licensed-business
 date: 2026-08-12
+# ===== 建議填寫 =====
+category: 特許行業登記
+tags: ["特許", "執照"]
+author: 大佳稅務記帳士事務所
+# ===== 選填欄位 =====
+# pinned: 1
 ---
 
 # 特許行業登記申請流程
