@@ -456,6 +456,75 @@
             margin-bottom: 0;
         }
 
+        /* ---------- 提示方塊（Notice Blocks） ---------- */
+        /* ---------- 使用範例 ----------
+        由於 Markdown 不支援自訂的 ::: warning 之類的語法，你需要直接在 .md 檔案中寫 HTML。以下是四種提示方塊的範例：
+        <div class="notice notice-warning">
+            <strong>⚠️ 注意：</strong> 請於次月 10 日前完成繳款作業，以免產生滯納金。
+        </div>
+        <div class="notice notice-info">
+            <strong>📌 說明：</strong> 本篇文章適用於 113 年度的營所稅申報。
+        </div>
+        <div class="notice notice-success">
+            <strong>✅ 提示：</strong> 若您不確定是否適用，歡迎來電洽詢本所。
+        </div>
+        <div class="notice notice-danger">
+            <strong>🚫 警告：</strong> 逾期申報將加徵滯納金及滯納利息，請務必留意期限。
+        </div>
+        */
+        .notice {
+            padding: 16px 20px;
+            border-radius: 0 6px 6px 0;
+            margin: 20px 0;
+            line-height: 1.8;
+            font-size: 15px;
+        }
+        .notice p {
+            margin-bottom: 8px;
+        }
+        .notice p:last-child {
+            margin-bottom: 0;
+        }
+        .notice strong {
+            font-weight: 700;
+        }
+        /* ⚠️ 注意（黃色） */
+        .notice-warning {
+            background: #fefcbf;
+            border-left: 4px solid #d69e2e;
+            color: #744210;
+        }
+        .notice-warning strong {
+            color: #744210;
+        }
+        /* 📌 說明（藍色） */
+        .notice-info {
+            background: #ebf8ff;
+            border-left: 4px solid #2b6cb0;
+            color: #2a4365;
+        }
+        .notice-info strong {
+            color: #2a4365;
+        }
+        /* ✅ 提示（綠色） */
+        .notice-success {
+            background: #f0fff4;
+            border-left: 4px solid #38a169;
+            color: #22543d;
+        }
+        .notice-success strong {
+            color: #22543d;
+        }
+        /* 🚫 警告（紅色） */
+        .notice-danger {
+            background: #fff5f5;
+            border-left: 4px solid #e53e3e;
+            color: #742a2a;
+        }
+        .notice-danger strong {
+            color: #742a2a;
+        }
+
         /* 圖片 */
         .post-content img {
             max-width: 100%;

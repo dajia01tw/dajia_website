@@ -456,6 +456,75 @@
             margin-bottom: 0;
         }
 
+        /* ---------- 提示方塊（Notice Blocks） ---------- */
+        /* ---------- 使用範例 ----------
+        由於 Markdown 不支援自訂的 ::: warning 之類的語法，你需要直接在 .md 檔案中寫 HTML。以下是四種提示方塊的範例：
+        <div class="notice notice-warning">
+            <strong>⚠️ 注意：</strong> 請於次月 10 日前完成繳款作業，以免產生滯納金。
+        </div>
+        <div class="notice notice-info">
+            <strong>📌 說明：</strong> 本篇文章適用於 113 年度的營所稅申報。
+        </div>
+        <div class="notice notice-success">
+            <strong>✅ 提示：</strong> 若您不確定是否適用，歡迎來電洽詢本所。
+        </div>
+        <div class="notice notice-danger">
+            <strong>🚫 警告：</strong> 逾期申報將加徵滯納金及滯納利息，請務必留意期限。
+        </div>
+        */
+        .notice {
+            padding: 16px 20px;
+            border-radius: 0 6px 6px 0;
+            margin: 20px 0;
+            line-height: 1.8;
+            font-size: 15px;
+        }
+        .notice p {
+            margin-bottom: 8px;
+        }
+        .notice p:last-child {
+            margin-bottom: 0;
+        }
+        .notice strong {
+            font-weight: 700;
+        }
+        /* ⚠️ 注意（黃色） */
+        .notice-warning {
+            background: #fefcbf;
+            border-left: 4px solid #d69e2e;
+            color: #744210;
+        }
+        .notice-warning strong {
+            color: #744210;
+        }
+        /* 📌 說明（藍色） */
+        .notice-info {
+            background: #ebf8ff;
+            border-left: 4px solid #2b6cb0;
+            color: #2a4365;
+        }
+        .notice-info strong {
+            color: #2a4365;
+        }
+        /* ✅ 提示（綠色） */
+        .notice-success {
+            background: #f0fff4;
+            border-left: 4px solid #38a169;
+            color: #22543d;
+        }
+        .notice-success strong {
+            color: #22543d;
+        }
+        /* 🚫 警告（紅色） */
+        .notice-danger {
+            background: #fff5f5;
+            border-left: 4px solid #e53e3e;
+            color: #742a2a;
+        }
+        .notice-danger strong {
+            color: #742a2a;
+        }
+
         /* 圖片 */
         .post-content img {
             max-width: 100%;
@@ -972,7 +1041,7 @@
     <span class="meta-divider">｜</span>
     <span class="meta-item">✍️ 大佳稅務記帳士事務所</span>
     <span class="meta-divider">｜</span>
-    <span class="meta-item">⏱️ 約 1 分鐘</span>
+    <span class="meta-item">⏱️ 約 2 分鐘</span>
 </div>
 
 <!-- 分類與標籤 -->
@@ -983,22 +1052,25 @@
 
 <!-- 文章內文 -->
 <div class="post-content">
-    <h1>開公司（公司登記）需要準備哪些文件？</h1>
-<h2>需要準備的文件如下：</h2>
-<ul>
-<li>存褶影本：封面、內頁、第一頁</li>
-<li>銀行餘額證明：跟銀行請領</li>
-<li>會計師資本簽證報告書</li>
-<li>房屋租約影本</li>
-<li>最新房屋稅單影本</li>
-<li>房屋使用同意書影本</li>
-<li>各股東身份證影本</li>
-<li>股東同意書</li>
-<li>營業場所審查表</li>
-</ul>
-<h2>本所建議：</h2>
-<p>公司法規定繁鎖、程序複雜、對接的機關也不相同，讓我們為您解決困擾，讓您輕鬆開公司,全心衝業務。</p>
-<p>如有疑問，歡迎來電諮詢本所。</p>
+    <h2>申報期間</h2>
+<p>113 年度營利事業所得稅結算申報將於 <strong>2026 年 9 月 1 日</strong> 開始。</p>
+<div class="notice notice-info">
+    <strong>📌 說明：</strong> 本篇文章適用於 113 年度的營所稅申報。
+</div><h2>三大重點</h2>
+<h3>1. 擴大書審純益率調整</h3>
+<p>部分行業純益率調降，請確認所屬行業別。</p>
+<div class="notice notice-warning">
+    <strong>⚠️ 注意：</strong> 若您不確定所屬行業別，請洽本所協助確認。
+</div><h3>2. 關係人交易揭露</h3>
+<p>若與關係人有交易，務必填報關係人交易明細表。</p>
+<div class="notice notice-danger">
+    <strong>🚫 警告：</strong> 未誠實揭露關係人交易，可能面臨補稅及罰鍰。
+</div><h3>3. 投資抵減申請</h3>
+<p>若有研發投資抵減，請於申報時一併檢附證明文件。</p>
+<div class="notice notice-success">
+    <strong>✅ 提示：</strong> 投資抵減可有效降低稅負，建議及早準備相關文件。
+</div><h2>結語</h2>
+<p>如有任何疑問，歡迎來電諮詢本所。</p>
 
 </div>
 
