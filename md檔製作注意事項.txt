@@ -1,0 +1,60 @@
+二、完整的 Front Matter 欄位建議
+---
+# ===== 必填欄位 =====
+title: 113年度營所稅結算申報重點整理
+description: 提醒企業注意營所稅新制規定與申報期限，包含擴大書審純益率調整、關係人交易揭露等重點。
+categorySlug: tax-news
+date: 2026-08-25
+# ===== 建議填寫 =====
+category: 稅務新聞
+tags: ["營所稅", "申報", "113年度"]
+author: 大佳稅務記帳士事務所
+# ===== 選填欄位 =====
+pinned: 1
+---
+
+
+
+四、categorySlug 的可用值一覽
+以下是目前網站中所有分類的 categorySlug，你在寫文章時必須從中選擇一個：
+---
+分類名稱	categorySlug
+稅務新聞	tax-news
+本所公告	firm-news
+公司設立/變更登記	company-reg
+帳務處理	accounting
+稅務申報與諮詢	tax-consult
+勞健保專區	labor-ins
+特許行業登記	licensed-business
+外國人投資	foreign-invest
+登記地址租借/虛擬辦公室	addr-rental
+
+
+
+
+
+圖片的建議：
+1。養成好習慣：每次新增圖片時，先壓縮、改檔名、寫好 alt，再放入 images/ 資料夾。
+2。圖片不要太多：文章內文圖片建議 1~3 張即可，太多會拖慢載入速度。
+3。未來可擴充：如果未來圖片很多，可以考慮用 images/tax-news/、images/company-reg/ 分資料夾管理。
+
+
+
+
+一、Markdown 插入圖片的語法
+基本語法
+markdown
+![圖片替代文字](圖片路徑)
+例如：
+markdown
+![公司設立流程圖](/images/company-reg-flow.png)
+加上標題（滑鼠移上去會顯示）
+markdown
+![公司設立流程圖](/images/company-reg-flow.png "公司設立流程圖")
+加上連結（點擊圖片可跳轉）
+markdown
+[![公司設立流程圖](/images/company-reg-flow.png)](/images/company-reg-flow.png)
+這樣點擊圖片時，會開啟原始大圖。
+
+
+
