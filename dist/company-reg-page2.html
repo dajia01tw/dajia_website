@@ -459,6 +459,9 @@
         /* ---------- 提示方塊（Notice Blocks） ---------- */
         /* ---------- 使用範例 ----------
         由於 Markdown 不支援自訂的 ::: warning 之類的語法，你需要直接在 .md 檔案中寫 HTML。以下是四種提示方塊的範例：
+        <div class="notice notice-quote">
+            💬「專業不是靠頭銜，而是靠每一次為客戶解決問題所累積的信任。」—— 本所主持記帳士
+        </div>
         <div class="notice notice-warning">
             <strong>⚠️ 注意：</strong> 請於次月 10 日前完成繳款作業，以免產生滯納金。
         </div>
@@ -487,6 +490,16 @@
         }
         .notice strong {
             font-weight: 700;
+        }
+        /* 💬 一般引用（灰色 + 白底） */
+        .notice-quote {
+            background: #ffffff;
+            border-left: 4px solid #a0aec0;
+            color: #4a5568;
+            font-style: italic;
+        }
+        .notice-quote strong {
+            color: #2d3748;
         }
         /* ⚠️ 注意（黃色） */
         .notice-warning {
@@ -1011,9 +1024,9 @@
 <ul>
     <li><a href="company-reg-10.html">Test-10:開公司（公司登記）需要準備哪些文件？</a> (2026-07-15)</li>
 <li><a href="company-reg-09.html">Test-9:開公司（公司登記）需要準備哪些文件？</a> (2026-07-14)</li>
-<li><a href="company-reg-08.html">Test-8:開公司（公司登記）需要準備哪些文件？</a> (2026-07-13)</li>
 <li><a href="company-reg-05.html">公司登記名稱預查應提供之資訊有哪些？</a> (2026-07-10)</li>
 <li><a href="company-reg-04.html">開公司、公司登記的資本額該如何處理？</a> (2026-07-10)</li>
+<li><a href="company-reg-08.html">股份有限公司股東會怎麼開？從召集、通知、出席、表決到議事錄，一次看懂</a> (2020-08-22)</li>
 <li><a href="company-reg-07.html">我要成立股份有限公司，但完全不懂公司怎麼運作？創業老闆必懂的股東會、董事會與決議流程</a> (2020-08-21)</li>
 <li><a href="company-reg-06.html">有限公司還是股份有限公司？3種常見創業情境，教你快速選擇適合的公司型態</a> (2020-08-21)</li>
 
