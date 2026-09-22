@@ -401,7 +401,7 @@ renderGroupPage(groupServices, '服務內容總覽', 'services.html', '大佳稅
 
 // ===== 3.5 準備首頁所需的「本所公告」資料 =====
 // 🔧 若要調整首頁顯示的公告篇數，請修改下面的數字
-const HOMEPAGE_FIRM_NEWS_COUNT = 2;
+const HOMEPAGE_FIRM_NEWS_COUNT = 3;
 
 // 讀取 page_index.html 模板
 const indexTemplatePath = path.join(TEMPLATES_DIR, 'page_index.html');
