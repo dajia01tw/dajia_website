@@ -7,10 +7,14 @@ const matter = require('gray-matter');
 const ARTICLES_DIR = './articles';
 const TEMPLATES_DIR = './templates';
 const DIST_DIR = './dist';
+const SITE_URL = 'https://www.dajia01.com.tw'; // 🔧🔧🔧🔧🔧 請改成你的正式網域
 
-if (!fs.existsSync(DIST_DIR)) {
-    fs.mkdirSync(DIST_DIR);
+// ===== 清空 dist 資料夾 =====
+if (fs.existsSync(DIST_DIR)) {
+    fs.rmSync(DIST_DIR, { recursive: true, force: true });
+    console.log('🧹 已清空 dist 資料夾');
 }
+fs.mkdirSync(DIST_DIR, { recursive: true });
 
 // ===== 日期格式化函數：將 Date 物件或日期字串轉為 yyyy-mm-dd =====
 function formatDate(dateInput) {
@@ -195,6 +199,7 @@ Object.keys(categories).forEach(key => {
         let finalPage = layoutTemplate.replace('{{content}}', listContent);
         finalPage = finalPage.replace(/{{title}}/g, pageTitle);
         finalPage = finalPage.replace(/{{description}}/g, `大佳稅務記帳士事務所 - ${cat.name} 文章列表`);
+        finalPage = finalPage.replace(/{{canonical}}/g, `${SITE_URL}/${key}.html`);
 
         // 決定輸出檔名：第一頁用原本的檔名（如 company-reg.html），其他頁加上 -pageN
         let outputFile;
@@ -295,31 +300,32 @@ Object.keys(categories).forEach(key => {
 
         // ---- 生成 JSON-LD 結構化資料 ----
         const jsonLd = `
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Article",
-  "headline": ${JSON.stringify(article.title)},
-  "description": ${JSON.stringify(article.description)},
-  "datePublished": "${article.date}",
-  "dateModified": "${article.date}",
-  "author": {
-    "@type": "Organization",
-    "name": ${JSON.stringify(article.author || '大佳稅務記帳士事務所')}
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "大佳稅務記帳士事務所"
-  },
-  "articleSection": ${JSON.stringify(cat.name)},
-  "keywords": ${JSON.stringify(article.tags || [])}
-}
-</script>`;
+        <script type="application/ld+json">
+        {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": ${JSON.stringify(article.title)},
+        "description": ${JSON.stringify(article.description)},
+        "datePublished": "${article.date}",
+        "dateModified": "${article.date}",
+        "author": {
+            "@type": "Organization",
+            "name": ${JSON.stringify(article.author || '大佳稅務記帳士事務所')}
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "大佳稅務記帳士事務所"
+        },
+        "articleSection": ${JSON.stringify(cat.name)},
+        "keywords": ${JSON.stringify(article.tags || [])}
+        }
+        </script>`;
 
         // ---- 套入 Layout ----
         let finalPage = layoutTemplate.replace('{{content}}', content);
         finalPage = finalPage.replace(/{{title}}/g, article.title);
         finalPage = finalPage.replace(/{{description}}/g, article.description || article.title);
+        finalPage = finalPage.replace(/{{canonical}}/g, `${SITE_URL}/${article.slug}`);
         // 將 JSON-LD 插入到 </head> 之前
         finalPage = finalPage.replace('</head>', jsonLd + '\n</head>');
 
@@ -387,6 +393,7 @@ function renderGroupPage(groupList, pageTitle, outputFileName, description) {
     let finalPage = layoutTemplate.replace('{{content}}', contentHtml);
     finalPage = finalPage.replace(/{{title}}/g, pageTitle);
     finalPage = finalPage.replace(/{{description}}/g, description || `大佳稅務記帳士事務所 - ${pageTitle}`);
+    finalPage = finalPage.replace(/{{canonical}}/g, `${SITE_URL}/${outputFileName}`);
 
     const outputFile = path.join(DIST_DIR, outputFileName);
     fs.writeFileSync(outputFile, finalPage);
@@ -472,7 +479,31 @@ fixedPages.forEach(page => {
     let finalPage = layoutTemplate.replace('{{content}}', content);
     finalPage = finalPage.replace(/{{title}}/g, page.title);
     finalPage = finalPage.replace(/{{description}}/g, page.desc);
-    
+    finalPage = finalPage.replace(/{{canonical}}/g, `${SITE_URL}/${page.slug}.html`);
+
+    // 首頁加入 Organization JSON-LD
+    if (page.slug === 'index') {
+        const orgJsonLd = `
+    <script type="application/ld+json">
+    {
+    "@context": "https://schema.org",
+    "@type": "AccountingService",
+    "name": "大佳稅務記帳士事務所",
+    "url": "${SITE_URL}",
+    "telephone": "(02) 8771-8346",
+    "email": "kai0932.tw@gmail.com",
+    "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "復興北路15號5樓之九",
+        "addressLocality": "台北市松山區",
+        "addressCountry": "TW"
+      },
+    "openingHours": "Mo-Fr 09:00-18:00"
+    }
+    </script>`;
+        finalPage = finalPage.replace('</head>', orgJsonLd + '\n</head>');
+    }
+
     const outputFile = path.join(DIST_DIR, `${page.slug}.html`);
     fs.writeFileSync(outputFile, finalPage);
     console.log(`✅ 已產生固定頁面: ${outputFile}`);
@@ -497,5 +528,60 @@ if (fs.existsSync(IMAGES_SRC)) {
 } else {
     console.log('⚠️ images 資料夾不存在，跳過複製');
 }
+
+// ===== 生成 sitemap.xml =====
+const sitemapUrls = [];
+
+// 1. 首頁與固定頁面
+const staticPages = ['index', 'about', 'services', 'links', 'contact', 'news',
+                     'tool_invoice', 'tool_rent', 'tool_withholding'];
+staticPages.forEach(slug => {
+    sitemapUrls.push({
+        loc: `${SITE_URL}/${slug}.html`,
+        lastmod: new Date().toISOString().split('T')[0]
+    });
+});
+
+// 2. 各分類的列表頁
+Object.keys(categories).forEach(key => {
+    const cat = categories[key];
+    if (cat.articles.length === 0) return;
+    const totalPages = Math.ceil(cat.articles.length / ARTICLES_PER_PAGE);
+    for (let i = 1; i <= totalPages; i++) {
+        const pageSlug = (i === 1) ? `${key}.html` : `${key}-page${i}.html`;
+        sitemapUrls.push({
+            loc: `${SITE_URL}/${pageSlug}`,
+            lastmod: new Date().toISOString().split('T')[0]
+        });
+    }
+});
+
+// 3. 所有文章頁
+Object.keys(categories).forEach(key => {
+    categories[key].articles.forEach(article => {
+        sitemapUrls.push({
+            loc: `${SITE_URL}/${article.slug}`,
+            lastmod: article.date
+        });
+    });
+});
+
+// 產生 sitemap.xml
+let sitemapXml = '<?xml version="1.0" encoding="UTF-8"?>\n';
+sitemapXml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
+sitemapUrls.forEach(url => {
+    sitemapXml += `  <url>\n`;
+    sitemapXml += `    <loc>${url.loc}</loc>\n`;
+    sitemapXml += `    <lastmod>${url.lastmod}</lastmod>\n`;
+    sitemapXml += `  </url>\n`;
+});
+sitemapXml += '</urlset>\n';
+fs.writeFileSync(path.join(DIST_DIR, 'sitemap.xml'), sitemapXml);
+console.log(`✅ 已產生 sitemap.xml（共 ${sitemapUrls.length} 個網址）`);
+
+// ===== 生成 robots.txt =====
+const robotsTxt = `User-agent: *\nAllow: /\n\nSitemap: ${SITE_URL}/sitemap.xml\n`;
+fs.writeFileSync(path.join(DIST_DIR, 'robots.txt'), robotsTxt);
+console.log('✅ 已產生 robots.txt');
 
 console.log('🎉 所有頁面生成完畢！請將 dist 資料夾內的檔案上傳至虛擬主機。');
