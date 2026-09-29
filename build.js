@@ -272,7 +272,7 @@ Object.keys(categories).forEach(key => {
             <h3>需要專人協助嗎？</h3>
             <p>我們提供免費初步諮詢，歡迎與我們聯繫。</p>
             <div class="cta-buttons">
-                <a href="tel:0287718346" class="cta-btn cta-btn-primary">📞 電話諮詢</a>
+                <a href="tel:0938365926" class="cta-btn cta-btn-primary">📞 電話諮詢</a>
                 <a href="contact.html" class="cta-btn cta-btn-secondary">✉️ 聯絡我們</a>
             </div>
         </div>`;
