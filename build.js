@@ -298,8 +298,9 @@ Object.keys(categories).forEach(key => {
         content = content.replace('{{cta}}', ctaHtml);
         content = content.replace('{{articleNav}}', navHtml);
 
-        // ---- 生成 JSON-LD 結構化資料 ----
-        const jsonLd = `
+        
+        // ---- 生成 Article JSON-LD ----
+        const articleJsonLd = `
         <script type="application/ld+json">
         {
         "@context": "https://schema.org",
@@ -321,13 +322,56 @@ Object.keys(categories).forEach(key => {
         }
         </script>`;
 
+        // ---- 生成 BreadcrumbList JSON-LD ----
+        // 建立麵包屑的層級陣列
+        const breadcrumbItems = [];
+        breadcrumbItems.push({
+            name: '首頁',
+            url: `${SITE_URL}/index.html`
+        });
+        if (groupName && groupLink) {
+            breadcrumbItems.push({
+                name: groupName,
+                url: `${SITE_URL}/${groupLink}`
+            });
+        }
+        breadcrumbItems.push({
+            name: cat.name,
+            url: `${SITE_URL}/${slug}.html`
+        });
+        breadcrumbItems.push({
+            name: article.title,
+            url: `${SITE_URL}/${article.slug}`
+        });
+
+        // 組裝 BreadcrumbList JSON-LD
+        const breadcrumbListItems = breadcrumbItems.map((item, index) => {
+            return `    {
+              "@type": "ListItem",
+              "position": ${index + 1},
+              "name": ${JSON.stringify(item.name)},
+              "item": "${item.url}"
+            }`;
+        }).join(',\n');
+
+        const breadcrumbJsonLd = `
+        <script type="application/ld+json">
+        {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+        ${breadcrumbListItems}
+        ]
+        }
+        </script>`;
+
         // ---- 套入 Layout ----
         let finalPage = layoutTemplate.replace('{{content}}', content);
         finalPage = finalPage.replace(/{{title}}/g, article.title);
         finalPage = finalPage.replace(/{{description}}/g, article.description || article.title);
         finalPage = finalPage.replace(/{{canonical}}/g, `${SITE_URL}/${article.slug}`);
-        // 將 JSON-LD 插入到 </head> 之前
-        finalPage = finalPage.replace('</head>', jsonLd + '\n</head>');
+        // 將兩個 JSON-LD 插入到 </head> 之前
+        finalPage = finalPage.replace('</head>', articleJsonLd + '\n' + breadcrumbJsonLd + '\n</head>');
 
         const outputFile = path.join(DIST_DIR, article.slug);
         fs.writeFileSync(outputFile, finalPage);
