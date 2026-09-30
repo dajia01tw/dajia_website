@@ -573,6 +573,26 @@ if (fs.existsSync(IMAGES_SRC)) {
     console.log('⚠️ images 資料夾不存在，跳過複製');
 }
 
+// ===== 複製 files 資料夾到 dist =====
+const FILES_SRC = './files';
+const FILES_DEST = path.join(DIST_DIR, 'files');
+if (fs.existsSync(FILES_SRC)) {
+    if (!fs.existsSync(FILES_DEST)) {
+        fs.mkdirSync(FILES_DEST, { recursive: true });
+    }
+    const filesList = fs.readdirSync(FILES_SRC);
+    filesList.forEach(file => {
+        const srcPath = path.join(FILES_SRC, file);
+        const destPath = path.join(FILES_DEST, file);
+        if (fs.statSync(srcPath).isFile()) {
+            fs.copyFileSync(srcPath, destPath);
+        }
+    });
+    console.log(`✅ 已複製 ${filesList.length} 個檔案到 dist/files`);
+} else {
+    console.log('⚠️ files 資料夾不存在，跳過複製');
+}
+
 // ===== 生成 sitemap.xml =====
 const sitemapUrls = [];
 
