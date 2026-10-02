@@ -12,25 +12,25 @@ author: 大佳稅務記帳士事務所
 # pinned: 1
 ---
 
-## 中央政府各機關派赴國外各地區出差人員生活費日支數額表
+<h2 id="contents">中央政府各機關派赴國外各地區出差人員生活費日支數額表</h2>
 
 （115.1.1.生效；114.10.31.修正）（單位：美元）
 
-- [Ａ 亞太地區](#ａ-亞太地區)
-- [大陸地區、香港及澳門](#大陸地區香港及澳門)
-- [Ｂ 亞西地區](#ｂ-亞西地區)
-- [Ｃ 歐洲地區](#ｃ-歐洲地區)
-- [Ｄ 北美洲地區](#ｄ-北美洲地區)
-- [Ｅ 拉丁美洲及加勒比海地區](#ｅ-拉丁美洲及加勒比海地區)
-- [Ｆ 非洲地區](#ｆ-非洲地區)
+- [Ａ 亞太地區](#asia-pacific)
+- [大陸地區、香港及澳門](#china-hk-macau)
+- [Ｂ 亞西地區](#west-asia)
+- [Ｃ 歐洲地區](#europe)
+- [Ｄ 北美洲地區](#north-america)
+- [Ｅ 拉丁美洲及加勒比海地區](#central-and-south-america)
+- [Ｆ 非洲地區](#africa)
 
 資料量龐大，請善用目錄查詢，或使用瀏覽器搜尋功能。
 
-## Ａ 亞太地區
+<h2 id="asia-pacific">Ａ 亞太地區</h2>
 
 （115.1.1.生效；114.10.31.修正）（單位：美元）
 
-[↑ 回目錄](#中央政府各機關派赴國外各地區出差人員生活費日支數額表)
+[↑ 回目錄](#contents)
 
 <table style="font-size: 10pt;" border="1" cellspacing="0" width="90%">
   <tbody>
@@ -1744,13 +1744,13 @@ Is.</font></td>
   </tbody>
 </table>
 
-[↑ 回目錄](#中央政府各機關派赴國外各地區出差人員生活費日支數額表)
+[↑ 回目錄](#contents)
 
-## 大陸地區、香港及澳門
+<h2 id="china-hk-macau">大陸地區、香港及澳門</h2>
 
 （115.1.1.生效；114.10.31.修正）（單位：美元）
 
-[↑ 回目錄](#中央政府各機關派赴國外各地區出差人員生活費日支數額表)
+[↑ 回目錄](#contents)
 
 <table style="font-size: 10pt;" border="1" cellspacing="0" width="90%">
   <tbody>
@@ -2052,15 +2052,15 @@ Is.</font></td>
   </tbody>
 </table>
 
-[↑ 回目錄](#中央政府各機關派赴國外各地區出差人員生活費日支數額表)
+[↑ 回目錄](#contents)
 
 
 
-## Ｂ 亞西地區
+<h2 id="west-asia">Ｂ 亞西地區</h2>
 
 （115.1.1.生效；114.10.31.修正）（單位：美元）
 
-[↑ 回目錄](#中央政府各機關派赴國外各地區出差人員生活費日支數額表)
+[↑ 回目錄](#contents)
 
 <table style="font-size: 10pt;" border="1" cellspacing="0" width="90%">
   <tbody>
@@ -3024,15 +3024,15 @@ Lviv(114年度新增城市)</font></td>
   </tbody>
 </table>
 
-[↑ 回目錄](#中央政府各機關派赴國外各地區出差人員生活費日支數額表)
+[↑ 回目錄](#contents)
 
 
 
-## Ｃ 歐洲地區
+<h2 id="europe">Ｃ 歐洲地區</h2>
 
 （115.1.1.生效；114.10.31.修正）（單位：美元）
 
-[↑ 回目錄](#中央政府各機關派赴國外各地區出差人員生活費日支數額表)
+[↑ 回目錄](#contents)
 
 <table style="font-size: 10pt;" border="1" cellspacing="0" width="90%">
   <tbody>
@@ -4326,16 +4326,16 @@ The</strong></font></td>
   </tbody>
 </table>
 
-[↑ 回目錄](#中央政府各機關派赴國外各地區出差人員生活費日支數額表)
+[↑ 回目錄](#contents)
 
 
 
 
-## Ｄ 北美洲地區
+<h2 id="north-america">Ｄ 北美洲地區</h2>
 
 （115.1.1.生效；114.10.31.修正）（單位：美元）
 
-[↑ 回目錄](#中央政府各機關派赴國外各地區出差人員生活費日支數額表)
+[↑ 回目錄](#contents)
 
 <table style="font-size: 10pt;" border="1" cellspacing="0" width="90%"><tbody><tr><td colspan="2" align="center" valign="top" width="10%"><font color="#000080" size="2"><strong>&#32232;&#34399;</strong></font></td><td rowspan="2" align="center" width="50%"><font color="#000080" size="2"><strong>&#21517;&#31281;&#65288;&#22320;&#21312;&#12289;&#22283;&#23478;&#12289;&#22478;&#24066;&#25110;&#20854;&#20182;&#65289;</strong></font></td><td rowspan="2" align="center" valign="top" width="10%"><font color="#000080" size="2"><strong>&#26085;&#25903;&#25976;&#38989; (115.1.1&#24460;)</strong></font></td><td rowspan="2" align="center" valign="top" width="10%"><font color="#000080" size="2"><strong>&#26085;&#25903;&#25976;&#38989; (114.1.1&#24460;)</strong></font></td><td rowspan="2" align="center" valign="top" width="10%"><font color="#000080" size="2"><strong>&#26085;&#25903;&#25976;&#38989; (113.1.1&#24460;)</strong></font></td><td rowspan="2" align="center" valign="top" width="10%"><font color="#000080" size="2"><strong>&#26085;&#25903;&#25976;&#38989; (112.1.1&#24460;)</strong></font></td></tr><tr><td align="center" valign="top" width="5%"><font color="#000080" size="2"><strong>&#22320;&#21312;&#12289;&#22283;&#23478;</strong></font></td><td align="center" valign="top" width="5%"><font color="#000080" size="2"><strong>&#22478;&#24066;&#25110;&#20854;&#20182;</strong></font></td></tr><tr><td align="center" height="17" width="5%"><font size="2">&#19968;&#19968;&#9675;</font></td><td align="center" height="17" width="5%"><br>
 </td><td height="17" width="50%"><font size="2"><b>&#21152;&#25343;&#22823;<b><span>&nbsp;</span>Canada</b></b></font></td><td align="right" height="17" width="10%">&nbsp;</td><td align="right" height="17" width="10%"><br>
@@ -4369,15 +4369,15 @@ The</strong></font></td>
 </td><td align="center" height="17" width="5%">312</td><td height="17" width="50%"><font size="2">&#38364;&#23798; Guam</font></td><td align="right" height="17" width="10%">266</td><td align="right" height="17" width="10%">266</td><td align="right" height="17" width="10%">266</td><td align="right" height="17" width="10%"><font color="#ff0000">266</font></td></tr><tr><td align="center" height="17" width="5%"><br>
 </td><td align="center" height="17" width="5%">313</td><td height="17" width="50%"><font size="2">&#20854;&#20182; Other</font></td><td align="right" height="17" width="10%">320</td><td align="right" height="17" width="10%">320</td><td align="right" height="17" width="10%">320</td><td align="right" height="17" width="10%"><font color="#ff0000">320</font></td></tr></tbody></table>
 
-[↑ 回目錄](#中央政府各機關派赴國外各地區出差人員生活費日支數額表)
+[↑ 回目錄](#contents)
 
 
 
-## Ｅ 拉丁美洲及加勒比海地區
+<h2 id="central-and-south-america">Ｅ 拉丁美洲及加勒比海地區</h2>
 
 （115.1.1.生效；114.10.31.修正）（單位：美元）
 
-[↑ 回目錄](#中央政府各機關派赴國外各地區出差人員生活費日支數額表)
+[↑ 回目錄](#contents)
 
 <table style="font-size: 10pt;" border="1" cellspacing="0" width="90%">
   <tbody>
@@ -5654,15 +5654,15 @@ Blanca &amp; Mar del Plata</font></td>
   </tbody>
 </table>
 
-[↑ 回目錄](#中央政府各機關派赴國外各地區出差人員生活費日支數額表)
+[↑ 回目錄](#contents)
 
 
 
-## Ｆ 非洲地區
+<h2 id="africa">Ｆ 非洲地區</h2>
 
 （115.1.1.生效；114.10.31.修正）（單位：美元）
 
-[↑ 回目錄](#中央政府各機關派赴國外各地區出差人員生活費日支數額表)
+[↑ 回目錄](#contents)
 
 <table style="font-size: 10pt;" border="1" cellspacing="0" height="3421" width="90%">
   <tbody>
@@ -7883,7 +7883,7 @@ Tomeand Principe</strong></font></td>
   </tbody>
 </table>
 
-[↑ 回目錄](#中央政府各機關派赴國外各地區出差人員生活費日支數額表)
+[↑ 回目錄](#contents)
 
 
 
