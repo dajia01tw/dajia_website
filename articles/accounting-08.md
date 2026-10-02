@@ -144,7 +144,9 @@ author: 大佳稅務記帳士事務所
 
 3. [台灣銀行-匯率利率黃金牌價查詢服務](https://rate.bot.com.tw/)
 
-4. [中央政府各機關派赴國外各地區出差人員生活費日支數額表-修正日期：114年10月31日](https://law.dgbas.gov.tw/LawContent.aspx?id=FL028084)
+4. [國外各地區出差人員生活費日支數額表-本所站內查詢-不須下載](./accounting-09.html)
+
+5. [中央政府各機關派赴國外各地區出差人員生活費日支數額表-修正日期：114年10月31日](https://law.dgbas.gov.tw/LawContent.aspx?id=FL028084)
 
 
 
