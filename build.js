@@ -80,6 +80,18 @@ files.forEach(fileName => {
     }
 
     let htmlBody = marked.parse(body);
+    // 自動為外部連結加上 target="_blank"。外部連結會另開新視窗。
+    // 判斷邏輯：href 以 http:// 或 https:// 開頭，且不是自己的網域 dajia01.com.tw
+    htmlBody = htmlBody.replace(
+        /<a href="(https?:\/\/[^"]+)"/g,
+        (match, url) => {
+            // 如果連結是本站網域，不加 target="_blank"
+            if (url.includes('dajia01.com.tw') || url.includes('dajia-website.vercel.app')) {
+                return match;
+            }
+            return `<a href="${url}" target="_blank" rel="noopener noreferrer"`;
+        }
+    );
     // 自動為所有 <img> 加上 loading="lazy"
     htmlBody = htmlBody.replace(/<img /g, '<img loading="lazy" ');
     // 格式化日期
