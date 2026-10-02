@@ -16,6 +16,8 @@ author: 大佳稅務記帳士事務所
 
 員工因公司業務需要出差，所產生的交通、住宿、餐費及其他必要支出，會成為公司的差旅費。
 
+![國外出差-所產生的交通、住宿、餐費及其他必要支出，會成為公司的差旅費-示意圖](./images/accounting-08-Business-Trip-airport.jpg)
+
 <div class="notice notice-quote">
 但實務上常遇到的問題是：
 「員工出差，吃飯沒有發票，可以列公司費用嗎？」
@@ -47,7 +49,7 @@ author: 大佳稅務記帳士事務所
 
 ### 國外出差旅費報告表-範例如下：
 
-![國外出差旅費報告表-出差報告單-範例-示意圖](./images/accounting-02-Business-Trip-Form-o.jpg)
+![國外出差旅費報告表-出差報告單-範例-示意圖](./images/accounting-08-Business-Trip-Form-o.jpg)
 
 <div class="notice notice-quote">
 例如：
@@ -83,6 +85,14 @@ author: 大佳稅務記帳士事務所
 
 ### 範例說明（包含計算說明）
 
+![台灣銀行匯率-現金賣出-2026/1/5-範例-示意圖](./images/accounting-08-bank-exchange-rate.jpg)
+
+台灣銀行匯率-現金賣出-2026/1/5-範例-示意圖
+
+![日支數額表-上海-範例-示意圖](./images/accounting-08-cost-shanghai.jpg)
+
+日支數額表-上海-範例-示意圖
+
 - 匯率計算：出差日為 115/1/6 。依前一日（115/1/5）台灣銀行現金賣出匯率 31.81 計算。
 - 出差地點：為上海。依據日支數額表每日日支數額為268元（美元）。
 - 日支數額限額： 268美元*匯率31.81=單日上限8525元。
@@ -92,7 +102,7 @@ author: 大佳稅務記帳士事務所
 
 ### 國內出差旅費報告表-範例如下：
 
-![國內出差旅費報告表-出差報告單-範例-示意圖](./images/accounting-02-Business-Trip-Form-i.jpg)
+![國內出差旅費報告表-出差報告單-範例-示意圖](./images/accounting-08-Business-Trip-Form-i.jpg)
 
 <div class="notice notice-quote">
 例如：
