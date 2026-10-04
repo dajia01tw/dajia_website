@@ -3,7 +3,7 @@
 title: 營業稅申報常見錯誤與避免方法
 description: 進項扣抵、零稅率、免稅...一次搞懂營業稅申報眉角。
 categorySlug: tax-consult
-date: 2026-08-18
+date: 2019-08-18
 # ===== 建議填寫 =====
 category: 稅務申報與諮詢
 tags: ["營業稅", "不得扣抵", "零稅率"]
