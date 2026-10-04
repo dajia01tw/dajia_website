@@ -17,7 +17,7 @@ pinned: 1
 ## 113年度綜合所得稅免稅額、標準扣除額、薪資特別扣除額、身心障礙特別扣除額
 
 
-            <table border=1 cellspacing="0" align=center>
+<table border=1 cellspacing="0" align=center>
               <thead>
                 <tr>
                   <th  colspan="3" nowrap>113年度綜所稅 (114年05月申報)</th>
@@ -66,7 +66,7 @@ pinned: 1
                   <td colspan="2" rowspan="1"> 六歲以下之子女，第一名子女每年扣除150,000元，第二名及以上子女每人每年扣除225,000元。 </td>
                 </tr>
 
-            </table>
+</table>
 
 ## 綜合所得稅課稅級距及累進稅率：
 
