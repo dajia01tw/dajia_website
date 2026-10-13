@@ -390,14 +390,23 @@
             list-style: decimal;
         }
 
+        /* 子清單（無序清單的子清單） */
         .post-content ul ul,
         .post-content ol ul {
             margin: 4px 0 4px 0;
             padding-left: 24px;
         }
 
-        .post-content ul ul li {
+        /* 子清單的項目符號：空心圓 */
+        .post-content ul ul li,
+        .post-content ol ul li {
             list-style: circle;
+        }
+
+        /* 第三層清單：實心方塊 */
+        .post-content ul ul ul li,
+        .post-content ol ul ul li {
+            list-style: square;
         }
 
         .post-content a {
