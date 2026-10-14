@@ -24,7 +24,7 @@ author: 大佳稅務記帳士事務所
 - [Ｑ2.發票寫錯了可以塗改嗎？正確處理為何？](#accounting-16-invoice-revise)
 - [Ｑ3.營業人開立發票後，發生銷貨退回，應如何處理？](#accounting-16-invoice-return)
 
-<h2 id="#accounting-16-invoice-lost">Ｑ1.統一發票遺失，應如何辦理？</h2>
+<h2 id="accounting-16-invoice-lost">Ｑ1.統一發票遺失，應如何辦理？</h2>
 
 1. **整本發票遺失**：應即日敘明原因及遺失發票種類、字軌號碼，**向主管稽徵機關報核**。
 
@@ -39,7 +39,7 @@ author: 大佳稅務記帳士事務所
 
 [回本文目錄](#contents)
 
-<h2 id="#accounting-16-invoice-revise">Ｑ2.發票寫錯了可以塗改嗎？正確處理為何？</h2>
+<h2 id="accounting-16-invoice-revise">Ｑ2.發票寫錯了可以塗改嗎？正確處理為何？</h2>
 
 公司開立三聯式統一發票，其中買受人部分書寫錯誤，得否僅在發票上塗改後蓋章更正呢？
 
@@ -54,7 +54,7 @@ author: 大佳稅務記帳士事務所
 
 [回本文目錄](#contents)
 
-<h2 id="#accounting-16-invoice-return">Ｑ3.營業人開立發票後，發生銷貨退回，應如何處理？</h2>
+<h2 id="accounting-16-invoice-return">Ｑ3.營業人開立發票後，發生銷貨退回，應如何處理？</h2>
 
 - ◆開立統一發票之銷售額尚未申報者，
   - 應收回收執聯（營業人之收執、扣抵二聯）黏於原存根聯上並註明「作廢」。
