@@ -285,6 +285,7 @@ Object.keys(categories).forEach(key => {
             <p>我們提供免費初步諮詢，歡迎與我們聯繫。</p>
             <div class="cta-buttons">
                 <a href="tel:0938365926" class="cta-btn cta-btn-primary">📞 電話諮詢</a>
+                <a href="https://lin.ee/rYNOjLg" target="_blank" rel="noopener" class="cta-btn cta-btn-line">💬 加入 LINE</a>
                 <a href="contact.html" class="cta-btn cta-btn-secondary">✉️ 聯絡我們</a>
             </div>
         </div>`;
