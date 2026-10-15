@@ -24,7 +24,7 @@ pinned: 4
 
 請點選 “線上服務” 再點選 “電子申報繳稅服務”，如下圖。
 
-![請點選 “線上服務” 再點選 “電子申報繳稅服務”，如下圖](./images/accounting-20-withholding-tax-payment-slip-print10.webp)
+![請點選 “線上服務” 再點選 “電子申報繳稅服務”，如下圖](./images/accounting-20-withholding-tax-payment-slip-print10.webp) 
 
 進入 “電子申報繳稅服務” 頁面；請點選 “自繳繳款書三段式條碼列印(線上版)” ，如下圖。
 
