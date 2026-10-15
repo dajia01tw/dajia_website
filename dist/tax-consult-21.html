@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href="https://www.dajia01.com.tw/tax-consult-21.html">
+    <title>什麼是執行業務所得?具體來說有哪些?認定標準為何?稅務上應如何處理? | 大佳稅務記帳士事務所</title>
+    <meta name="description" content="什麼是執行業務所得？依據國稅局的定義：執行業務所得為執行業務者以專業性勞務或技藝自力營生的所得。財政部每年會針對指定的執行業務訂定相關的費用標準。">
+    
+    <style>
+        /* ---------- 全域重置與字型 ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: "Segoe UI", "Microsoft JhengHei", "PingFang TC", sans-serif;
+            background-color: #f5f7fa;
+            color: #2d3748;
+            line-height: 1.6;
+        }
+
+        /* ---------- 容器（置中） ---------- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ---------- 1. HEAD (頁首 + 上方導覽) ---------- */
+        .header {
+            background-color: #1a365d;
+            color: white;
+            padding: 15px 0;
+            border-bottom: 4px solid #ecc94b;
+            position: relative;
+            z-index: 999;
+        }
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+        .logo small {
+            font-size: 14px;
+            font-weight: 300;
+            opacity: 0.9;
+            display: block;
+        }
+
+        /* ===== 漢堡按鈕 (預設隱藏) ===== */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 5px;
+            margin-left: auto;
+        }
+        .hamburger span {
+            width: 28px;
+            height: 3px;
+            background: white;
+            margin: 4px 0;
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+
+        /* ===== 頂部主選單 ===== */
+        .top-nav {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px 15px;
+        }
+        .top-nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+            padding: 5px 0;
+            border-bottom: 2px solid transparent;
+            transition: 0.3s;
+            white-space: nowrap;
+        }
+        .top-nav a:hover {
+            border-bottom-color: #ecc94b;
+        }
+
+        /* ===== 下拉選單容器 (電腦版 hover 用) ===== */
+        .top-nav .dropdown {
+            position: relative;
+        }
+        .top-nav .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            border-radius: 6px;
+            min-width: 200px;
+            padding: 8px 0;
+            z-index: 1000;
+            border: 1px solid #e2e8f0;
+        }
+        .top-nav .dropdown-menu a {
+            display: block;
+            padding: 8px 20px;
+            color: #2d3748;
+            border-bottom: none;
+            white-space: nowrap;
+            font-size: 14px;
+        }
+        .top-nav .dropdown-menu a:hover {
+            background-color: #f7fafc;
+            color: #1a365d;
+            border-left: 3px solid #ecc94b;
+        }
+        /* 電腦版 hover 觸發顯示 */
+        .top-nav .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        /* 下拉箭頭 (電腦版預設隱藏) */
+        .top-nav .arrow {
+            display: none;
+            font-size: 12px;
+            margin-left: 4px;
+            color: #a0aec0;
+            transition: 0.3s;
+        }
+
+        /* ---------- 2. BANNER (形象區) ---------- */
+        .banner {
+            background: linear-gradient(135deg, #2a4365 0%, #1a365d 100%);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .banner h2 {
+            font-size: 28px;
+            font-weight: 300;
+            letter-spacing: 3px;
+        }
+        .banner p {
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        /* ---------- 3. MAIN (左側地圖 + 右側內容) ---------- */
+        .main-wrap {
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+            padding-bottom: 40px;
+        }
+
+        /* 左側邊欄 (網站地圖) */
+        .sidebar {
+            width: 250px;
+            min-width: 200px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 20px 15px;
+            position: sticky;
+            top: 20px;
+            border: 1px solid #e2e8f0;
+        }
+        .sidebar h3 {
+            color: #1a365d;
+            font-size: 16px;
+            border-bottom: 2px solid #ecc94b;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .sidebar ul li {
+            margin-bottom: 2px;
+        }
+        .sidebar ul li a {
+            display: block;
+            padding: 6px 12px;
+            border-radius: 6px;
+            color: #2d3748;
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.2s;
+            border-left: 3px solid transparent;
+        }
+        .sidebar ul li a:hover {
+            background-color: #edf2f7;
+            border-left-color: #ecc94b;
+        }
+        .sidebar ul ul {
+            padding-left: 20px;
+        }
+        .sidebar ul ul li a {
+            font-size: 13px;
+            padding: 4px 12px;
+            color: #4a5568;
+        }
+        .sidebar ul ul li a:hover {
+            background-color: #f7fafc;
+        }
+        .sidebar ul li a.active {
+            background-color: #ebf8ff;
+            border-left-color: #1a365d;
+            font-weight: 600;
+            color: #1a365d;
+        }
+        .sidebar .parent-item > a {
+            font-weight: 600;
+            color: #1a365d;
+        }
+
+        /* 右側內容區 */
+        .content-area {
+            flex: 1;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 30px 35px;
+            border: 1px solid #e2e8f0;
+            min-height: 400px;
+        }
+        .content-area h2 {
+            color: #1a365d;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .content-area .post-date {
+            color: #718096;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        /* 僅適用於列表頁（不影響文章內文） */
+        .content-area > ul {
+            padding-left: 20px;
+        }
+        .content-area > ul > li {
+            margin-bottom: 10px;
+            list-style: none;
+            border-bottom: 1px dashed #edf2f7;
+            padding: 8px 0;
+        }
+        .content-area > ul > li > a {
+            color: #2b6cb0;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .content-area > ul > li > a:hover {
+            text-decoration: underline;
+        }
+        .content-area ul li a {
+            color: #2b6cb0;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .content-area ul li a:hover {
+            text-decoration: underline;
+        }
+
+
+        /* ---------- 文章頁樣式 ---------- */
+        .article-title {
+            color: #1a365d;
+            font-size: 28px;
+            line-height: 1.4;
+            margin-bottom: 16px;
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .article-meta {
+            color: #718096;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .article-meta .meta-item {
+            display: inline-block;
+        }
+
+        .article-meta .meta-divider {
+            margin: 0 8px;
+            color: #cbd5e0;
+        }
+
+        .article-taxonomy {
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        .article-category {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #ebf8ff;
+            color: #1a365d;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        .article-category:hover {
+            background: #bee3f8;
+        }
+
+        .article-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #f7fafc;
+            color: #4a5568;
+            border-radius: 4px;
+            font-size: 13px;
+            margin-right: 6px;
+            margin-bottom: 6px;
+            border:1px solid #e2e8f0;
+        }
+
+        /* 文章內文樣式 */
+        .post-content {
+            line-height: 1.9;
+            color: #2d3748;
+            font-size: 16px;
+        }
+
+        .post-content h2 {
+            color: #1a365d;
+            font-size: 22px;
+            margin-top: 36px;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #ecc94b;
+            border-top: none;
+        }
+
+        .post-content h3 {
+            color: #2a4365;
+            font-size: 18px;
+            margin-top: 28px;
+            margin-bottom: 12px;
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .post-content h4 {
+            color: #2a4365;
+            font-size: 16px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .post-content p {
+            margin-bottom: 16px;
+        }
+
+        .post-content ul,
+        .post-content ol {
+            margin: 12px 0 16px 0;
+            padding-left: 28px;
+        }
+
+        .post-content li {
+            margin-bottom: 4px;
+            padding: 0;
+            border-bottom: none;
+            list-style: disc;
+            line-height: 1.8;
+        }
+
+        .post-content ol li {
+            list-style: decimal;
+        }
+
+        /* 子清單（無序清單的子清單） */
+        .post-content ul ul,
+        .post-content ol ul {
+            margin: 4px 0 4px 0;
+            padding-left: 24px;
+        }
+
+        /* 子清單的項目符號：空心圓 */
+        .post-content ul ul li,
+        .post-content ol ul li {
+            list-style: circle;
+        }
+
+        /* 第三層清單：實心方塊 */
+        .post-content ul ul ul li,
+        .post-content ol ul ul li {
+            list-style: square;
+        }
+
+        .post-content a {
+            color: #2b6cb0;
+            text-decoration: underline;
+        }
+
+        .post-content a:hover {
+            color: #1a365d;
+        }
+
+        .post-content strong {
+            color: #1a365d;
+            font-weight: 700;
+        }
+
+        /* 表格 */
+        .post-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 15px;
+        }
+
+        .post-content th {
+            background: #edf2f7;
+            color: #1a365d;
+            padding: 10px 12px;
+            border: 1px solid #e2e8f0;
+            text-align: left;
+        }
+
+        .post-content td {
+            padding: 10px 12px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .post-content tr:nth-child(even) td {
+            background: #f7fafc;
+        }
+
+        /* 引用區塊（法規引用、注意事項） */
+        .post-content blockquote {
+            margin: 20px 0;
+            padding: 16px 20px;
+            background: #fefcbf;
+            border-left: 4px solid #d69e2e;
+            border-radius: 0 6px 6px 0;
+            color: #744210;
+        }
+
+        .post-content blockquote p {
+            margin-bottom: 8px;
+        }
+
+        .post-content blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* ---------- 提示方塊（Notice Blocks） ---------- */
+        /* ---------- 使用範例 ----------
+        由於 Markdown 不支援自訂的 ::: warning 之類的語法，你需要直接在 .md 檔案中寫 HTML。以下是四種提示方塊的範例：
+        <div class="notice notice-quote">
+            💬「專業不是靠頭銜，而是靠每一次為客戶解決問題所累積的信任。」—— 本所主持記帳士
+        </div>
+        <div class="notice notice-warning">
+            <strong>⚠️ 注意：</strong> 請於次月 10 日前完成繳款作業，以免產生滯納金。
+        </div>
+        <div class="notice notice-info">
+            <strong>📌 說明：</strong> 本篇文章適用於 113 年度的營所稅申報。
+        </div>
+        <div class="notice notice-success">
+            <strong>✅ 提示：</strong> 若您不確定是否適用，歡迎來電洽詢本所。
+        </div>
+        <div class="notice notice-danger">
+            <strong>🚫 警告：</strong> 逾期申報將加徵滯納金及滯納利息，請務必留意期限。
+        </div>
+        */
+        .notice {
+            padding: 16px 20px;
+            border-radius: 0 6px 6px 0;
+            margin: 20px 0;
+            line-height: 1.8;
+            font-size: 15px;
+        }
+        .notice p {
+            margin-bottom: 8px;
+        }
+        .notice p:last-child {
+            margin-bottom: 0;
+        }
+        .notice strong {
+            font-weight: 700;
+        }
+        /* 💬 一般引用（灰色 + 白底） */
+        .notice-quote {
+            background: #ffffff;
+            border-left: 4px solid #a0aec0;
+            color: #4a5568;
+            font-style: italic;
+        }
+        .notice-quote strong {
+            color: #2d3748;
+        }
+        /* ⚠️ 注意（黃色） */
+        .notice-warning {
+            background: #fefcbf;
+            border-left: 4px solid #d69e2e;
+            color: #744210;
+        }
+        .notice-warning strong {
+            color: #744210;
+        }
+        /* 📌 說明（藍色） */
+        .notice-info {
+            background: #ebf8ff;
+            border-left: 4px solid #2b6cb0;
+            color: #2a4365;
+        }
+        .notice-info strong {
+            color: #2a4365;
+        }
+        /* ✅ 提示（綠色） */
+        .notice-success {
+            background: #f0fff4;
+            border-left: 4px solid #38a169;
+            color: #22543d;
+        }
+        .notice-success strong {
+            color: #22543d;
+        }
+        /* 🚫 警告（紅色） */
+        .notice-danger {
+            background: #fff5f5;
+            border-left: 4px solid #e53e3e;
+            color: #742a2a;
+        }
+        .notice-danger strong {
+            color: #742a2a;
+        }
+
+        /* 圖片 */
+        .post-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        /* 相關文章 */
+        .related-articles {
+            margin-top: 40px;
+            padding: 20px 24px;
+            background: #f7fafc;
+            border-radius: 8px;
+            border-left: 4px solid #1a365d;
+        }
+
+        .related-articles h3 {
+            color: #1a365d;
+            font-size: 18px;
+            margin-bottom: 12px;
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .related-articles ul {
+            padding-left: 0;
+            margin: 0;
+        }
+
+        .related-articles li {
+            list-style: none;
+            padding: 8px 0;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+
+        .related-articles li:last-child {
+            border-bottom: none;
+        }
+
+        .related-articles a {
+            color: #2b6cb0;
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+        .related-articles a:hover {
+            text-decoration: underline;
+        }
+
+        .related-articles .related-date {
+            color: #718096;
+            font-size: 13px;
+        }
+
+        /* CTA 區塊 */
+        .article-cta {
+            margin-top: 30px;
+            padding: 24px;
+            background: #ebf8ff;
+            border-radius: 8px;
+            border-left: 4px solid #2b6cb0;
+            text-align: center;
+        }
+
+        .article-cta h3 {
+            color: #1a365d;
+            font-size: 20px;
+            margin-bottom: 10px;
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .article-cta p {
+            color: #4a5568;
+            margin-bottom: 16px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            padding: 10px 24px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            transition: 0.2s;
+        }
+
+        .cta-btn-primary {
+            background: #1a365d;
+            color: white;
+        }
+
+        .cta-btn-primary:hover {
+            background: #2a4365;
+        }
+
+        .cta-btn-secondary {
+            background: white;
+            color: #1a365d;
+            border: 2px solid #1a365d;
+        }
+
+        .cta-btn-secondary:hover {
+            background: #f7fafc;
+        }
+
+        /* LINE 按鈕（綠色） */
+        .cta-btn-line {
+            background: #06C755;
+            color: white;
+        }
+        .cta-btn-line:hover {
+            background: #05a847;
+        }
+
+        /* 回列表 + 看更多 */
+        .article-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+            flex-wrap: wrap;
+        }
+
+        .article-nav-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #f7fafc;
+            color: #2b6cb0;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 14px;
+            border: 1px solid #e2e8f0;
+            transition: 0.2s;
+        }
+
+        .article-nav-btn:hover {
+            background: #1a365d;
+            color: white;
+            border-color: #1a365d;
+        }
+
+
+        /* ---------- 麵包屑導航 ---------- */
+        .breadcrumb {
+            font-size: 14px;
+            color: #718096;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #edf2f7;
+        }
+        .breadcrumb a {
+            color: #2b6cb0;
+            text-decoration: none;
+        }
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+        .breadcrumb .current {
+            color: #2d3748;
+            font-weight: 600;
+        }
+
+        /* ---------- 分頁導航樣式 ---------- */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+            flex-wrap: wrap;
+        }
+        .pagination a,
+        .pagination span {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 14px;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+        .pagination a {
+            color: #2b6cb0;
+            background: #edf2f7;
+            border: 1px solid #e2e8f0;
+        }
+        .pagination a:hover {
+            background: #2b6cb0;
+            color: white;
+            border-color: #2b6cb0;
+        }
+        .pagination .current {
+            background: #1a365d;
+            color: white;
+            border: 1px solid #1a365d;
+        }
+        .pagination .disabled {
+            color: #a0aec0;
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            cursor: not-allowed;
+        }
+        .pagination .prev,
+        .pagination .next {
+            font-weight: 500;
+        }
+
+        /* ---------- 4. FOOT (頁尾) ---------- */
+        .footer {
+            background-color: #1a365d;
+            color: #cbd5e0;
+            text-align: center;
+            padding: 25px 0;
+            border-top: 4px solid #ecc94b;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        .footer a {
+            color: #ecc94b;
+            text-decoration: none;
+        }
+
+        /* ======================================================
+                   📱 手機版 RWD (響應式)
+                   ====================================================== */
+        @media (max-width: 768px) {
+            /* 漢堡按鈕顯示 */
+            .hamburger {
+                display: flex;
+            }
+            /* 手機版：首頁的兩欄/三欄布局改為一欄 */
+            .content-area div[style*="grid"] {
+                grid-template-columns: 1fr !important;
+            }
+
+            /* 頂部選單調整 */
+            .header-inner {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            .top-nav {
+                display: none;          /* 預設隱藏 */
+                flex-direction: column;
+                width: 100%;
+                padding: 15px 0 5px 0;
+                gap: 5px;
+                border-top: 1px solid rgba(255,255,255,0.1);
+                margin-top: 10px;
+            }
+            .top-nav.active {
+                display: flex;          /* 點擊漢堡後顯示 */
+            }
+            .top-nav a {
+                width: 100%;
+                padding: 10px 12px;
+                border-bottom: none;
+                border-radius: 4px;
+                font-size: 16px;
+            }
+            .top-nav a:hover {
+                background-color: rgba(255,255,255,0.05);
+                border-bottom: none;
+            }
+
+            /* 手機版下拉選單處理 */
+            .top-nav .dropdown {
+                width: 100%;
+            }
+            .top-nav .dropdown > a {
+                display: inline-block;
+                width: auto;
+                padding-right: 5px;
+            }
+            /* 手機版箭頭顯示 */
+            .top-nav .arrow {
+                display: inline-block;
+                font-size: 14px;
+                margin-left: 8px;
+                cursor: pointer;
+                padding: 10px 10px 10px 5px;
+                transition: 0.3s;
+                color: #a0aec0;
+            }
+            .top-nav .dropdown.open .arrow {
+                transform: rotate(180deg);
+                color: #ecc94b;
+            }
+
+            /* 手機版子選單 */
+            .top-nav .dropdown-menu {
+                display: none;          /* 預設隱藏 */
+                position: static;
+                box-shadow: none;
+                background: rgba(255,255,255,0.05);
+                border-radius: 0;
+                padding: 0 0 0 20px;
+                margin-top: 2px;
+                border: none;
+                width: 100%;
+            }
+            .top-nav .dropdown-menu a {
+                color: #cbd5e0;
+                padding: 8px 12px;
+                font-size: 15px;
+                border-left: 2px solid transparent;
+            }
+            .top-nav .dropdown-menu a:hover {
+                background: rgba(255,255,255,0.05);
+                border-left-color: #ecc94b;
+                color: white;
+            }
+            /* 當父層 .dropdown 加上 .open 時，顯示子選單 */
+            .top-nav .dropdown.open .dropdown-menu {
+                display: block;
+            }
+
+            /* ★★★ 手機版：隱藏左側「網站導覽」★★★ */
+            .sidebar {
+                display: none;
+            }
+
+            /* 內容區滿版 */
+            .content-area {
+                padding: 20px;
+                min-height: 300px;
+            }
+
+            .banner h2 {
+                font-size: 22px;
+            }
+        }
+
+        /* 小手機 (小於 480px) */
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 10px;
+            }
+            .logo h1 {
+                font-size: 18px;
+            }
+            .top-nav a {
+                font-size: 15px;
+                padding: 8px 10px;
+            }
+            .content-area {
+                padding: 15px;
+            }
+        }
+    </style>
+
+        <script type="application/ld+json">
+        {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "什麼是執行業務所得?具體來說有哪些?認定標準為何?稅務上應如何處理?",
+        "description": "什麼是執行業務所得？依據國稅局的定義：執行業務所得為執行業務者以專業性勞務或技藝自力營生的所得。財政部每年會針對指定的執行業務訂定相關的費用標準。",
+        "datePublished": "2023-10-12",
+        "dateModified": "2023-10-12",
+        "author": {
+            "@type": "Organization",
+            "name": "大佳稅務記帳士事務所"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "大佳稅務記帳士事務所"
+        },
+        "articleSection": "稅務申報與諮詢",
+        "keywords": ["執行業務所得","執行業務","專業性勞務","技藝自力營生","費用標準","",""]
+        }
+        </script>
+
+        <script type="application/ld+json">
+        {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "首頁",
+              "item": "https://www.dajia01.com.tw/index.html"
+            },
+    {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "服務內容總覽",
+              "item": "https://www.dajia01.com.tw/services.html"
+            },
+    {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "稅務申報與諮詢",
+              "item": "https://www.dajia01.com.tw/tax-consult.html"
+            },
+    {
+              "@type": "ListItem",
+              "position": 4,
+              "name": "什麼是執行業務所得?具體來說有哪些?認定標準為何?稅務上應如何處理?",
+              "item": "https://www.dajia01.com.tw/tax-consult-21.html"
+            }
+        ]
+        }
+        </script>
+</head>
+<body>
+
+    <!-- ====== 1. HEAD (頁首 + 漢堡 + 頂部選單) ====== -->
+    <header class="header">
+        <div class="container header-inner">
+            <!-- Logo -->
+            <div class="logo">
+                <a href="index.html" style="text-decoration: none; color: inherit;">
+                    <h1>大佳稅務記帳士事務所</h1>
+                    <small>專業 · 誠信 · 永續經營</small>
+                </a>
+            </div>
+
+            <!-- 漢堡按鈕 (三條線) -->
+            <div class="hamburger" id="hamburgerBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <!-- 頂部主選單 -->
+            <!--
+                ⚠️ 注意：若在 build.js 中新增分類，請同時更新此導航列。
+                目前結構：最新消息 (下有稅務新聞、本所公告)，
+                服務內容總覽 (下有 7 項服務)。
+            -->
+            <nav class="top-nav" id="topNav">
+                <!-- 首頁 -->
+                <a href="index.html">🏠 首頁</a>
+
+                <!-- 最新消息 (下拉選單) -->
+                <div class="dropdown">
+                    <a href="news.html">📰 最新消息</a>
+                    <span class="arrow">▼</span>
+                    <div class="dropdown-menu">
+                        <a href="tax-news.html">稅務新聞</a>
+                        <a href="firm-news.html">本所公告</a>
+                    </div>
+                </div>
+
+                <!-- 事務所簡介 -->
+                <a href="about.html">📄 事務所簡介</a>
+
+                <!-- 服務內容總覽 (下拉選單) -->
+                <div class="dropdown">
+                    <a href="services.html">📋 服務內容總覽</a>
+                    <span class="arrow">▼</span>
+                    <div class="dropdown-menu">
+                        <a href="company-reg.html">公司設立/變更登記</a>
+                        <a href="accounting.html">帳務處理</a>
+                        <a href="tax-consult.html">稅務申報與諮詢</a>
+                        <a href="labor-ins.html">勞健保專區</a>
+                        <a href="licensed-business.html">特許行業登記</a>
+                        <a href="foreign-invest.html">外國人投資</a>
+                        <a href="addr-rental.html">登記地址租借/虛擬辦公室</a>
+                    </div>
+                </div>
+
+                <!-- 小工具 (下拉選單) -->
+                <div class="dropdown">
+                    <a href="#">🛠️ 小工具</a>
+                    <span class="arrow">▼</span>
+                    <div class="dropdown-menu">
+                        <a href="tool_invoice.html">手開發票小幫手</a>
+                        <a href="tool_rent.html">租金扣繳計算機</a>
+                        <a href="tool_withholding.html">所得扣繳計算機</a>
+                    </div>
+                </div>
+
+                <!-- 常用連結 -->
+                <a href="links.html">🔗 常用連結</a>
+
+                <!-- 聯絡我們 -->
+                <a href="contact.html">📞 聯絡我們</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ====== 2. BANNER (形象標語) ====== -->
+    <section class="banner">
+        <div class="container">
+            <h2>您事業最值得信賴的夥伴</h2>
+            <p>專精於公司登記、稅務申報、帳務處理與諮詢服務</p>
+        </div>
+    </section>
+
+    <!-- ====== 3. MAIN (左側地圖 + 右側內容) ====== -->
+    <main class="container main-wrap">
+        <!-- 左側邊欄 (網站導覽) -->
+        <aside class="sidebar">
+            <h3>📌 網站導覽</h3>
+            <ul>
+                <li><a href="index.html">🏠 首頁</a></li>
+                <li class="parent-item">
+                    <a href="news.html">📰 最新消息</a>
+                    <ul>
+                        <li><a href="tax-news.html">稅務新聞</a></li>
+                        <li><a href="firm-news.html">本所公告</a></li>
+                    </ul>
+                </li>
+                <li><a href="about.html">📄 事務所簡介</a></li>
+                <li class="parent-item">
+                    <a href="services.html">📋 服務內容總覽</a>
+                    <ul>
+                        <li><a href="company-reg.html">公司設立/變更登記</a></li>
+                        <li><a href="accounting.html">帳務處理</a></li>
+                        <li><a href="tax-consult.html">稅務申報與諮詢</a></li>
+                        <li><a href="labor-ins.html">勞健保專區</a></li>
+                        <li><a href="licensed-business.html">特許行業登記</a></li>
+                        <li><a href="foreign-invest.html">外國人投資</a></li>
+                        <li><a href="addr-rental.html">登記地址租借/虛擬辦公室</a></li>
+                    </ul>
+                </li>
+                <!-- 小工具 -->
+                <li class="parent-item">
+                    <a href="#">🛠️ 小工具</a>
+                    <ul>
+                        <li><a href="tool_invoice.html">手開發票小幫手</a></li>
+                        <li><a href="tool_rent.html">租金扣繳計算機</a></li>
+                        <li><a href="tool_withholding.html">所得扣繳計算機</a></li>
+                    </ul>
+                </li>
+                <li><a href="links.html">🔗 常用連結</a></li>
+                <li><a href="contact.html">📞 聯絡我們</a></li>
+            </ul>
+        </aside>
+
+        <!-- 右側內容區 -->
+        <section class="content-area">
+            <!-- 麵包屑 -->
+<div class="breadcrumb">
+    <a href="index.html">首頁</a> › <a href="services.html">服務內容總覽</a> › <a href="tax-consult.html">稅務申報與諮詢</a> › <span class="current">什麼是執行業務所得?具體來說有哪些?認定標準為何?稅務上應如何處理?</span>
+</div>
+
+<!-- 文章標題 -->
+<h1 class="article-title">什麼是執行業務所得?具體來說有哪些?認定標準為何?稅務上應如何處理?</h1>
+
+<!-- 文章資訊列 -->
+<div class="article-meta">
+    <span class="meta-item">📅 2023-10-12</span>
+    <span class="meta-divider">｜</span>
+    <span class="meta-item">✍️ 大佳稅務記帳士事務所</span>
+    <span class="meta-divider">｜</span>
+    <span class="meta-item">⏱️ 約 9 分鐘</span>
+</div>
+
+<!-- 分類與標籤 -->
+<div class="article-taxonomy">
+    <a href="tax-consult.html" class="article-category">🏷️ 稅務申報與諮詢</a>
+    <span class="article-tag">執行業務所得</span><span class="article-tag">執行業務</span><span class="article-tag">專業性勞務</span><span class="article-tag">技藝自力營生</span><span class="article-tag">費用標準</span><span class="article-tag"></span><span class="article-tag"></span>
+</div>
+
+<!-- 文章內文 -->
+<div class="post-content">
+    <h2>什麼是執行業務者?具體來說有哪些?</h2>
+<p>　　什麼是執行業務所得？依據國稅局的定義：<strong>執行業務所得為執行業務者以專業性勞務或技藝自力營生的所得</strong>。</p>
+<p>　　所得稅法第11條第1項，稱執行業務者，係指律師、會計師、建築師、技師、醫師、藥師、助產士、著作人、經紀人、代書人（地政士）、工匠、表演人及其他以技藝自力營生者均屬之。 另外財政部每年會針對指定的執行業務訂定相關的費用標準，約有42項。</p>
+<p>　　一般來說如屬於上述這些職業內容的專業工作收入，<strong>都屬於職業所得(9A)類別</strong>。而其他也有一些工作內容不在上述範圍的專業收入內，屬於<strong>職業所得(9B)類別</strong>。 </p>
+<h2 id="contents">9A 與 9B 有什麼差別　本文目錄</h2><ul>
+<li><a href="#9a-vs-9b">所得稅稅務中，9A 與 9B 都屬於「執行業務所得」，差別在於適用對象、免稅額度與成本費用認列方式。搶先看。</a></li>
+</ul>
+<h2>認定標準為何？案例解析：</h2>
+<p>　　某經紀公司A提供簽約藝人B，予客戶公司C，從事尾牙晚會之主持表演工作。該藝人B之收入是屬執行業務所得或屬薪資所得？</p>
+<p>　　該藝人B符合自力營生的條件，但是因為已跟經紀公司A簽約，且公司C是將主持表演費交付經紀公司A，再經分配後交付予藝人B，所以國稅局在認定上還是會當作薪資所得。反之，若藝人B直接與公司C接洽，且直接自公司C處取得報酬，這樣子的收入就完全屬於執行業務所得。</p>
+<h2>什麼是執行業務所得？在稅務上應如何處理？</h2>
+<p>　　依所得稅法第14條，個人之綜合所得總額，以其全年下列各類所得合併計算之...其中，第二類：執行業務所得：凡執行業務者之業務或演技收入，減除業務所房租或折舊、業務上使用器材設備之折舊及修理費，或收取代價提供顧客使用之藥品、材料等之成本、業務上雇用人員之薪資、執行業務之旅費及其他直接必要費用後之餘額為所得額。</p>
+<p>　　執行業務者至少應設置日記帳一種，詳細記載其業務收支項目；業務支出，應取得確實憑證。帳簿及憑證最少應保存五年；帳簿、憑證之設置、取得、保管及其他應遵行事項之辦法，由財政部定之。</p>
+<p>　　執行業務者為執行業務而使用之房屋及器材、設備之折舊，依固定資產耐用年數表之規定。執行業務費用之列支，準用本法有關營利事業所得稅之規定；其帳簿、憑證之查核、收入與費用之認列及其他應遵行事項之辦法，由財政部定之。</p>
+<h2 id=9a-vs-9b><h3>簡單的說，</h3>
+<ul>
+<li>執行業務者應依規定需設置帳冊並保存。</li>
+<li>其執行業務收入減除衍生之成本費用後的餘額<ul>
+<li>即為所得額。</li>
+</ul>
+</li>
+<li>依此所得額與所得人之他類所得合併計算綜所稅。</li>
+</ul>
+<h3>若屬高執行業務所得者，</h3>
+<ul>
+<li>其報稅方式較為特殊，且容易被稅務單位注意，進而補繳稅或罰款，</li>
+<li>建議委託專業人員處理，既符合規定也能合法節稅。</li>
+</ul>
+<h2 id="9a-vs-9b">所得稅稅務中，9A 與 9B 都屬於「執行業務所得」，差別在於適用對象、免稅額度與成本費用認列方式</h2><h3>9A 與 9B 比較表</h3>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>9A：執行業務所得</th>
+<th>9B：稿費 / 演講費 / 版稅等</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>適用對象</td>
+<td>專業技術人員：律師、會計師、建築師、設計師、外包工程師、表演人、經紀人等。</td>
+<td>創作者與學者：專欄作家、書籍作者、作曲家、漫畫家、公眾集會專題演講者等。</td>
+</tr>
+<tr>
+<td>免稅額</td>
+<td>無免稅額。</td>
+<td>每年 18 萬元（全年度加總計算）。</td>
+</tr>
+<tr>
+<td>費用認列</td>
+<td>依國稅局規定的各行業「標準費用率」認列成本，或憑單據核實減除。</td>
+<td>超過 18 萬元的部分，可直接減除 30% 費用，或按單據核實減除。</td>
+</tr>
+<tr>
+<td>扣繳與二代健保門檻</td>
+<td>單次給付達 20,010 元（含）以上：預扣 10% 所得稅。<br>單筆達 20,000 元（含）以上：代扣 2.11% 二代健保補充保費。</td>
+<td>單次給付達 20,000 元（含）以上：預扣 10% 所得稅與 2.11% 二代健保（同 9A 門檻）。</td>
+</tr>
+</tbody></table>
+<h3>核心差異解析</h3>
+<ul>
+<li>9A（專業服務）： <ul>
+<li>著重於提供專業技術勞務（例如外包寫程式、平面設計、法律顧問），</li>
+<li>所得全額必須依照國稅局訂定的費用率報稅，</li>
+<li>沒有 18 萬元的定額免稅額。</li>
+</ul>
+</li>
+<li>9B（創作與演講）： <ul>
+<li>著重於智慧財產與知識產出（例如寫稿、出書、單次專題演講），</li>
+<li>享有每年 18 萬元免稅額的超大優勢，</li>
+<li>且超過 18 萬部分還能扣除 30% 費用，對接案者或講師相對更節稅。</li>
+</ul>
+</li>
+</ul>
+<p><a href="#contents">回本文目錄</a></p>
+<h2>相關新聞</h2>
+<h2>執行業務者列報交際費支出相關限額規定</h2>
+<p>　　財政部臺北市國稅局表示，執行業務者列報交際費支出，除應取得合法憑證並與業務有關外，還須注意相關限額規定，全年列支之交際費總額，不得超過各業別核定執行業務收入之交際費限額比例，超限部分將不予認定。</p>
+<p>　　該局說明，依執行業務所得查核辦法第25條第1項規定，執行業務者列支之交際費，經取得合法憑證並查明與業務有關者，准予核實認定。但全年列報總額，不得超過核定執行業務收入之下列標準：一、建築師、保險業經紀人：7%。二、律師、會計師、記帳士、記帳及報稅代理業務人、技師、地政士：5﹪。三、其他：3﹪。</p>
+<p>　　該局舉例，不動產估價師業者申報全年收入總額600萬元，並取具與業務有關之交際費憑證30萬元，依上開規定，列報交際費支出之限額應以3﹪計算，得交際費之限額為18萬元（600萬元×3﹪＝18萬元），即列報交際費支出總額不得超過18萬元，若列報交際費30萬元，則超限12萬元（30萬元－18萬元＝12萬元）部分，稽徵機關將不予認定。</p>
+<p>　　該局呼籲，執行業務者列支或申報交際費用時，應注意上開相關規定，以維自身權益。</p>
+
+</div>
+
+<!-- 相關文章 -->
+<div class="related-articles"><h3>📚 相關文章</h3><ul><li>📌 <a href="tax-consult-13.html">114、115年度綜合所得稅免稅額、標準扣除額、薪資特別扣除額、身心障礙特別扣除額、課稅級距、退職所得及最低稅負制</a> <span class="related-date">（2025-12-15）</span></li><li>📌 <a href="tax-consult-16.html">透過臉書或LINE銷售產品逃不過國稅局「法眼」了</a> <span class="related-date">（2022-09-10）</span></li><li>📌 <a href="tax-consult-15.html">網紅課稅怎麼看？114年最新規範重點一次搞懂</a> <span class="related-date">（2022-09-10）</span></li></ul></div>
+
+<!-- CTA 區塊 -->
+
+        <div class="article-cta">
+            <h3>需要專人協助嗎？</h3>
+            <p>我們提供免費初步諮詢，歡迎與我們聯繫。</p>
+            <div class="cta-buttons">
+                <a href="tel:0938365926" class="cta-btn cta-btn-primary">📞 電話諮詢</a>
+                <a href="https://lin.ee/rYNOjLg" target="_blank" rel="noopener" class="cta-btn cta-btn-line">💬 加入 LINE</a>
+                <a href="contact.html" class="cta-btn cta-btn-secondary">✉️ 聯絡我們</a>
+            </div>
+        </div>
+
+<!-- 回列表 + 看更多 -->
+
+        <div class="article-nav">
+            <a href="tax-consult.html" class="article-nav-btn">← 回稅務申報與諮詢列表</a>
+            <a href="tax-consult.html" class="article-nav-btn">看更多稅務申報與諮詢 →</a>
+        </div>
+        </section>
+        
+    </main>
+
+    <!-- ====== 4. FOOT (頁尾) ====== -->
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 大佳稅務記帳士事務所</p>
+            <p>地址：台北市松山區復興北路15號5樓之9</p>
+            <p>電話：0938-365-926　(02)8771-8346</p>
+            <p style="margin-top: 8px;">
+                <a href="https://lin.ee/rYNOjLg" target="_blank" rel="noopener" style="color: #ecc94b; text-decoration: none; font-weight: 600;">💬 加入 LINE 好友</a>
+            </p>
+        </div>
+    </footer>
+
+    <!-- ====== JavaScript (控制漢堡與手機版下拉) ====== -->
+<script>
+    (function() {
+        // 1. 漢堡按鈕：切換選單顯示
+        const hamburger = document.getElementById('hamburgerBtn');
+        const topNav = document.getElementById('topNav');
+
+        if (hamburger && topNav) {
+            hamburger.addEventListener('click', function() {
+                topNav.classList.toggle('active');
+            });
+        }
+
+        // 2. 手機版：點擊箭頭 (▼/▲) 切換子選單的「展開/收合」
+        const arrows = document.querySelectorAll('.top-nav .arrow');
+        arrows.forEach(function(arrow) {
+            arrow.addEventListener('click', function(e) {
+                e.stopPropagation();   // 防止事件冒泡
+                e.preventDefault();    // 防止任何預設行為（如有）
+                
+                const parentDropdown = this.parentElement;
+                if (parentDropdown) {
+                    // 切換 .open 類別
+                    parentDropdown.classList.toggle('open');
+                    
+                    // ⚠️ 額外保障：直接控制子選單的顯示，確保與 .open 同步
+                    const subMenu = parentDropdown.querySelector('.dropdown-menu');
+                    if (subMenu) {
+                        if (parentDropdown.classList.contains('open')) {
+                            subMenu.style.display = 'block';
+                        } else {
+                            subMenu.style.display = 'none';
+                        }
+                    }
+                }
+            });
+        });
+
+        // 3. (手機版) 點擊選單外空白處可關閉選單 (提升體驗)
+        document.addEventListener('click', function(e) {
+            if (window.innerWidth <= 768) {
+                const nav = document.getElementById('topNav');
+                const hamburger = document.getElementById('hamburgerBtn');
+                if (nav && nav.classList.contains('active')) {
+                    if (!nav.contains(e.target) && !hamburger.contains(e.target)) {
+                        nav.classList.remove('active');
+                    }
+                }
+            }
+        });
+
+        // 4. (手機版) 點擊父層連結（如「最新消息」文字）不跳轉，只切換選單
+        //    但若希望點擊文字也跳轉，請將此區塊註解或刪除
+        const dropdownLinks = document.querySelectorAll('.top-nav .dropdown > a');
+        dropdownLinks.forEach(function(link) {
+            link.addEventListener('click', function(e) {
+                if (window.innerWidth <= 768) {
+                    // 手機版：點擊父層連結時，切換子選單（不跳轉）
+                    e.preventDefault();
+                    const parentDropdown = this.parentElement;
+                    if (parentDropdown) {
+                        parentDropdown.classList.toggle('open');
+                        const subMenu = parentDropdown.querySelector('.dropdown-menu');
+                        if (subMenu) {
+                            if (parentDropdown.classList.contains('open')) {
+                                subMenu.style.display = 'block';
+                            } else {
+                                subMenu.style.display = 'none';
+                            }
+                        }
+                    }
+                }
+                // 電腦版不干擾（讓它正常跳轉）
+            });
+        });
+
+    })();
+</script>
+
+</body>
+</html>
