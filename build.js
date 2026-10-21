@@ -586,6 +586,15 @@ if (fs.existsSync(IMAGES_SRC)) {
     console.log('⚠️ images 資料夾不存在，跳過複製');
 }
 
+// ===== 複製 .htaccess 到 dist =====
+const HTACCESS_SRC = './.htaccess';
+if (fs.existsSync(HTACCESS_SRC)) {
+    fs.copyFileSync(HTACCESS_SRC, path.join(DIST_DIR, '.htaccess'));
+    console.log('✅ 已複製 .htaccess 到 dist');
+} else {
+    console.log('⚠️ .htaccess 不存在，跳過複製');
+}
+
 // ===== 複製 files 資料夾到 dist =====
 const FILES_SRC = './files';
 const FILES_DEST = path.join(DIST_DIR, 'files');

@@ -1,0 +1,35 @@
+# ============================================
+# 301 永久轉址設定
+# 舊網址 → 新網址
+# ============================================
+
+RewriteEngine On
+
+# ===== 勞健保專區 =====
+RewriteRule ^acc03171\.html$ /labor-ins-01.html [R=301,L]
+RewriteRule ^acc03169\.html$ /labor-ins-01.html [R=301,L]
+RewriteRule ^acc03163\.html$ /labor-ins-01.html [R=301,L]
+RewriteRule ^acc03170\.html$ /labor-ins-12.html [R=301,L]
+RewriteRule ^acc03116\.html$ /labor-ins-11.html [R=301,L]
+RewriteRule ^acc03109\.html$ /labor-ins-09.html [R=301,L]
+RewriteRule ^acc03164\.html$ /labor-ins-01.html [R=301,L]
+RewriteRule ^acc03165\.html$ /labor-ins-01.html [R=301,L]
+
+# ===== 帳務處理 =====
+RewriteRule ^acc02002\.html$ /accounting-16.html [R=301,L]
+RewriteRule ^acc02017\.html$ /accounting-13.html [R=301,L]
+RewriteRule ^acc02020\.html$ /accounting-14.html [R=301,L]
+RewriteRule ^acc02023\.html$ /accounting-15.html [R=301,L]
+RewriteRule ^acc02025\.html$ /accounting-12.html [R=301,L]
+RewriteRule ^acc02004\.html$ /accounting-08.html [R=301,L]
+RewriteRule ^acc02005\.html$ /accounting-19.html [R=301,L]
+RewriteRule ^acc02026\.html$ /accounting-17.html [R=301,L]
+RewriteRule ^acc02013\.html$ /accounting-10.html [R=301,L]
+RewriteRule ^acc02021\.html$ /accounting-18.html [R=301,L]
+
+# ===== 公司設立/變更登記 =====
+RewriteRule ^acc01007\.html$ /company-reg-20.html [R=301,L]
+
+# ===== 稅務申報與諮詢 =====
+RewriteRule ^acc03007\.html$ /tax-consult-21.html [R=301,L]
+RewriteRule ^acc03023\.html$ /tax-consult-16.html [R=301,L]
