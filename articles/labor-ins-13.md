@@ -48,68 +48,65 @@ author: 大佳稅務記帳士事務所
 		</tr>
 		<tr>
 			<td axis="第一類" id="a6" scope="col" valign="top" headers="a1">
-			<p style="text-align: center;"><font lang="ZH-TW">第一類</font></p>
+				<p style="text-align: center;"><font lang="ZH-TW">第一類</font></p>
 			</td>
 			<td axis="第一類" id="a7" scope="col" valign="top" headers="a2">
-			<p><font lang="ZH-TW">＊</font>受僱者（含外籍勞工）</p>
-			<p><font lang="ZH-TW">＊</font>公職人員、公務人員、私立學校教職員</p>
-			<p><font lang="ZH-TW">＊雇主</font></p>
-			<p><font lang="ZH-TW">＊自營業主</font></p>
-			<p><font lang="ZH-TW">＊專技人員自行執業者</font></p>
+				<p><font lang="ZH-TW">＊</font>受僱者（含外籍勞工）</p>
+				<p><font lang="ZH-TW">＊</font>公職人員、公務人員、私立學校教職員</p>
+				<p><font lang="ZH-TW">＊雇主</font></p>
+				<p><font lang="ZH-TW">＊自營業主</font></p>
+				<p><font lang="ZH-TW">＊專技人員自行執業者</font></p>
             </td>
 			<td axis="第一類" id="a8" valign="top" headers="a2">
-			<p><font lang="ZH-TW">＊配偶</font></p>
-
-			<p><font lang="ZH-TW">＊</font>直系血親尊親屬（例如：父母、祖父母、外祖父母、曾祖父母、外曾祖父母等）</p>
-
-			<p><font lang="ZH-TW">＊</font>二親等內直系血親卑親屬未滿20歲，或滿20歲無謀生能力或仍在學就讀（限子女、孫子女、外孫子女）</p>
-
-			<p><font lang="ZH-TW">＊</font>以上均需無職業且應依最近親等順序投保</p>
+				<p><font lang="ZH-TW">＊配偶</font></p>
+				<p><font lang="ZH-TW">＊</font>直系血親尊親屬（例如：父母、祖父母、外祖父母、曾祖父母、外曾祖父母等）</p>
+				<p><font lang="ZH-TW">＊</font>二親等內直系血親卑親屬未滿20歲，或滿20歲無謀生能力或仍在學就讀（限子女、孫子女、外孫子女）</p>
+				<p><font lang="ZH-TW">＊</font>以上均需無職業且應依最近親等順序投保</p>
 			</td>
 			<td axis="第一類" id="a9" valign="top" headers="a3">
-			<p>所屬的機關、學校、公司、團體或雇主</p>
+				<p>所屬的機關、學校、公司、團體或雇主</p>
 			</td>
 		</tr>
 		<tr>
 			<td axis="第二類" id="a10" valign="top" headers="a1">
-			<p style="text-align: center;"><font lang="ZH-TW">第二類</font></p>
+				<p style="text-align: center;"><font lang="ZH-TW">第二類</font></p>
 			</td>
 			<td axis="第二類" id="a11" valign="top" headers="a2">
-			<p><font lang="ZH-TW">＊職業工會會員、外僱船員</font></p>
+				<p><font lang="ZH-TW">＊職業工會會員、外僱船員</font></p>
 			</td>
 			<td align="center" axis="第二類" id="a12" valign="top" headers="a2">
-			<p><font lang="ZH-TW">同上</font></p>
+				<p><font lang="ZH-TW">同上</font></p>
 			</td>
 			<td axis="第二類" id="a13" valign="top" headers="a3">
-			<p><font lang="ZH-TW">所屬的職業工會、船長公會、海員總工會</font></p>
+				<p><font lang="ZH-TW">所屬的職業工會、船長公會、海員總工會</font></p>
 			</td>
 		</tr>
 		<tr>
 			<td axis="第三類" id="a14" valign="top" headers="a1">
-			<p style="text-align: center;"><font lang="ZH-TW">第三類</font></p>
+				<p style="text-align: center;"><font lang="ZH-TW">第三類</font></p>
 			</td>
 			<td axis="第三類" id="a15" valign="top" headers="a2">
-			<p><font lang="ZH-TW">＊農、漁民、水利會會員</font>或年滿15歲以上實際從事農、漁業工作者</p>
+				<p><font lang="ZH-TW">＊農、漁民、水利會會員</font>或年滿15歲以上實際從事農、漁業工作者</p>
 			</td>
 			<td align="center" axis="第三類" id="a16" valign="top" headers="a2">
-			<p><font lang="ZH-TW">同上</font></p>
+				<p><font lang="ZH-TW">同上</font></p>
 			</td>
 			<td axis="第三類" id="a17" valign="top" headers="a3">
-			<p><font lang="ZH-TW">農會、漁會、水利會</font></p>
+				<p><font lang="ZH-TW">農會、漁會、水利會</font></p>
 			</td>
 		</tr>
 		<tr>
 			<td axis="第四類" id="a18" rowspan="3" valign="top" headers="a1">
-			<p style="text-align: center;"><font lang="ZH-TW">第四類</font></p>
+				<p style="text-align: center;"><font lang="ZH-TW">第四類</font></p>
 			</td>
 			<td id="a19" valign="top" headers="a2">
-			<p><font lang="ZH-TW">義務役軍人、軍校軍費生、在恤遺眷</font></p>
+				<p><font lang="ZH-TW">義務役軍人、軍校軍費生、在恤遺眷</font></p>
 			</td>
 			<td align="center" axis="第四類" id="a20" valign="top" headers="a2">
-			<p><font lang="ZH-TW">無</font></p>
+				<p><font lang="ZH-TW">無</font></p>
 			</td>
 			<td axis="第四類" id="a21" valign="top" headers="a3">
-			<p>國防部指定之單位</p>
+				<p>國防部指定之單位</p>
 			</td>
 		</tr>
 		<tr>
@@ -136,19 +133,19 @@ author: 大佳稅務記帳士事務所
 		</tr>
 		<tr>
 			<td axis="第六類" id="a29" rowspan="2" valign="top" headers="a1">
-			<p style="text-align: center;"><font lang="ZH-TW">第六類</font></p>
+				<p style="text-align: center;"><font lang="ZH-TW">第六類</font></p>
 			</td>
 			<td axis="第六類" id="a30" valign="top" headers="a2">無職業榮民或榮民遺眷家戶代表</td>
 			<td align="center" axis="第六類" id="a31" rowspan="2" valign="top" headers="a2">
-			<p><font lang="ZH-TW">同第一類眷屬</font></p>
+				<p><font lang="ZH-TW">同第一類眷屬</font></p>
 			</td>
 			<td axis="第六類" id="a32" rowspan="2" valign="top" headers="a3">
-			<p><font lang="ZH-TW">戶籍地的鄉（鎮、市、區）公所</font></p>
+				<p><font lang="ZH-TW">戶籍地的鄉（鎮、市、區）公所</font></p>
 			</td>
 		</tr>
 		<tr>
 			<td axis="第六類" id="a33" valign="top" headers="a1">
-			<p>無職業一般家戶戶長或家戶代表</p>
+				<p>無職業一般家戶戶長或家戶代表</p>
 			</td>
 		</tr>
 	</tbody>
