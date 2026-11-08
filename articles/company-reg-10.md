@@ -9,7 +9,7 @@ category: 公司設立/變更登記
 tags: ["公司設立", "行號設立", "有限公司", "商號", "商行", "創業", "公司登記", "稅務登記", "營業登記"]
 author: 大佳稅務記帳士事務所
 # ===== 選填欄位 =====
-# pinned: 1
+pinned: 4
 ---
 
 <div class="notice notice-quote">
