@@ -515,7 +515,9 @@ const fixedPages = [
     // ★★★ 小工具（新增）★★★
     { slug: 'tool_invoice', title: '手開發票小幫手', desc: '大佳稅務記帳士事務所 - 統一編號查詢與含稅未稅價格換算' },
     { slug: 'tool_rent', title: '租金扣繳計算機', desc: '大佳稅務記帳士事務所 - 租金扣繳稅額與二代健保補充保費試算' },
-    { slug: 'tool_withholding', title: '所得扣繳計算機', desc: '大佳稅務記帳士事務所 - 各類所得扣繳稅額試算' }
+    { slug: 'tool_withholding', title: '所得扣繳計算機', desc: '大佳稅務記帳士事務所 - 各類所得扣繳稅額試算' },
+    // ★★★ 生成 404.html ★★★
+    { slug: '404', title: '找不到網頁', desc: '抱歉，您尋找的頁面不存在。' }
 ];
 
 fixedPages.forEach(page => {

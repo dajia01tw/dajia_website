@@ -33,3 +33,6 @@ RewriteRule ^acc01007\.html$ /company-reg-20.html [R=301,L]
 # ===== 稅務申報與諮詢 =====
 RewriteRule ^acc03007\.html$ /tax-consult-21.html [R=301,L]
 RewriteRule ^acc03023\.html$ /tax-consult-16.html [R=301,L]
+
+
+ErrorDocument 404 /404.html
